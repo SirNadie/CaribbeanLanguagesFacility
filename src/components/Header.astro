@@ -1,0 +1,29 @@
+---
+import ThemeToggle from "./ThemeToggle.jsx";
+---
+
+<header
+    class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm"
+>
+    <div
+        class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-white/10 px-4 sm:px-10 py-3 max-w-6xl mx-auto"
+    >
+        <div class="flex items-center gap-4 text-text-light dark:text-white">
+            <div class="h-10 w-auto">
+                <img
+                    src="/CLFlogo.png"
+                    alt="Caribbean Language Facility Logo"
+                    class="h-full w-auto object-contain"
+                />
+            </div>
+            <h2
+                class="text-text-light dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]"
+            >
+                Caribbean Language Facility
+            </h2>
+        </div>
+        <div class="flex flex-1 justify-end items-center gap-4 sm:gap-6">
+            <ThemeToggle client:load />
+        </div>
+    </div>
+</header>

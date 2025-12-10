@@ -1,0 +1,134 @@
+---
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+import FloatingWhatsApp from "../components/FloatingWhatsApp.astro";
+import { ClientRouter } from "astro:transitions";
+---
+
+<!doctype html>
+<html lang="es" class="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="description"
+            content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
+        />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/png" href="/CLFlogo.png" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={Astro.url} />
+        <meta property="og:title" content={title} />
+        <meta
+            property="og:description"
+            content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
+        />
+        <meta property="og:image" content="/CLFlogo.png" />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={Astro.url} />
+        <meta property="twitter:title" content={title} />
+        <meta
+            property="twitter:description"
+            content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
+        />
+        <meta property="twitter:image" content="/CLFlogo.png" />
+
+        <ClientRouter />
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0"
+            rel="stylesheet"
+        />
+        <style is:global>
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+        </style>
+        <script is:inline>
+            if (
+                localStorage.theme === "dark" ||
+                (!("theme" in localStorage) &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+        </script>
+    </head>
+    <body
+        class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark selection:bg-primary selection:text-white"
+    >
+        <div
+            class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden"
+        >
+            <div class="layout-container flex h-full grow flex-col">
+                <slot />
+            </div>
+        </div>
+        <FloatingWhatsApp />
+        <script>
+            // Simple Scroll Reveal Animation
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.1,
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("animate-fade-in-up");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.addEventListener("astro:page-load", () => {
+                const elements = document.querySelectorAll(
+                    "section, .reveal-on-scroll",
+                );
+                elements.forEach((el) => observer.observe(el));
+            });
+        </script>
+        <style is:global>
+            /* Custom Animation Utility */
+            .animate-fade-in-up {
+                animation: fadeInUp 0.8s ease-out forwards;
+                opacity: 0;
+            }
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            /* Initial state for elements to be revealed */
+            section,
+            .reveal-on-scroll {
+                opacity: 0; /* Hidden initially */
+            }
+            /* Ensure content is visible if JS fails/disabled or on immediate load if needed, but here we assume JS works */
+        </style>
+    </body>
+</html>
