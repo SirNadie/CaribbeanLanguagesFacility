@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Landing Page: Casa Career &amp; Skills Academy</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3B82F6",
+                        "secondary": "#F97316",
+                        "accent": "#10B981",
+                        "background-light": "#F7FAFC",
+                        "background-dark": "#1A202C",
+                        "text-light": "#1A202C",
+                        "text-dark": "#F7FAFC"
+                    },
+                    fontFamily: {
+                        "display": ["Nunito", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm">
+                <div
+                    class="flex items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 dark:border-white/10 px-4 sm:px-10 py-3 max-w-6xl mx-auto">
+                    <div class="flex items-center gap-4 text-text-light dark:text-white">
+                        <div class="size-6 text-primary">
+                            <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_6_319)">
+                                    <path
+                                        d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"
+                                        fill="currentColor"></path>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_6_319">
+                                        <rect fill="white" height="48" width="48"></rect>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h2 class="text-text-light dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">
+                            Casa Career &amp; Skills Academy</h2>
+                    </div>
+                    <div class="flex flex-1 justify-end items-center gap-4 sm:gap-6">
+                        <button
+                            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-accent text-white text-sm font-bold leading-normal tracking-[0.015em] gap-2 hover:bg-accent/90 transition-colors">
+                            <span class="truncate">WhatsApp</span>
+                            <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            <main class="flex-1">
+                <div class="max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-20">
+                    <div class="@container">
+                        <div class="flex flex-col gap-10 @[864px]:flex-row @[864px]:items-center">
+                            <div class="flex flex-col gap-6 text-left @[864px]:w-1/2">
+                                <h1
+                                    class="text-text-light dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl">
+                                    Practical Courses for the Future, Today!</h1>
+                                <h2
+                                    class="text-text-light/80 dark:text-white/80 text-base font-normal leading-normal @[480px]:text-lg">
+                                    Empowering the next generation with bilingual education in coding, robotics, and
+                                    leadership.</h2>
+                                <div class="flex-wrap gap-3 flex">
+                                    <button
+                                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors"><span
+                                            class="truncate">See Our Courses</span></button>
+                                    <button
+                                        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-background-light dark:bg-background-dark border border-gray-300 dark:border-white/20 text-text-light dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"><span
+                                            class="truncate">Learn More</span></button>
+                                </div>
+                            </div>
+                            <div class="w-full aspect-square bg-center bg-no-repeat bg-cover rounded-xl @[864px]:w-1/2"
+                                data-alt="A diverse group of happy children engaged in a coding class, collaborating over a laptop."
+                                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBwDOnikaC8RHTyD6a7GSFVGjQ2zmOwIzqsJwXR1Q_tE1XUBbUO1N-yuAQ0TlnDVkv5vuPJmPvIvTrTPqwY1eWE6nchHAGRT6t6V3o4GNNN1bzdh0y0iH9rn6L4IBCV0Wxo0vcisG9YR6dSRaGiq9Q50zpeFA1YfZGCO0TSnVjVDJRhnRZgRQzA2B7RFVJ6EhcBrL4BJ-iXjskd9UUoNbhEig9Q51QjPWjlP5IWTjUxEpuu3DgrWXJp5aREL6hOvLMotH8C-rDL3UM");'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-10 py-10 sm:py-20 @container">
+                        <div class="flex flex-col gap-4 text-center">
+                            <h2
+                                class="text-text-light dark:text-white text-3xl font-bold leading-tight tracking-[-0.015em] @[480px]:text-4xl">
+                                Flexible Learning for Every Child</h2>
+                            <p
+                                class="text-text-light/80 dark:text-white/80 text-base font-normal leading-normal max-w-3xl mx-auto">
+                                We offer two great ways to learn, each designed to provide an exceptional educational
+                                experience tailored to your family's needs.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-0">
+                            <div
+                                class="flex flex-1 gap-4 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark p-6 flex-col">
+                                <div class="text-primary"><span
+                                        class="material-symbols-outlined text-4xl">laptop_chromebook</span></div>
+                                <div class="flex flex-col gap-2">
+                                    <h3 class="text-text-light dark:text-white text-xl font-bold leading-tight">Online
+                                        Learning</h3>
+                                    <p
+                                        class="text-text-light/70 dark:text-white/70 text-base font-normal leading-normal">
+                                        Learn from the comfort of your home with our flexible and interactive virtual
+                                        classrooms.</p>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-1 gap-4 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark p-6 flex-col">
+                                <div class="text-secondary"><span
+                                        class="material-symbols-outlined text-4xl">groups</span></div>
+                                <div class="flex flex-col gap-2">
+                                    <h3 class="text-text-light dark:text-white text-xl font-bold leading-tight">
+                                        In-Person Classes</h3>
+                                    <p
+                                        class="text-text-light/70 dark:text-white/70 text-base font-normal leading-normal">
+                                        Experience hands-on, collaborative learning in our state-of-the-art, engaging
+                                        facilities.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-8 py-10">
+                        <h2
+                            class="text-text-light dark:text-white text-3xl font-bold leading-tight tracking-[-0.015em] text-center">
+                            Our Curriculum</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div
+                                class="flex flex-col items-center text-center gap-3 p-6 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark">
+                                <div class="text-primary"><span class="material-symbols-outlined text-4xl">code</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-text-light dark:text-white">Creative Coding</h3>
+                                <p class="text-sm text-text-light/70 dark:text-white/70">Bring ideas to life with
+                                    programming languages kids love.</p>
+                            </div>
+                            <div
+                                class="flex flex-col items-center text-center gap-3 p-6 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark">
+                                <div class="text-secondary"><span
+                                        class="material-symbols-outlined text-4xl">smart_toy</span></div>
+                                <h3 class="text-lg font-bold text-text-light dark:text-white">Robotics</h3>
+                                <p class="text-sm text-text-light/70 dark:text-white/70">Build and command robots to
+                                    solve real-world challenges.</p>
+                            </div>
+                            <div
+                                class="flex flex-col items-center text-center gap-3 p-6 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark">
+                                <div class="text-accent"><span
+                                        class="material-symbols-outlined text-4xl">campaign</span></div>
+                                <h3 class="text-lg font-bold text-text-light dark:text-white">Public Speaking</h3>
+                                <p class="text-sm text-text-light/70 dark:text-white/70">Develop confidence and
+                                    communication skills for future leaders.</p>
+                            </div>
+                            <div
+                                class="flex flex-col items-center text-center gap-3 p-6 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark">
+                                <div class="text-yellow-500"><span
+                                        class="material-symbols-outlined text-4xl">palette</span></div>
+                                <h3 class="text-lg font-bold text-text-light dark:text-white">Digital Arts</h3>
+                                <p class="text-sm text-text-light/70 dark:text-white/70">Unleash creativity through
+                                    digital drawing, animation, and design.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-10 sm:py-20" id="la-promesa">
+                        <div class="flex flex-col gap-10">
+                            <div class="flex flex-col gap-4 text-center">
+                                <h2 class="text-3xl font-bold tracking-tight text-text-light dark:text-white">Loved by
+                                    Parents &amp; Students</h2>
+                                <p class="text-lg text-text-light/80 dark:text-white/80 max-w-3xl mx-auto">See what our
+                                    community is saying about their experience at Casa Career &amp; Skills Academy.</p>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div
+                                    class="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark p-6">
+                                    <p class="text-text-light/80 dark:text-white/80">"My daughter's confidence has
+                                        soared since she started the public speaking course. The teachers are
+                                        fantastic!"</p>
+                                    <div class="flex items-center gap-4 mt-auto">
+                                        <img class="h-12 w-12 rounded-full object-cover"
+                                            data-alt="Portrait of Maria, a happy parent"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNJGua73SDQEu0AL60QniZU3PZQWbKzHXgW3tHgHNUkwYguslL84sOkMOiQQdA0U-Y8wgwjwDQF81QY6rGqESxlTeXLz5yeayrbCr5JbM1DcdjELB0SkJtdig90CDZjftSz1lhTK11B-OrvpvMe7KvFGSiffCShPPdRy121tL8im66UvsEVnexBZU4Ak_dZGl7L9TvKp0CGhKpmcCsnJYOoCqYOttNMCme7w--G3ZpHzvleONcaCaM0V5b-4WLnMRoHI78_Tvwgqc" />
+                                        <div>
+                                            <p class="font-bold text-text-light dark:text-white">Maria S.</p>
+                                            <p class="text-sm text-text-light/70 dark:text-white/70">Parent</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark p-6">
+                                    <p class="text-text-light/80 dark:text-white/80">"I built my first robot and it was
+                                        awesome! I can't wait to learn more."</p>
+                                    <div class="flex items-center gap-4 mt-auto">
+                                        <img class="h-12 w-12 rounded-full object-cover"
+                                            data-alt="Portrait of Leo, an excited student"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuACsYEdfo3NdlZoAGLAsvKvF75NLwqR_SsG504S6DKgWlGmEEgzEsz8keMVuZTcuHuxSrukz5MH8xpzzMcSec_eDIOtvhnuNWp7nwWcELgt24WtAeB4FZIkGEABwkSf92ltRPLe5f21pt0h286cu8RRzMD2JDePs6PKvYx3ZPnI_G5gpxc2h3RgVO99tSk4SfETq-1DcmAOjbUyge4ACY977acCCjr4pb79Ycemb84qW15qajNl9xokNR04RomylPN28v-QOtHBa44" />
+                                        <div>
+                                            <p class="font-bold text-text-light dark:text-white">Leo R.</p>
+                                            <p class="text-sm text-text-light/70 dark:text-white/70">Student, Age 10</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-white/20 bg-white dark:bg-background-dark p-6">
+                                    <p class="text-text-light/80 dark:text-white/80">"The online coding classes are so
+                                        convenient and just as engaging as in-person ones. Highly recommend!"</p>
+                                    <div class="flex items-center gap-4 mt-auto">
+                                        <img class="h-12 w-12 rounded-full object-cover"
+                                            data-alt="Portrait of David, a satisfied parent"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfRj0rTTwDUEwWyyKyRPYtvXCwxlTVmYEveMP4x7eI7Sy36-olGUWF5C7lSQ8wS4LQQxI1xdV0s_OhXAytiCfuGvGIY3lyut-IG_0Q6bqNIsoGlHLqrQRhEbTqacJxdTEbQ369CwyIY2clqKwGahpPJdlZut4DG6lDl0BHDZ1I-b5uTMNLvx9juSEHW1C0jZb7NvReit-x-NSdhGjirj3Mlp5sfzVQbvy0VBZOwS-zOoqH_C0jFQSZeWQ2roebWlGGevrx9gj7yEg" />
+                                        <div>
+                                            <p class="font-bold text-text-light dark:text-white">David Chen</p>
+                                            <p class="text-sm text-text-light/70 dark:text-white/70">Parent</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <footer class="bg-white dark:bg-background-dark border-t border-gray-200 dark:border-white/10">
+                <div class="max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-20">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div class="flex flex-col gap-4">
+                            <h2 class="text-3xl font-bold tracking-tight text-text-light dark:text-white">Start Your
+                                Child's Journey</h2>
+                            <p class="text-lg text-text-light/80 dark:text-white/80">Have questions or ready to enroll?
+                                Fill out the form and our team will get in touch with you shortly.</p>
+                        </div>
+                        <form
+                            class="flex flex-col gap-4 p-8 rounded-xl border border-gray-200 dark:border-white/20 bg-background-light dark:bg-background-dark/50">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-sm font-medium text-text-light dark:text-white/80"
+                                        for="name">Name</label>
+                                    <input
+                                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-white/20 bg-white dark:bg-background-dark/50 text-text-light dark:text-white focus:ring-primary focus:border-primary"
+                                        id="name" placeholder="Your Name" type="text" />
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-text-light dark:text-white/80"
+                                        for="email">Email</label>
+                                    <input
+                                        class="mt-1 block w-full rounded-lg border-gray-300 dark:border-white/20 bg-white dark:bg-background-dark/50 text-text-light dark:text-white focus:ring-primary focus:border-primary"
+                                        id="email" placeholder="you@example.com" type="email" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-sm font-medium text-text-light dark:text-white/80"
+                                    for="message">Message</label>
+                                <textarea
+                                    class="mt-1 block w-full rounded-lg border-gray-300 dark:border-white/20 bg-white dark:bg-background-dark/50 text-text-light dark:text-white focus:ring-primary focus:border-primary"
+                                    id="message" placeholder="How can we help?" rows="4"></textarea>
+                            </div>
+                            <button
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+                                type="submit">Request Information</button>
+                        </form>
+                    </div>
+                    <div
+                        class="mt-16 pt-8 border-t border-gray-200 dark:border-white/10 text-center text-sm text-text-light/60 dark:text-white/60">
+                        <p>© 2024 Casa Career &amp; Skills Academy. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+</body>
+
+</html>
