@@ -20,42 +20,42 @@ import eduImg from "../assets/images/kids.jpg";
 				>
 					<div class="flex flex-col gap-6 text-left @[864px]:w-1/2">
 						<h1
-							class="text-text-light text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl"
+							class="hero-animate text-text-light text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl"
 						>
 							Impulsamos tu comunicación, educación y crecimiento
 							profesional con enfoque bilingüe.
 						</h1>
 						<h2
-							class="text-text-light/80 text-base font-normal leading-normal @[480px]:text-lg"
+							class="hero-animate text-text-light/80 text-base font-normal leading-normal @[480px]:text-lg"
 						>
 							Ofrecemos traducción, interpretación, educación
 							bilingüe y capacitación en oficios.
 						</h2>
 						<div
-							class="flex flex-col md:flex-row flex-wrap gap-4 w-full"
+							class="hero-animate flex flex-col md:flex-row flex-wrap gap-4 w-full"
 						>
 							<a
 								href="#services"
-								class="flex-1 min-w-[200px] flex items-center justify-center rounded-xl py-3 px-6 bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 hover:scale-105 hover:bg-primary/90 transition-all duration-300"
+								class="btn-press flex-1 min-w-[200px] flex items-center justify-center rounded-xl py-3 px-6 bg-primary text-white text-base font-bold shadow-lg shadow-primary/20 hover:scale-105 hover:bg-primary/90 transition-all duration-300"
 							>
 								Servicios de Traducción
 							</a>
 							<a
 								href="#education-section"
-								class="flex-1 min-w-[200px] flex items-center justify-center rounded-xl py-3 px-6 bg-secondary text-white text-base font-bold shadow-lg shadow-secondary/20 hover:scale-105 hover:bg-secondary/90 transition-all duration-300"
+								class="btn-press flex-1 min-w-[200px] flex items-center justify-center rounded-xl py-3 px-6 bg-secondary text-white text-base font-bold shadow-lg shadow-secondary/20 hover:scale-105 hover:bg-secondary/90 transition-all duration-300"
 							>
 								Educación Bilingüe
 							</a>
 							<a
 								href="#casa-section"
-								class="flex-1 min-w-[200px] flex items-center justify-center rounded-xl py-3 px-6 bg-white border border-gray-200 text-text-light text-base font-bold shadow-lg shadow-gray-200/50 hover:scale-105 hover:bg-gray-50 transition-all duration-300"
+								class="btn-press flex-1 min-w-[200px] flex items-center justify-center rounded-xl py-3 px-6 bg-white border border-gray-200 text-text-light text-base font-bold shadow-lg shadow-gray-200/50 hover:scale-105 hover:bg-gray-50 transition-all duration-300"
 							>
 								Centro CASA
 							</a>
 						</div>
 					</div>
 					<div
-						class="relative w-full aspect-square rounded-xl overflow-hidden @[864px]:w-1/2"
+						class="hero-animate img-zoom relative w-full aspect-square rounded-xl overflow-hidden @[864px]:w-1/2"
 					>
 						<Image
 							src={heroImg}
@@ -72,17 +72,21 @@ import eduImg from "../assets/images/kids.jpg";
 			<div
 				class="max-w-6xl mx-auto px-4 sm:px-10 flex flex-col gap-8 text-center"
 			>
-				<h2 class="text-3xl font-bold tracking-tight text-text-light">
+				<h2
+					class="reveal text-3xl font-bold tracking-tight text-text-light"
+				>
 					Quiénes Somos
 				</h2>
-				<p class="text-lg text-text-light/80 max-w-4xl mx-auto">
+				<p class="reveal text-lg text-text-light/80 max-w-4xl mx-auto">
 					En Caribbean Language Facility nos dedicamos a la traducción
 					profesional, interpretación, educación bilingüe y formación
 					vocacional. Tenemos años de experiencia ayudando a familias,
 					estudiantes y empresas.
 				</p>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
-					<div class="p-6 rounded-xl border border-gray-200">
+					<div
+						class="reveal-left card-hover p-6 rounded-xl border border-gray-200 bg-white"
+					>
 						<h3 class="text-xl font-bold text-primary mb-3">
 							Nuestra Visión
 						</h3>
@@ -91,7 +95,9 @@ import eduImg from "../assets/images/kids.jpg";
 							mundo global.
 						</p>
 					</div>
-					<div class="p-6 rounded-xl border border-gray-200">
+					<div
+						class="reveal-right card-hover p-6 rounded-xl border border-gray-200 bg-white"
+					>
 						<h3 class="text-xl font-bold text-secondary mb-3">
 							Nuestros Valores
 						</h3>
@@ -114,7 +120,7 @@ import eduImg from "../assets/images/kids.jpg";
 				id="services"
 			>
 				<div
-					class="relative h-64 md:h-full min-h-[300px] rounded-xl overflow-hidden md:order-2"
+					class="reveal-right img-zoom relative h-64 md:h-full min-h-[300px] rounded-xl overflow-hidden md:order-2"
 				>
 					<Image
 						src={transImg}
@@ -122,11 +128,11 @@ import eduImg from "../assets/images/kids.jpg";
 						class="object-cover w-full h-full"
 					/>
 				</div>
-				<div class="md:order-1">
+				<div class="reveal-left md:order-1">
 					<div class="flex items-center gap-3 mb-4">
 						<div class="h-12 w-12 shrink-0">
 							<img
-								src="/INSIlogo.png"
+								src="/images/logos/INSIlogo.png"
 								alt="Insignia Traducción"
 								class="h-full w-full object-contain"
 							/>
@@ -175,7 +181,7 @@ import eduImg from "../assets/images/kids.jpg";
 						<div>
 							<button
 								onclick="window.dispatchEvent(new CustomEvent('selectService', { detail: 'Traducción/Interpretación' }))"
-								class="mt-4 w-full sm:w-auto px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-md text-sm"
+								class="btn-press mt-4 w-full sm:w-auto px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-colors shadow-md text-sm"
 							>
 								Solicitar Información
 							</button>
@@ -190,7 +196,7 @@ import eduImg from "../assets/images/kids.jpg";
 				id="education-section"
 			>
 				<div
-					class="relative h-64 md:h-full min-h-[300px] rounded-xl overflow-hidden md:order-2"
+					class="reveal-right img-zoom relative h-64 md:h-full min-h-[300px] rounded-xl overflow-hidden md:order-2"
 				>
 					<Image
 						src={eduImg}
@@ -198,7 +204,7 @@ import eduImg from "../assets/images/kids.jpg";
 						class="object-cover w-full h-full"
 					/>
 				</div>
-				<div class="md:order-1">
+				<div class="reveal-left md:order-1">
 					<div class="flex items-center gap-3 mb-4">
 						<span
 							class="material-symbols-outlined text-4xl text-secondary"
@@ -211,7 +217,7 @@ import eduImg from "../assets/images/kids.jpg";
 					<div class="flex items-center gap-3 mb-4">
 						<div class="h-12 w-12 shrink-0">
 							<img
-								src="/CASAlogo.png"
+								src="/images/logos/CASAlogo.png"
 								alt="Logo CASA"
 								class="h-full w-full object-contain"
 							/>
@@ -243,7 +249,7 @@ import eduImg from "../assets/images/kids.jpg";
 					<div class="sm:col-span-2 mt-2">
 						<button
 							onclick="window.dispatchEvent(new CustomEvent('selectService', { detail: 'Educación Bilingüe (Lisa\'s Kids)' }))"
-							class="w-full sm:w-auto px-6 py-3 bg-secondary text-white font-bold rounded-lg hover:bg-secondary/90 transition-colors shadow-md text-sm"
+							class="btn-press w-full sm:w-auto px-6 py-3 bg-secondary text-white font-bold rounded-lg hover:bg-secondary/90 transition-colors shadow-md text-sm"
 						>
 							Solicitar Información
 						</button>
@@ -256,11 +262,11 @@ import eduImg from "../assets/images/kids.jpg";
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="casa-section">
 			<!-- CASA -->
 			<div
-				class="p-8 rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col"
+				class="reveal-left card-hover p-8 rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col"
 			>
 				<div class="h-20 mb-6 flex items-start">
 					<img
-						src="/CASAlogo.png"
+						src="/images/logos/CASAlogo.png"
 						alt="Lisa's Kids CASA Logo"
 						class="h-full w-auto object-contain"
 					/>
@@ -301,7 +307,7 @@ import eduImg from "../assets/images/kids.jpg";
 				<div class="mt-auto pt-6 flex justify-end">
 					<button
 						onclick="window.dispatchEvent(new CustomEvent('selectService', { detail: 'Capacitación (CASA)' }))"
-						class="w-full sm:w-auto px-6 py-3 border border-accent text-accent font-bold rounded-lg hover:bg-accent hover:text-white transition-all text-sm"
+						class="btn-press w-full sm:w-auto px-6 py-3 border border-accent text-accent font-bold rounded-lg hover:bg-accent hover:text-white transition-all text-sm"
 					>
 						Solicitar Información
 					</button>
@@ -310,7 +316,7 @@ import eduImg from "../assets/images/kids.jpg";
 
 			<!-- Classes & Training -->
 			<div
-				class="p-8 rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col"
+				class="reveal-right card-hover p-8 rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col"
 			>
 				<div class="text-blue-500 mb-4">
 					<span
@@ -322,35 +328,35 @@ import eduImg from "../assets/images/kids.jpg";
 				Soluciones de aprendizaje para ti.
 				<ul class="space-y-3">
 					<li
-						class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+						class="stagger-item flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
 					>
 						<span
-							class="material-symbols-outlined"
+							class="icon-bounce material-symbols-outlined"
 							aria-hidden="true">menu_book</span
 						>
 						Clases de inglés y español
 					</li>
 					<li
-						class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+						class="stagger-item flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
 					>
 						<span
-							class="material-symbols-outlined"
+							class="icon-bounce material-symbols-outlined"
 							aria-hidden="true">person</span
 						> Cursos personalizados
 					</li>
 					<li
-						class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+						class="stagger-item flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
 					>
 						<span
-							class="material-symbols-outlined"
+							class="icon-bounce material-symbols-outlined"
 							aria-hidden="true">business</span
 						> Formación para empresas
 					</li>
 					<li
-						class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+						class="stagger-item flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
 					>
 						<span
-							class="material-symbols-outlined"
+							class="icon-bounce material-symbols-outlined"
 							aria-hidden="true">group</span
 						>
 						Capacitación para jóvenes y adultos
@@ -359,7 +365,7 @@ import eduImg from "../assets/images/kids.jpg";
 				<div class="mt-auto pt-6 flex justify-end">
 					<button
 						onclick="window.dispatchEvent(new CustomEvent('selectService', { detail: 'Otro' }))"
-						class="w-full sm:w-auto px-6 py-3 border border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all text-sm"
+						class="btn-press w-full sm:w-auto px-6 py-3 border border-primary text-primary font-bold rounded-lg hover:bg-primary hover:text-white transition-all text-sm"
 					>
 						Solicitar Información
 					</button>
@@ -371,38 +377,38 @@ import eduImg from "../assets/images/kids.jpg";
 	<!-- Why Choose Us -->
 	<div class="bg-primary text-white py-14">
 		<div class="max-w-6xl mx-auto px-4 sm:px-10 text-center">
-			<h2 class="text-3xl font-bold mb-10">¿Por qué elegirnos?</h2>
+			<h2 class="reveal text-3xl font-bold mb-10">¿Por qué elegirnos?</h2>
 			<div class="flex flex-wrap justify-center gap-6">
 				<div
-					class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
+					class="badge-float flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
 				>
 					<span class="material-symbols-outlined" aria-hidden="true"
 						>verified</span
 					> Servicios integrados
 				</div>
 				<div
-					class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
+					class="badge-float flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
 				>
 					<span class="material-symbols-outlined" aria-hidden="true"
 						>verified</span
 					> Enfoque bilingüe real
 				</div>
 				<div
-					class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
+					class="badge-float flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
 				>
 					<span class="material-symbols-outlined" aria-hidden="true"
 						>verified</span
 					> Experiencia
 				</div>
 				<div
-					class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
+					class="badge-float flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
 				>
 					<span class="material-symbols-outlined" aria-hidden="true"
 						>verified</span
 					> Atención personalizada
 				</div>
 				<div
-					class="flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
+					class="badge-float flex items-center gap-2 bg-white/10 px-5 py-3 rounded-full backdrop-blur-sm"
 				>
 					<span class="material-symbols-outlined" aria-hidden="true"
 						>verified</span
@@ -417,7 +423,7 @@ import eduImg from "../assets/images/kids.jpg";
 		<div class="max-w-6xl mx-auto px-4 sm:px-10">
 			<div class="text-center mb-10">
 				<img
-					src="/CLFlogo.png"
+					src="/images/logos/CLFlogo.png"
 					alt="Caribbean Language Facility Group"
 					class="h-20 w-auto mx-auto mb-4 object-contain"
 				/>
@@ -434,29 +440,31 @@ import eduImg from "../assets/images/kids.jpg";
 			<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
 				<!-- Lisa's Kids -->
 				<div
-					class="flex flex-col items-center gap-3 p-4 hover:bg-white hover:shadow-sm rounded-xl transition-all"
+					class="reveal-scale flex flex-col items-center gap-3 p-4 hover:bg-white hover:shadow-md rounded-xl transition-all duration-300 hover:-translate-y-1"
+					data-delay="0"
 				>
 					<img
-						src="/CASAlogo.png"
+						src="/images/logos/CASAlogo.png"
 						alt="Lisa's Kids"
-						class="h-16 w-auto object-contain brightness-90"
+						class="h-16 w-auto object-contain brightness-90 transition-transform duration-300 hover:scale-110"
 					/>
 					<h3 class="text-sm font-bold text-secondary leading-tight">
 						Educación Infantil Bilingüe
 					</h3>
 					<p class="text-xs text-text-light/70">
-						Lisa’s Kids Casa Bilingüe
+						Lisa's Kids Casa Bilingüe
 					</p>
 				</div>
 
 				<!-- CASA -->
 				<div
-					class="flex flex-col items-center gap-3 p-4 hover:bg-white hover:shadow-sm rounded-xl transition-all"
+					class="reveal-scale flex flex-col items-center gap-3 p-4 hover:bg-white hover:shadow-md rounded-xl transition-all duration-300 hover:-translate-y-1"
+					data-delay="150"
 				>
 					<img
-						src="/CASAlogo.png"
+						src="/images/logos/CASAlogo.png"
 						alt="CASA"
-						class="h-16 w-auto object-contain"
+						class="h-16 w-auto object-contain transition-transform duration-300 hover:scale-110"
 					/>
 					<h3 class="text-sm font-bold text-accent leading-tight">
 						Capacitación Técnica y Profesional
@@ -466,12 +474,13 @@ import eduImg from "../assets/images/kids.jpg";
 
 				<!-- Translation -->
 				<div
-					class="flex flex-col items-center gap-3 p-4 hover:bg-white hover:shadow-sm rounded-xl transition-all"
+					class="reveal-scale flex flex-col items-center gap-3 p-4 hover:bg-white hover:shadow-md rounded-xl transition-all duration-300 hover:-translate-y-1"
+					data-delay="300"
 				>
 					<img
-						src="/INSIlogo.png"
+						src="/images/logos/INSIlogo.png"
 						alt="Traducciones"
-						class="h-16 w-auto object-contain"
+						class="h-16 w-auto object-contain transition-transform duration-300 hover:scale-110"
 					/>
 					<h3 class="text-sm font-bold text-primary leading-tight">
 						Servicios Lingüísticos
@@ -487,7 +496,7 @@ import eduImg from "../assets/images/kids.jpg";
 	<!-- Contact Section -->
 	<div class="max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-20">
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-			<div class="flex flex-col gap-6">
+			<div class="reveal-left flex flex-col gap-6">
 				<h2 class="text-3xl font-bold tracking-tight text-text-light">
 					Contáctanos
 				</h2>
@@ -539,7 +548,7 @@ import eduImg from "../assets/images/kids.jpg";
 			</div>
 
 			<!-- React Contact Form -->
-			<div class="flex flex-col gap-6">
+			<div class="reveal-right flex flex-col gap-6">
 				<ContactForm client:visible />
 
 				<!-- Google Maps Embed -->

@@ -17,7 +17,7 @@ import { ClientRouter } from "astro:transitions";
             content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
         />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/png" href="/CLFlogo.png" />
+        <link rel="icon" type="image/png" href="/images/logos/CLFlogo.png" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
 
@@ -29,7 +29,7 @@ import { ClientRouter } from "astro:transitions";
             property="og:description"
             content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
         />
-        <meta property="og:image" content="/CLFlogo.png" />
+        <meta property="og:image" content="/images/logos/CLFlogo.png" />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
@@ -39,14 +39,14 @@ import { ClientRouter } from "astro:transitions";
             property="twitter:description"
             content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
         />
-        <meta property="twitter:image" content="/CLFlogo.png" />
+        <meta property="twitter:image" content="/images/logos/CLFlogo.png" />
 
         <!-- PWA -->
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#2563eb" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <link rel="apple-touch-icon" href="/CLFlogo.png" />
+        <link rel="apple-touch-icon" href="/images/logos/CLFlogo.png" />
 
         <!-- Schema.org LocalBusiness -->
         <script type="application/ld+json">
@@ -64,7 +64,7 @@ import { ClientRouter } from "astro:transitions";
                     "addressRegion": "Trinidad",
                     "addressCountry": "TT"
                 },
-                "image": "/CLFlogo.png",
+                "image": "/images/logos/CLFlogo.png",
                 "priceRange": "$$",
                 "openingHours": "Mo-Fr 08:00-18:00",
                 "sameAs": []
@@ -108,7 +108,7 @@ import { ClientRouter } from "astro:transitions";
         </div>
         <FloatingWhatsApp />
         <script>
-            // Simple Scroll Reveal Animation
+            // Enhanced Scroll Reveal Animation with stagger support
             const observerOptions = {
                 root: null,
                 rootMargin: "0px",
@@ -118,17 +118,36 @@ import { ClientRouter } from "astro:transitions";
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add("animate-fade-in-up");
-                        observer.unobserve(entry.target);
+                        const el = entry.target as HTMLElement;
+                        const delay = el.dataset.delay || 0;
+                        setTimeout(
+                            () => {
+                                el.classList.add("is-visible");
+                            },
+                            parseInt(delay as string),
+                        );
+                        observer.unobserve(el);
                     }
                 });
             }, observerOptions);
 
             document.addEventListener("astro:page-load", () => {
+                // Observe all reveal elements
                 const elements = document.querySelectorAll(
-                    "section, .reveal-on-scroll",
+                    ".reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-item",
                 );
                 elements.forEach((el) => observer.observe(el));
+
+                // Hero animation sequence
+                const heroElements = document.querySelectorAll(".hero-animate");
+                heroElements.forEach((el, index) => {
+                    setTimeout(
+                        () => {
+                            el.classList.add("is-visible");
+                        },
+                        100 + index * 150,
+                    );
+                });
             });
 
             // Service Worker Registration
@@ -142,24 +161,262 @@ import { ClientRouter } from "astro:transitions";
             }
         </script>
         <style is:global>
-            /* Custom Animation Utility */
-            .animate-fade-in-up {
-                animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-            }
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
+            /* ===== CUSTOM CURSOR (Desktop only) ===== */
+            @media (hover: hover) and (pointer: fine) {
+                :root {
+                    --cursor-airplane: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%233B82F6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 2L11 13'/%3E%3Cpath d='M22 2L15 22L11 13L2 9L22 2Z'/%3E%3C/svg%3E");
                 }
-                to {
+
+                html,
+                body {
+                    cursor:
+                        var(--cursor-airplane) 0 0,
+                        auto;
+                }
+
+                a,
+                button,
+                [role="button"],
+                input[type="submit"],
+                .btn-press,
+                [onclick],
+                select,
+                input {
+                    cursor:
+                        var(--cursor-airplane) 0 0,
+                        pointer;
+                }
+            }
+
+            /* ===== ANIMATION UTILITIES ===== */
+
+            /* Base reveal states */
+            .reveal,
+            .reveal-left,
+            .reveal-right,
+            .reveal-scale,
+            .stagger-item,
+            .hero-animate {
+                opacity: 0;
+                transition:
+                    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            }
+
+            .reveal {
+                transform: translateY(30px);
+            }
+
+            .reveal-left {
+                transform: translateX(-40px);
+            }
+
+            .reveal-right {
+                transform: translateX(40px);
+            }
+
+            .reveal-scale {
+                transform: scale(0.9);
+            }
+
+            .hero-animate {
+                transform: translateY(20px);
+            }
+
+            /* Visible state */
+            .reveal.is-visible,
+            .reveal-left.is-visible,
+            .reveal-right.is-visible,
+            .reveal-scale.is-visible,
+            .stagger-item.is-visible,
+            .hero-animate.is-visible {
+                opacity: 1;
+                transform: translateY(0) translateX(0) scale(1);
+            }
+
+            /* ===== WHATSAPP BUTTON ANIMATIONS ===== */
+            .whatsapp-btn {
+                animation:
+                    whatsappEntrance 0.6s ease-out 1s both,
+                    whatsappPulse 2s ease-in-out 2s infinite;
+            }
+
+            @keyframes whatsappEntrance {
+                0% {
+                    opacity: 0;
+                    transform: scale(0) rotate(-180deg);
+                }
+                100% {
                     opacity: 1;
+                    transform: scale(1) rotate(0deg);
+                }
+            }
+
+            @keyframes whatsappPulse {
+                0%,
+                100% {
+                    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+                }
+                50% {
+                    box-shadow:
+                        0 4px 25px rgba(37, 211, 102, 0.6),
+                        0 0 0 8px rgba(37, 211, 102, 0.15);
+                }
+            }
+
+            /* ===== CARD HOVER EFFECTS ===== */
+            .card-hover {
+                transition:
+                    transform 0.3s ease,
+                    box-shadow 0.3s ease;
+            }
+
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
+
+            /* ===== IMAGE HOVER ZOOM ===== */
+            .img-zoom {
+                overflow: hidden;
+            }
+
+            .img-zoom img {
+                transition: transform 0.5s ease;
+            }
+
+            .img-zoom:hover img {
+                transform: scale(1.05);
+            }
+
+            /* ===== BADGE FLOAT ANIMATION ===== */
+            .badge-float {
+                animation: badgeFloat 3s ease-in-out infinite;
+            }
+
+            .badge-float:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+            .badge-float:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+            .badge-float:nth-child(4) {
+                animation-delay: 0.6s;
+            }
+            .badge-float:nth-child(5) {
+                animation-delay: 0.8s;
+            }
+
+            @keyframes badgeFloat {
+                0%,
+                100% {
                     transform: translateY(0);
                 }
+                50% {
+                    transform: translateY(-5px);
+                }
             }
-            /* Initial state for elements to be revealed */
-            section,
-            .reveal-on-scroll {
-                opacity: 0;
+
+            /* ===== ICON ANIMATIONS ===== */
+            .icon-bounce {
+                transition: transform 0.3s ease;
+            }
+
+            .icon-bounce:hover {
+                animation: iconBounce 0.5s ease;
+            }
+
+            @keyframes iconBounce {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                25% {
+                    transform: translateY(-4px);
+                }
+                50% {
+                    transform: translateY(0);
+                }
+                75% {
+                    transform: translateY(-2px);
+                }
+            }
+
+            /* ===== BUTTON PRESS EFFECT ===== */
+            .btn-press {
+                transition:
+                    transform 0.15s ease,
+                    box-shadow 0.15s ease;
+            }
+
+            .btn-press:active {
+                transform: scale(0.97);
+            }
+
+            /* ===== LIST ITEM STAGGER ===== */
+            .stagger-item:nth-child(1) {
+                transition-delay: 0.1s;
+            }
+            .stagger-item:nth-child(2) {
+                transition-delay: 0.2s;
+            }
+            .stagger-item:nth-child(3) {
+                transition-delay: 0.3s;
+            }
+            .stagger-item:nth-child(4) {
+                transition-delay: 0.4s;
+            }
+            .stagger-item:nth-child(5) {
+                transition-delay: 0.5s;
+            }
+            .stagger-item:nth-child(6) {
+                transition-delay: 0.6s;
+            }
+
+            /* ===== ACCESSIBILITY: Reduce motion ===== */
+            @media (prefers-reduced-motion: reduce) {
+                *,
+                *::before,
+                *::after {
+                    animation-duration: 0.01ms !important;
+                    animation-iteration-count: 1 !important;
+                    transition-duration: 0.01ms !important;
+                }
+
+                .reveal,
+                .reveal-left,
+                .reveal-right,
+                .reveal-scale,
+                .stagger-item,
+                .hero-animate {
+                    opacity: 1;
+                    transform: none;
+                }
+
+                .whatsapp-btn {
+                    animation: none;
+                }
+            }
+
+            /* ===== SHIMMER LOADING EFFECT ===== */
+            .shimmer {
+                background: linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.4) 50%,
+                    rgba(255, 255, 255, 0) 100%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite;
+            }
+
+            @keyframes shimmer {
+                0% {
+                    background-position: -200% 0;
+                }
+                100% {
+                    background-position: 200% 0;
+                }
             }
         </style>
     </body>
