@@ -9,28 +9,25 @@ import Footer from "../components/Footer.astro";
     <main class="flex-1 flex items-center justify-center py-20 px-4">
         <div class="max-w-2xl mx-auto text-center space-y-6">
             <div
-                class="inline-flex items-center justify-center p-4 bg-green-100 dark:bg-green-900/30 rounded-full text-green-600 dark:text-green-400 mb-4"
+                class="inline-flex items-center justify-center p-4 bg-green-100 rounded-full text-green-600 mb-4"
             >
-                <span class="material-symbols-outlined text-6xl"
-                    >check_circle</span
+                <span
+                    class="material-symbols-outlined text-6xl"
+                    aria-hidden="true">check_circle</span
                 >
             </div>
 
-            <h1 class="text-4xl font-bold text-text-light dark:text-white">
+            <h1 class="text-4xl font-bold text-text-light">
                 ¡Gracias por tu mensaje!
             </h1>
 
-            <p class="text-xl text-text-light/80 dark:text-white/80">
+            <p class="text-xl text-text-light/80">
                 Hemos recibido tu información correctamente. Marc o alguien de
                 nuestro equipo te contactará muy pronto.
             </p>
 
-            <div
-                class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-500/20 mt-8"
-            >
-                <p
-                    class="font-bold text-lg mb-2 text-text-light dark:text-white"
-                >
+            <div class="bg-blue-50 p-6 rounded-xl border border-blue-100 mt-8">
+                <p class="font-bold text-lg mb-2 text-text-light">
                     ¿Necesitas una respuesta más rápida?
                 </p>
                 <a
@@ -38,7 +35,9 @@ import Footer from "../components/Footer.astro";
                     target="_blank"
                     class="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#20bd5a] transition-colors mt-2"
                 >
-                    <span class="material-symbols-outlined">chat_bubble</span>
+                    <span class="material-symbols-outlined" aria-hidden="true"
+                        >chat_bubble</span
+                    >
                     Escríbenos por WhatsApp
                 </a>
             </div>

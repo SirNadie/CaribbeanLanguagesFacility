@@ -48,14 +48,14 @@ export default function ContactForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-8 rounded-xl border border-gray-200 dark:border-white/20 bg-background-light dark:bg-background-dark/50" id="contact-form">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-8 rounded-xl border border-gray-200 bg-background-light" id="contact-form">
             {/* Honeypot for spam protection (optional by formspree but good practice) */}
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
             <div>
-                <label className="text-sm font-medium text-text-light dark:text-white/80" htmlFor="name">Nombre</label>
+                <label className="text-sm font-medium text-text-light" htmlFor="name">Nombre</label>
                 <input
-                    className="mt-1 block w-full rounded-lg border-gray-300 dark:border-white/20 bg-white dark:bg-background-dark/50 text-text-light dark:text-white focus:ring-primary focus:border-primary px-3 py-2"
+                    className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                     id="name"
                     name="name"
                     placeholder="Tu Nombre Completo"
@@ -65,9 +65,9 @@ export default function ContactForm() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label className="text-sm font-medium text-text-light dark:text-white/80" htmlFor="service">Servicio</label>
+                    <label className="text-sm font-medium text-text-light" htmlFor="service">Servicio</label>
                     <select
-                        className="mt-1 block w-full rounded-lg border-gray-300 dark:border-white/20 bg-white dark:bg-background-dark/50 text-text-light dark:text-white focus:ring-primary focus:border-primary px-3 py-2"
+                        className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                         id="service"
                         name="service"
                         value={selectedService}
@@ -80,9 +80,9 @@ export default function ContactForm() {
                     </select>
                 </div>
                 <div>
-                    <label className="text-sm font-medium text-text-light dark:text-white/80" htmlFor="modality">Modalidad</label>
+                    <label className="text-sm font-medium text-text-light" htmlFor="modality">Modalidad</label>
                     <select
-                        className="mt-1 block w-full rounded-lg border-gray-300 dark:border-white/20 bg-white dark:bg-background-dark/50 text-text-light dark:text-white focus:ring-primary focus:border-primary px-3 py-2"
+                        className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                         id="modality"
                         name="modality"
                     >
@@ -93,9 +93,9 @@ export default function ContactForm() {
                 </div>
             </div>
             <div>
-                <label className="text-sm font-medium text-text-light dark:text-white/80" htmlFor="message">Mensaje</label>
+                <label className="text-sm font-medium text-text-light" htmlFor="message">Mensaje</label>
                 <textarea
-                    className="mt-1 block w-full rounded-lg border-gray-300 dark:border-white/20 bg-white dark:bg-background-dark/50 text-text-light dark:text-white focus:ring-primary focus:border-primary px-3 py-2"
+                    className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                     id="message"
                     name="message"
                     placeholder="¿Cómo podemos ayudarte?"
@@ -111,12 +111,12 @@ export default function ContactForm() {
                 {status === 'submitting' ? 'Enviando...' : status === 'success' ? '¡Enviado!' : 'Enviar Mensaje'}
             </button>
             {status === 'success' && (
-                <div className="p-3 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-center text-sm">
+                <div className="p-3 bg-green-100 text-green-700 rounded text-center text-sm">
                     ¡Gracias! Nos pondremos en contacto contigo pronto.
                 </div>
             )}
             {status === 'error' && (
-                <div className="p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-center text-sm">
+                <div className="p-3 bg-red-100 text-red-700 rounded text-center text-sm">
                     Hubo un error. Por favor intenta de nuevo o escríbenos por WhatsApp.
                 </div>
             )}

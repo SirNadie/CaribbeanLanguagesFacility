@@ -9,7 +9,7 @@ import { ClientRouter } from "astro:transitions";
 ---
 
 <!doctype html>
-<html lang="es" class="light">
+<html lang="es">
     <head>
         <meta charset="UTF-8" />
         <meta
@@ -41,14 +41,49 @@ import { ClientRouter } from "astro:transitions";
         />
         <meta property="twitter:image" content="/CLFlogo.png" />
 
+        <!-- PWA -->
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#2563eb" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <link rel="apple-touch-icon" href="/CLFlogo.png" />
+
+        <!-- Schema.org LocalBusiness -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "Caribbean Language Facility",
+                "description": "Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios.",
+                "url": "https://caribbeanlanguagefacility.com",
+                "telephone": "+1-868-269-3510",
+                "email": "Caribbeanlanguagefacility@gmail.com",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Princes Town",
+                    "addressRegion": "Trinidad",
+                    "addressCountry": "TT"
+                },
+                "image": "/CLFlogo.png",
+                "priceRange": "$$",
+                "openingHours": "Mo-Fr 08:00-18:00",
+                "sameAs": []
+            }
+        </script>
+
         <ClientRouter />
 
+        <!-- Preconnect to Google Fonts for faster loading -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <!-- Fonts with display=swap for better performance -->
         <link
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet"
         />
         <link
-            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0&display=swap"
             rel="stylesheet"
         />
         <style is:global>
@@ -60,20 +95,9 @@ import { ClientRouter } from "astro:transitions";
                     "opsz" 24;
             }
         </style>
-        <script is:inline>
-            if (
-                localStorage.theme === "dark" ||
-                (!("theme" in localStorage) &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches)
-            ) {
-                document.documentElement.classList.add("dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-            }
-        </script>
     </head>
     <body
-        class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark selection:bg-primary selection:text-white"
+        class="font-display bg-background-light text-text-light selection:bg-primary selection:text-white"
     >
         <div
             class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden"
@@ -106,17 +130,26 @@ import { ClientRouter } from "astro:transitions";
                 );
                 elements.forEach((el) => observer.observe(el));
             });
+
+            // Service Worker Registration
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", () => {
+                    navigator.serviceWorker
+                        .register("/sw.js")
+                        .then((reg) => console.log("SW registered"))
+                        .catch((err) => console.log("SW failed:", err));
+                });
+            }
         </script>
         <style is:global>
             /* Custom Animation Utility */
             .animate-fade-in-up {
-                animation: fadeInUp 0.8s ease-out forwards;
-                opacity: 0;
+                animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             }
             @keyframes fadeInUp {
                 from {
                     opacity: 0;
-                    transform: translateY(20px);
+                    transform: translateY(30px);
                 }
                 to {
                     opacity: 1;
@@ -126,9 +159,8 @@ import { ClientRouter } from "astro:transitions";
             /* Initial state for elements to be revealed */
             section,
             .reveal-on-scroll {
-                opacity: 0; /* Hidden initially */
+                opacity: 0;
             }
-            /* Ensure content is visible if JS fails/disabled or on immediate load if needed, but here we assume JS works */
         </style>
     </body>
 </html>

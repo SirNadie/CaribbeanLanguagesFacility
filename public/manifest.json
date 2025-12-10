@@ -1,0 +1,21 @@
+{
+    "name": "Caribbean Language Facility",
+    "short_name": "CLF",
+    "description": "Servicios de traducción, interpretación, educación bilingüe y capacitación profesional.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563eb",
+    "icons": [
+        {
+            "src": "/CLFlogo.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/CLFlogo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
