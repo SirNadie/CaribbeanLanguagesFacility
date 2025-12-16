@@ -1,7 +1,7 @@
 const CACHE_NAME = 'clf-v1';
 const urlsToCache = [
     '/',
-    '/CLFlogo.png',
+    '/images/logos/INSIlogo.png',
     '/manifest.json'
 ];
 
