@@ -7,13 +7,19 @@ import { Image } from "astro:assets";
 import heroImg from "../assets/images/hero.jpg";
 import transImg from "../assets/images/translation.jpg";
 import eduImg from "../assets/images/kids.jpg";
+import {
+	ADDRESS_LINE_1,
+	ADDRESS_LINE_2,
+	EMAIL_ADDRESS,
+	PHONE_NUMBER,
+} from "../consts";
 ---
 
 <Layout title="Caribbean Language Facility">
 	<Header />
 	<main class="flex-1">
 		<!-- Hero Section -->
-		<div class="max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-20">
+		<section class="max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-20">
 			<div class="@container">
 				<div
 					class="flex flex-col gap-10 @[864px]:flex-row @[864px]:items-center"
@@ -65,10 +71,10 @@ import eduImg from "../assets/images/kids.jpg";
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 
 		<!-- About Us -->
-		<div class="bg-white py-10 sm:py-20">
+		<section class="bg-white py-10 sm:py-20">
 			<div
 				class="max-w-6xl mx-auto px-4 sm:px-10 flex flex-col gap-8 text-center"
 			>
@@ -108,7 +114,7 @@ import eduImg from "../assets/images/kids.jpg";
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 
 		<!-- Services Sections -->
 		<div
@@ -271,7 +277,10 @@ import eduImg from "../assets/images/kids.jpg";
 		</div>
 
 		<!-- CASA & Classes Grid -->
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="casa-section">
+		<section
+			class="grid grid-cols-1 md:grid-cols-2 gap-8"
+			id="casa-section"
+		>
 			<!-- CASA -->
 			<div
 				class="reveal-left card-hover p-8 rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col"
@@ -284,7 +293,7 @@ import eduImg from "../assets/images/kids.jpg";
 					/>
 				</div>
 				<h3 class="text-2xl font-bold mb-3">
-					CASA – Career & Skills Training Center
+					CASA – Career and Skills Academy
 				</h3>
 				Centro de Capacitación en Carreras y Oficios con enfoque bilingüe.
 				<ul class="space-y-2 mb-6 text-text-light/90">
@@ -326,7 +335,7 @@ import eduImg from "../assets/images/kids.jpg";
 				</div>
 			</div>
 
-			<!-- Classes & Training -->
+			<!-- Classes & Academy -->
 			<div
 				class="reveal-right card-hover p-8 rounded-xl border border-gray-200 bg-white shadow-sm h-full flex flex-col"
 			>
@@ -383,11 +392,11 @@ import eduImg from "../assets/images/kids.jpg";
 					</button>
 				</div>
 			</div>
-		</div>
+		</section>
 	</main>
 
 	<!-- Why Choose Us -->
-	<div class="bg-primary text-white py-14">
+	<section class="bg-primary text-white py-14">
 		<div class="max-w-6xl mx-auto px-4 sm:px-10 text-center">
 			<h2 class="reveal text-3xl font-bold mb-10">¿Por qué elegirnos?</h2>
 			<div class="flex flex-wrap justify-center gap-6">
@@ -428,10 +437,10 @@ import eduImg from "../assets/images/kids.jpg";
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
 	<!-- Brand Ecosystem -->
-	<div class="py-12 bg-gray-50 border-y border-gray-100">
+	<section class="py-12 bg-gray-50 border-y border-gray-100">
 		<div class="max-w-6xl mx-auto px-4 sm:px-10">
 			<div class="text-center mb-10">
 				<h2
@@ -476,7 +485,9 @@ import eduImg from "../assets/images/kids.jpg";
 					<h3 class="text-sm font-bold text-accent leading-tight">
 						Capacitación Técnica y Profesional
 					</h3>
-					<p class="text-xs text-text-light/70">CASA</p>
+					<p class="text-xs text-text-light/70">
+						CASA – Career and Skills Academy
+					</p>
 				</div>
 
 				<!-- Translation -->
@@ -498,10 +509,10 @@ import eduImg from "../assets/images/kids.jpg";
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
 	<!-- Contact Section -->
-	<div class="max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-20">
+	<section class="max-w-6xl mx-auto px-4 sm:px-10 py-10 sm:py-20">
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
 			<div class="reveal-left flex flex-col gap-6">
 				<h2 class="text-3xl font-bold tracking-tight text-text-light">
@@ -520,7 +531,7 @@ import eduImg from "../assets/images/kids.jpg";
 						<div>
 							<h4 class="font-bold text-lg">Ubicación</h4>
 							<p class="text-text-light/70">
-								Vistabella, San Fernando,<br />Trinidad & Tobago
+								{ADDRESS_LINE_1},<br />{ADDRESS_LINE_2}
 							</p>
 						</div>
 					</div>
@@ -534,7 +545,7 @@ import eduImg from "../assets/images/kids.jpg";
 						<div>
 							<h4 class="font-bold text-lg">Email</h4>
 							<p class="text-text-light/70">
-								caribbeanlanguagefacility@gmail.com
+								{EMAIL_ADDRESS}
 							</p>
 						</div>
 					</div>
@@ -547,7 +558,7 @@ import eduImg from "../assets/images/kids.jpg";
 						</div>
 						<div>
 							<h4 class="font-bold text-lg">Teléfono</h4>
-							<p class="text-text-light/70">868-269-3510</p>
+							<p class="text-text-light/70">{PHONE_NUMBER}</p>
 						</div>
 					</div>
 				</div>
@@ -572,6 +583,6 @@ import eduImg from "../assets/images/kids.jpg";
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 	<Footer />
 </Layout>

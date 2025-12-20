@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import { WHATSAPP_NUMBER } from "../consts";
 ---
 
 <Layout title="¡Gracias! - Caribbean Language Facility">
@@ -31,7 +32,7 @@ import Footer from "../components/Footer.astro";
                     ¿Necesitas una respuesta más rápida?
                 </p>
                 <a
-                    href="https://wa.me/18682693510"
+                    href={`https://wa.me/${WHATSAPP_NUMBER}`}
                     target="_blank"
                     class="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#20bd5a] transition-colors mt-2"
                 >

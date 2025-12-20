@@ -1,5 +1,11 @@
 ---
-
+import {
+    EMAIL_ADDRESS,
+    PHONE_NUMBER,
+    WHATSAPP_NUMBER,
+    ADDRESS_LINE_1,
+    ADDRESS_LINE_2,
+} from "../consts";
 ---
 
 <footer class="bg-gray-100 border-t border-gray-200 pt-16 pb-8">
@@ -98,9 +104,7 @@
                             class="material-symbols-outlined text-base mt-0.5 text-primary"
                             >location_on</span
                         >
-                        <span
-                            >Vistabella, San Fernando,<br />Trinidad & Tobago</span
-                        >
+                        <span>{ADDRESS_LINE_1},<br />{ADDRESS_LINE_2}</span>
                     </li>
                     <li class="flex items-center gap-2">
                         <span
@@ -108,9 +112,9 @@
                             >email</span
                         >
                         <a
-                            href="mailto:caribbeanlanguagefacility@gmail.com"
+                            href={`mailto:${EMAIL_ADDRESS}`}
                             class="hover:text-primary transition-colors"
-                            >caribbeanlanguagefacility@gmail.com</a
+                            >{EMAIL_ADDRESS}</a
                         >
                     </li>
                     <li class="flex items-center gap-2">
@@ -119,9 +123,9 @@
                             >call</span
                         >
                         <a
-                            href="tel:8682693510"
+                            href={`tel:${WHATSAPP_NUMBER}`}
                             class="hover:text-primary transition-colors"
-                            >868-269-3510</a
+                            >{PHONE_NUMBER}</a
                         >
                     </li>
                 </ul>

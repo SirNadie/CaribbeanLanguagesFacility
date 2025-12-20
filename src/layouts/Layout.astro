@@ -6,6 +6,12 @@ interface Props {
 const { title } = Astro.props;
 import FloatingWhatsApp from "../components/FloatingWhatsApp.astro";
 import { ClientRouter } from "astro:transitions";
+import { SITE_DESCRIPTION, ADDRESS_LINE_1, ADDRESS_LINE_2, PHONE_NUMBER, EMAIL_ADDRESS } from "../consts";
+
+// Schema variables need to be safe strings
+const addressLocality = ADDRESS_LINE_1.split(',')[0];
+const addressRegion = ADDRESS_LINE_1.split(',')[1]?.trim() || '';
+const addressCountry = "TT"; // ISO code
 ---
 
 <!doctype html>
@@ -14,7 +20,7 @@ import { ClientRouter } from "astro:transitions";
         <meta charset="UTF-8" />
         <meta
             name="description"
-            content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
+            content={SITE_DESCRIPTION}
         />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/png" href="/images/logos/INSIlogo.png" />
@@ -27,7 +33,7 @@ import { ClientRouter } from "astro:transitions";
         <meta property="og:title" content={title} />
         <meta
             property="og:description"
-            content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
+            content={SITE_DESCRIPTION}
         />
         <meta property="og:image" content="/images/logos/INSIlogo.png" />
 
@@ -37,7 +43,7 @@ import { ClientRouter } from "astro:transitions";
         <meta property="twitter:title" content={title} />
         <meta
             property="twitter:description"
-            content="Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios."
+            content={SITE_DESCRIPTION}
         />
         <meta property="twitter:image" content="/images/logos/INSIlogo.png" />
 
@@ -49,26 +55,25 @@ import { ClientRouter } from "astro:transitions";
         <link rel="apple-touch-icon" href="/images/logos/INSIlogo.png" />
 
         <!-- Schema.org LocalBusiness -->
-        <script type="application/ld+json">
-            {
+        <script type="application/ld+json" set:html={JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
                 "name": "Caribbean Language Facility",
-                "description": "Servicios de traducción e interpretación, educación bilingüe y formación en carreras y oficios.",
+                "description": SITE_DESCRIPTION,
                 "url": "https://caribbeanlanguagefacility.com",
-                "telephone": "+1-868-269-3510",
-                "email": "caribbeanlanguagefacility@gmail.com",
+                "telephone": PHONE_NUMBER,
+                "email": EMAIL_ADDRESS,
                 "address": {
                     "@type": "PostalAddress",
-                    "addressLocality": "Vistabella, San Fernando",
-                    "addressRegion": "Trinidad",
-                    "addressCountry": "TT"
+                    "addressLocality": addressLocality,
+                    "addressRegion": addressRegion,
+                    "addressCountry": addressCountry
                 },
                 "image": "/images/logos/INSIlogo.png",
                 "priceRange": "$$",
                 "openingHours": "Mo-Fr 08:00-18:00",
                 "sameAs": []
-            }
+            })}>
         </script>
 
         <ClientRouter />

@@ -19,38 +19,16 @@ export default function ContactForm() {
         return () => window.removeEventListener('selectService', handleSelection);
     }, []);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setStatus('submitting');
-
-        const form = e.target;
-        const data = new FormData(form);
-
-        try {
-            const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-                method: "POST",
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-
-            if (response.ok) {
-                setStatus('success');
-                form.reset();
-                window.location.href = "/gracias";
-            } else {
-                setStatus('error');
-            }
-        } catch (error) {
-            setStatus('error');
-        }
+        // Integration disabled as requested
+        console.log("Form submission is currently disabled.");
     };
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-8 rounded-xl border border-gray-200 bg-background-light" id="contact-form">
             {/* Honeypot for spam protection (optional by formspree but good practice) */}
-            <input type="text" name="_gotcha" style={{ display: 'none' }} />
+            <input type="text" name="_gotcha" className="hidden" />
 
             <div>
                 <label className="text-sm font-medium text-text-light" htmlFor="name">Nombre</label>
@@ -104,22 +82,11 @@ export default function ContactForm() {
                 ></textarea>
             </div>
             <button
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all"
                 type="submit"
-                disabled={status === 'submitting'}
             >
-                {status === 'submitting' ? 'Enviando...' : status === 'success' ? '¡Enviado!' : 'Enviar Mensaje'}
+                Enviar Mensaje
             </button>
-            {status === 'success' && (
-                <div className="p-3 bg-green-100 text-green-700 rounded text-center text-sm">
-                    ¡Gracias! Nos pondremos en contacto contigo pronto.
-                </div>
-            )}
-            {status === 'error' && (
-                <div className="p-3 bg-red-100 text-red-700 rounded text-center text-sm">
-                    Hubo un error. Por favor intenta de nuevo o escríbenos por WhatsApp.
-                </div>
-            )}
         </form>
     );
 }
