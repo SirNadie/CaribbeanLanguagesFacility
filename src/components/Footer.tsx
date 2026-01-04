@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
-import { ADDRESS_LINE_1, ADDRESS_LINE_2, EMAIL_ADDRESS, PHONE_NUMBER } from '../consts';
+import { ADDRESS_LINE_1, ADDRESS_LINE_2, ADDRESS_2_LINE_1, ADDRESS_2_LINE_2, EMAIL_ADDRESS, PHONE_NUMBER } from '../consts';
 
 export default function Footer() {
     const { t } = useLanguage();
@@ -65,7 +65,10 @@ export default function Footer() {
                         <ul className="space-y-6 text-white/70">
                             <li className="flex items-start gap-3">
                                 <span className="material-symbols-outlined text-secondary shrink-0">location_on</span>
-                                <span className="text-sm">{ADDRESS_LINE_1}<br />{ADDRESS_LINE_2}</span>
+                                <div className="text-sm space-y-2">
+                                    <span>{ADDRESS_LINE_1}<br />{ADDRESS_LINE_2}</span>
+                                    <span className="block border-t border-white/10 pt-2">{ADDRESS_2_LINE_1}<br />{ADDRESS_2_LINE_2}</span>
+                                </div>
                             </li>
                             <li className="flex items-center gap-3">
                                 <span className="material-symbols-outlined text-secondary shrink-0">email</span>
@@ -80,10 +83,10 @@ export default function Footer() {
                 </div>
 
                 <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/40">
-                    <p>&copy; {new Date().getFullYear()} Caribbean Language Facility. All rights reserved.</p>
+                    <p>&copy; {new Date().getFullYear()} Caribbean Language Facility. {t('footer.rights')}</p>
                     <div className="flex gap-6">
-                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                        <Link href="/privacy" className="hover:text-white transition-colors">{t('footer.privacy')}</Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">{t('footer.terms')}</Link>
                     </div>
                 </div>
             </div>

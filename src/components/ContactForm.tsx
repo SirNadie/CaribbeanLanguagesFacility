@@ -200,6 +200,7 @@ export default function ContactForm() {
                         <option value="Traducción/Interpretación">{t('translation.servicesTitle')}</option>
                         <option value="Educación Bilingüe (Lisa's Kids)">{t('education.lisasKids')}</option>
                         <option value="Capacitación (CASA)">{t('casa.title')}</option>
+                        <option value="Servicios Profesionales">{t('professionalServices.title')}</option>
                         <option value="Otro">{t('form.services.other')}</option>
                     </select>
                 </div>

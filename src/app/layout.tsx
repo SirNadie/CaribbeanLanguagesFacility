@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Plus_Jakarta_Sans, Nunito } from 'next/font/google';
+import { Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '../context/LanguageContext';
 import { SITE_DESCRIPTION } from '../consts';
@@ -16,9 +16,6 @@ const jakarta = Plus_Jakarta_Sans({
     variable: '--font-jakarta',
     display: 'swap',
 });
-
-// Keeping Nunito as fallback/legacy if needed, but primary is Jakarta
-const nunito = Nunito({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://caribbeanlanguagefacility.com'),
@@ -43,6 +40,14 @@ export const metadata: Metadata = {
         description: SITE_DESCRIPTION,
         url: 'https://caribbeanlanguagefacility.com',
         siteName: 'Caribbean Language Facility',
+        images: [
+            {
+                url: '/images/logos/INSIlogo.png',
+                width: 512,
+                height: 512,
+                alt: 'Caribbean Language Facility Logo',
+            },
+        ],
         locale: 'es_ES',
         type: 'website',
     },

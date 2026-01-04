@@ -1,4 +1,4 @@
-import { ADDRESS_LINE_1, ADDRESS_LINE_2, ADDRESS_FULL, PHONE_NUMBER, EMAIL_ADDRESS, SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { ADDRESS_LINE_1, ADDRESS_LINE_2, ADDRESS_FULL, ADDRESS_2_LINE_1, ADDRESS_2_LINE_2, PHONE_NUMBER, EMAIL_ADDRESS, SITE_URL, SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 export default function JsonLd() {
     const organizationSchema = {
@@ -36,15 +36,25 @@ export default function JsonLd() {
         url: SITE_URL,
         telephone: PHONE_NUMBER,
         email: EMAIL_ADDRESS,
-        address: {
-            '@type': 'PostalAddress',
-            streetAddress: ADDRESS_LINE_1,
-            addressLocality: ADDRESS_LINE_2, // Adjust if Line 2 is country/region
-            addressCountry: 'TT'
-        },
+        address: [
+            {
+                '@type': 'PostalAddress',
+                streetAddress: ADDRESS_LINE_1,
+                addressLocality: 'San Fernando',
+                addressRegion: ADDRESS_LINE_2,
+                addressCountry: 'TT'
+            },
+            {
+                '@type': 'PostalAddress',
+                streetAddress: ADDRESS_2_LINE_1,
+                addressLocality: 'San Fernando',
+                addressRegion: ADDRESS_2_LINE_2,
+                addressCountry: 'TT'
+            }
+        ],
         geo: {
             '@type': 'GeoCoordinates',
-            latitude: 10.2796, // Approximate San Fernando/Vistabella coords
+            latitude: 10.2796,
             longitude: -61.4601
         },
         openingHoursSpecification: {

@@ -18,7 +18,7 @@ export default function Services() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="order-2 lg:order-1 relative h-[500px] rounded-3xl overflow-hidden shadow-2xl group"
+                        className="order-2 lg:order-1 relative h-[500px] rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white bg-gray-100 group"
                     >
                         <Image
                             src={transImg}
@@ -28,12 +28,6 @@ export default function Services() {
                             sizes="(max-width: 768px) 100vw, 50vw"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
-                        <div className="absolute bottom-8 left-8 text-white">
-                            <div className="bg-white/20 backdrop-blur-md p-3 rounded-xl inline-block mb-2">
-                                <span className="material-symbols-outlined text-3xl">translate</span>
-                            </div>
-                            <p className="font-bold text-lg">Professional Certified Services</p>
-                        </div>
                     </motion.div>
 
                     <motion.div
@@ -44,8 +38,14 @@ export default function Services() {
                         className="order-1 lg:order-2 space-y-8"
                     >
                         <div className="flex items-center gap-4">
-                            <div className="h-16 w-16 p-2 bg-white rounded-2xl shadow-sm border border-gray-100">
-                                <Image src="/images/logos/INSIlogo.png" alt="Insignia" width={64} height={64} className="h-full w-full object-contain" />
+                            <div className="h-16 w-16 relative">
+                                <Image
+                                    src="/images/logos/INSIlogo.png"
+                                    alt="INSI Logo"
+                                    fill
+                                    className="object-contain"
+                                    sizes="64px"
+                                />
                             </div>
                             <h2 className="text-4xl sm:text-5xl font-bold text-primary">{t('translation.title')}</h2>
                         </div>

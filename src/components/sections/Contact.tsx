@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import ContactForm from '../ContactForm';
-import { ADDRESS_LINE_1, ADDRESS_LINE_2, EMAIL_ADDRESS, PHONE_NUMBER } from '../../consts';
+import { ADDRESS_LINE_1, ADDRESS_LINE_2, ADDRESS_2_LINE_1, ADDRESS_2_LINE_2, EMAIL_ADDRESS, PHONE_NUMBER } from '../../consts';
 
 export default function Contact() {
     const { t } = useLanguage();
@@ -28,7 +28,10 @@ export default function Contact() {
                                 {
                                     icon: 'location_on',
                                     title: 'contact.location',
-                                    content: <>{ADDRESS_LINE_1}<br />{ADDRESS_LINE_2}</>
+                                    content: <>
+                                        <span>{ADDRESS_LINE_1}<br />{ADDRESS_LINE_2}</span>
+                                        <span className="block mt-2 pt-2 border-t border-slate-200">{ADDRESS_2_LINE_1}<br />{ADDRESS_2_LINE_2}</span>
+                                    </>
                                 },
                                 {
                                     icon: 'email',
@@ -62,17 +65,6 @@ export default function Contact() {
                     >
                         <div className="bg-white p-8 rounded-3xl shadow-2xl border border-gray-100">
                             <ContactForm />
-                        </div>
-                        <div className="w-full h-64 rounded-3xl overflow-hidden shadow-lg border border-gray-200 grayscale hover:grayscale-0 transition-all duration-500">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3925.327424660398!2d-61.42875142416805!3d10.313888367540258!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c3588cea0155555%3A0x63319042217c1810!2sTrinidad%20and%20Tobago!5e0!3m2!1sen!2s!4v1703020000000!5m2!1sen!2s"
-                                width="100%"
-                                height="100%"
-                                style={{ border: 0 }}
-                                allowFullScreen
-                                loading="lazy"
-                                referrerPolicy="no-referrer-when-downgrade"
-                            ></iframe>
                         </div>
                     </motion.div>
                 </div>

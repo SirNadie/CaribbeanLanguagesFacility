@@ -37,21 +37,21 @@ export default function Header() {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.5 }}
-            className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled
-                ? 'bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm py-2'
-                : 'bg-white/90 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none py-4'
+            className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 bg-white ${scrolled
+                ? 'shadow-md border-b border-gray-200/50 py-2'
+                : 'shadow-sm py-3'
                 }`}
         >
             <div className="flex items-center justify-between whitespace-nowrap px-4 sm:px-10 max-w-7xl mx-auto">
                 {/* Logo & Title */}
                 <Link href="/" className="flex items-center gap-2 sm:gap-4 z-[101] group" onClick={closeMenu}>
-                    <div className="h-10 sm:h-12 w-auto flex-shrink-0 relative transition-transform duration-300 group-hover:scale-105">
+                    <div className="h-10 sm:h-12 w-10 sm:w-12 flex-shrink-0 relative transition-transform duration-300 group-hover:scale-105">
                         <Image
                             src="/images/logos/INSIlogo.png"
                             alt="INSI Logo"
                             className="object-contain drop-shadow-sm"
-                            width={48}
-                            height={48}
+                            fill
+                            sizes="48px"
                             priority
                         />
                     </div>

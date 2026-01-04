@@ -26,13 +26,13 @@ export default function Ecosystem() {
                         whileHover={{ y: -5 }}
                         className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100"
                     >
-                        <div className="h-20 w-auto mb-2 relative">
+                        <div className="h-20 w-20 mb-2 relative">
                             <Image
                                 src="/images/logos/CASAlogo.png"
                                 alt="Lisa's Kids"
-                                width={80}
-                                height={80}
-                                className="h-full w-auto object-contain brightness-95"
+                                fill
+                                sizes="80px"
+                                className="object-contain brightness-95"
                             />
                         </div>
                         <h3 className="font-bold text-secondary text-lg leading-tight">{t('ecosystem.childEducation')}</h3>
@@ -44,13 +44,13 @@ export default function Ecosystem() {
                         whileHover={{ y: -5 }}
                         className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100"
                     >
-                        <div className="h-20 w-auto mb-2 relative">
+                        <div className="h-20 w-20 mb-2 relative">
                             <Image
                                 src="/images/logos/CLFlogo.png"
                                 alt="CASA"
-                                width={80}
-                                height={80}
-                                className="h-full w-auto object-contain"
+                                fill
+                                sizes="80px"
+                                className="object-contain"
                             />
                         </div>
                         <h3 className="font-bold text-accent text-lg leading-tight">{t('ecosystem.technicalTraining')}</h3>
@@ -62,13 +62,13 @@ export default function Ecosystem() {
                         whileHover={{ y: -5 }}
                         className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100"
                     >
-                        <div className="h-20 w-auto mb-2 relative">
+                        <div className="h-20 w-20 mb-2 relative">
                             <Image
                                 src="/images/logos/INSIlogo.png"
                                 alt="Translations"
-                                width={80}
-                                height={80}
-                                className="h-full w-auto object-contain"
+                                fill
+                                sizes="80px"
+                                className="object-contain"
                             />
                         </div>
                         <h3 className="font-bold text-primary text-lg leading-tight">{t('ecosystem.linguisticServices')}</h3>

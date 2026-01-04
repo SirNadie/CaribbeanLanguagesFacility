@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import { selectService } from '../../lib/utils';
-import clfLogo from '../../assets/images/logos/CLFlogo.png';
 
 export default function CASA() {
     const { t } = useLanguage();

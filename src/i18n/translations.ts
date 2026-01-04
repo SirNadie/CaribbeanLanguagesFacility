@@ -202,8 +202,8 @@ export const translations = {
         corporateTraining: { es: 'Capacitación Corporativa', en: 'Corporate Training' },
         contact: { es: 'Contacto', en: 'Contact' },
         rights: { es: 'Todos los derechos reservados.', en: 'All rights reserved.' },
-        privacy: { es: 'Privacidad', en: 'Privacy' },
-        terms: { es: 'Términos', en: 'Terms' }
+        privacy: { es: 'Política de Privacidad', en: 'Privacy Policy' },
+        terms: { es: 'Términos y Condiciones', en: 'Terms & Conditions' }
     },
 
     // Thank You Page
@@ -235,6 +235,58 @@ export const translations = {
         en: 'EN',
         spanish: { es: 'Español', en: 'Spanish' },
         english: { es: 'Inglés', en: 'English' }
+    },
+
+    // Professional Services Section
+    professionalServices: {
+        title: { es: 'Otros Servicios Profesionales', en: 'Other Professional Services' },
+        subtitle: {
+            es: 'Ofrecemos acompañamiento y asesoría integral en diversas áreas.',
+            en: 'We offer comprehensive support and advisory services in various areas.'
+        },
+        services: {
+            registration: {
+                title: { es: 'Asesoría Administrativa', en: 'Administrative Advisory' },
+                description: {
+                    es: 'Orientación en procesos de registro personal, empresarial y trámites asociados.',
+                    en: 'Guidance in personal, business registration and associated procedures.'
+                },
+                icon: 'description'
+            },
+            marriage: {
+                title: { es: 'Acompañamiento Matrimonial', en: 'Marriage Support' },
+                description: {
+                    es: 'Acompañamiento en procesos de matrimonio y orientación familiar con enfoque ético y confidencial.',
+                    en: 'Support in marriage processes and family guidance with an ethical and confidential approach.'
+                },
+                icon: 'favorite'
+            },
+            banking: {
+                title: { es: 'Gestiones Bancarias', en: 'Banking Assistance' },
+                description: {
+                    es: 'Orientación y apoyo en gestiones bancarias básicas para mejor comprensión de procesos.',
+                    en: 'Guidance and support in basic banking procedures for better understanding of processes.'
+                },
+                icon: 'account_balance'
+            },
+            career: {
+                title: { es: 'Orientación Vocacional', en: 'Career Guidance' },
+                description: {
+                    es: 'Planificación de carrera para jóvenes y adultos en decisiones académicas y laborales.',
+                    en: 'Career planning for youth and adults in academic and work decisions.'
+                },
+                icon: 'school'
+            },
+            counseling: {
+                title: { es: 'Consejería Familiar y Laboral', en: 'Family & Work Counseling' },
+                description: {
+                    es: 'Enfocada en el bienestar emocional, comunicación efectiva y toma de decisiones saludables.',
+                    en: 'Focused on emotional well-being, effective communication, and healthy decision-making.'
+                },
+                icon: 'psychology'
+            }
+        },
+        cta: { es: 'Consultar Servicio', en: 'Inquire About Service' }
     }
 } as const;
 
