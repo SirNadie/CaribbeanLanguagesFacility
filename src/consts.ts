@@ -6,3 +6,4 @@ export const EMAIL_ADDRESS = 'caribbeanlanguagefacility@gmail.com';
 export const ADDRESS_LINE_1 = 'Vistabella, San Fernando';
 export const ADDRESS_LINE_2 = 'Trinidad & Tobago';
 export const ADDRESS_FULL = `${ADDRESS_LINE_1}, ${ADDRESS_LINE_2}`;
+export const SITE_URL = 'https://caribbeanlanguagefacility.com';

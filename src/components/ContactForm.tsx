@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 // Configura tu webhook de Make aquí
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/ifvratfq5tl9d9tnzl8e72m9g80lb6af';
 
 export default function ContactForm() {
+    const { t, language } = useLanguage();
     const [status, setStatus] = useState('idle'); // idle, submitting, success, error
     const [selectedService, setSelectedService] = useState('Traducción/Interpretación');
     const [formData, setFormData] = useState({
@@ -14,8 +18,8 @@ export default function ContactForm() {
         message: ''
     });
 
-    React.useEffect(() => {
-        const handleSelection = (e) => {
+    useEffect(() => {
+        const handleSelection = (e: any) => {
             if (e.detail) {
                 setSelectedService(e.detail);
                 const form = document.getElementById('contact-form');
@@ -27,7 +31,7 @@ export default function ContactForm() {
         return () => window.removeEventListener('selectService', handleSelection);
     }, []);
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: any) => {
         const { name, value } = e.target;
         // Si cambia el método de contacto, limpiar el campo de info
         if (name === 'contactMethod') {
@@ -37,7 +41,7 @@ export default function ContactForm() {
         }
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         setStatus('submitting');
 
@@ -53,7 +57,8 @@ export default function ContactForm() {
                 timeStyle: 'short',
                 timeZone: 'America/Port_of_Spain'
             }),
-            source: 'caribbeanlanguagefacility.com'
+            source: 'caribbeanlanguagefacility.com',
+            language: language // Add language to payload for context
         };
 
         try {
@@ -81,13 +86,13 @@ export default function ContactForm() {
         return (
             <div className="flex flex-col items-center gap-4 p-8 rounded-xl border border-green-200 bg-green-50 text-center" id="contact-form">
                 <span className="material-symbols-outlined text-5xl text-green-500">check_circle</span>
-                <h3 className="text-xl font-bold text-green-700">¡Mensaje Enviado!</h3>
-                <p className="text-green-600">Gracias por contactarnos. Te responderemos pronto.</p>
+                <h3 className="text-xl font-bold text-green-700">{t('form.successTitle')}</h3>
+                <p className="text-green-600">{t('form.successText')}</p>
                 <button
                     onClick={() => setStatus('idle')}
                     className="mt-2 px-6 py-2 text-sm font-medium text-green-700 border border-green-300 rounded-lg hover:bg-green-100 transition-colors"
                 >
-                    Enviar otro mensaje
+                    {t('form.sendAnother')}
                 </button>
             </div>
         );
@@ -100,18 +105,18 @@ export default function ContactForm() {
 
             {status === 'error' && (
                 <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
-                    <span className="font-medium">Error al enviar.</span> Por favor intenta de nuevo o contáctanos por WhatsApp.
+                    {t('form.errorText')}
                 </div>
             )}
 
             {/* Nombre */}
             <div>
-                <label className="text-sm font-medium text-text-light" htmlFor="name">Nombre</label>
+                <label className="text-sm font-medium text-text-light" htmlFor="name">{t('form.name')}</label>
                 <input
                     className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                     id="name"
                     name="name"
-                    placeholder="Tu Nombre Completo"
+                    placeholder={t('form.namePlaceholder')}
                     type="text"
                     required
                     value={formData.name}
@@ -122,7 +127,7 @@ export default function ContactForm() {
 
             {/* Método de contacto */}
             <div>
-                <label className="text-sm font-medium text-text-light mb-3 block">¿Cómo prefieres que te contactemos?</label>
+                <label className="text-sm font-medium text-text-light mb-3 block">{t('form.contactMethod')}</label>
                 <div className="grid grid-cols-2 gap-4">
                     <label className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.contactMethod === 'whatsapp' ? 'border-[#25D366] bg-[#25D366]/10 shadow-lg shadow-[#25D366]/20' : 'border-gray-200 bg-white hover:border-[#25D366]/50 hover:bg-[#25D366]/5'}`}>
                         <input
@@ -142,7 +147,7 @@ export default function ContactForm() {
                             {/* Phone Icon */}
                             <span className={`material-symbols-outlined text-3xl ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-400'}`}>call</span>
                         </div>
-                        <span className={`font-bold text-sm ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-600'}`}>WhatsApp / Teléfono</span>
+                        <span className={`font-bold text-sm ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-600'}`}>{t('form.whatsapp')}</span>
                     </label>
 
                     <label className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.contactMethod === 'email' ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' : 'border-gray-200 bg-white hover:border-primary/50 hover:bg-primary/5'}`}>
@@ -157,7 +162,7 @@ export default function ContactForm() {
                         />
                         {/* Email Icon */}
                         <span className={`material-symbols-outlined text-4xl ${formData.contactMethod === 'email' ? 'text-primary' : 'text-gray-400'}`}>mail</span>
-                        <span className={`font-bold text-sm ${formData.contactMethod === 'email' ? 'text-primary' : 'text-gray-600'}`}>Correo Electrónico</span>
+                        <span className={`font-bold text-sm ${formData.contactMethod === 'email' ? 'text-primary' : 'text-gray-600'}`}>{t('form.emailOption')}</span>
                     </label>
                 </div>
             </div>
@@ -165,13 +170,13 @@ export default function ContactForm() {
             {/* Campo de contacto dinámico */}
             <div>
                 <label className="text-sm font-medium text-text-light" htmlFor="contactInfo">
-                    {formData.contactMethod === 'whatsapp' ? 'Número de Teléfono/WhatsApp' : 'Correo Electrónico'}
+                    {formData.contactMethod === 'whatsapp' ? t('form.phoneLabel') : t('form.emailLabel')}
                 </label>
                 <input
                     className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                     id="contactInfo"
                     name="contactInfo"
-                    placeholder={formData.contactMethod === 'whatsapp' ? 'Ej: +1 868 123 4567' : 'tu@email.com'}
+                    placeholder={formData.contactMethod === 'whatsapp' ? t('form.phonePlaceholder') : t('form.emailPlaceholder')}
                     type={formData.contactMethod === 'whatsapp' ? 'tel' : 'email'}
                     required
                     value={formData.contactInfo}
@@ -183,7 +188,7 @@ export default function ContactForm() {
             {/* Servicio y Modalidad */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label className="text-sm font-medium text-text-light" htmlFor="service">Servicio</label>
+                    <label className="text-sm font-medium text-text-light" htmlFor="service">{t('form.service')}</label>
                     <select
                         className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                         id="service"
@@ -192,14 +197,14 @@ export default function ContactForm() {
                         onChange={(e) => setSelectedService(e.target.value)}
                         disabled={status === 'submitting'}
                     >
-                        <option value="Traducción/Interpretación">Traducción/Interpretación</option>
-                        <option value="Educación Bilingüe (Lisa's Kids)">Educación Bilingüe (Lisa's Kids)</option>
-                        <option value="Capacitación (CASA)">Capacitación (CASA)</option>
-                        <option value="Otro">Otro</option>
+                        <option value="Traducción/Interpretación">{t('translation.servicesTitle')}</option>
+                        <option value="Educación Bilingüe (Lisa's Kids)">{t('education.lisasKids')}</option>
+                        <option value="Capacitación (CASA)">{t('casa.title')}</option>
+                        <option value="Otro">{t('form.services.other')}</option>
                     </select>
                 </div>
                 <div>
-                    <label className="text-sm font-medium text-text-light" htmlFor="modality">Modalidad</label>
+                    <label className="text-sm font-medium text-text-light" htmlFor="modality">{t('form.modality')}</label>
                     <select
                         className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                         id="modality"
@@ -208,22 +213,22 @@ export default function ContactForm() {
                         onChange={handleInputChange}
                         disabled={status === 'submitting'}
                     >
-                        <option>Presencial</option>
-                        <option>Online</option>
-                        <option>Híbrido</option>
+                        <option value="Presencial">{t('form.modalityInPerson')}</option>
+                        <option value="Online">{t('form.modalityOnline')}</option>
+                        <option value="Híbrido">{t('form.modalityHybrid')}</option>
                     </select>
                 </div>
             </div>
 
             {/* Mensaje */}
             <div>
-                <label className="text-sm font-medium text-text-light" htmlFor="message">Mensaje</label>
+                <label className="text-sm font-medium text-text-light" htmlFor="message">{t('form.message')}</label>
                 <textarea
                     className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
                     id="message"
                     name="message"
-                    placeholder="¿Cómo podemos ayudarte?"
-                    rows="4"
+                    placeholder={t('form.messagePlaceholder')}
+                    rows={4}
                     required
                     value={formData.message}
                     onChange={handleInputChange}
@@ -243,10 +248,10 @@ export default function ContactForm() {
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Enviando...
+                        {t('form.sending')}
                     </>
                 ) : (
-                    'Enviar Mensaje'
+                    t('form.submit')
                 )}
             </button>
         </form>
