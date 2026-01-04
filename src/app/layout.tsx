@@ -31,10 +31,12 @@ export const metadata: Metadata = {
     authors: [{ name: 'Caribbean Language Facility' }],
     creator: 'Caribbean Language Facility',
     publisher: 'Caribbean Language Facility',
-    formatDetection: {
-        email: false,
-        address: false,
-        telephone: false,
+    alternates: {
+        canonical: '/',
+    },
+    icons: {
+        icon: '/favicon.ico',
+        apple: '/images/logos/CLFlogo.png',
     },
     openGraph: {
         title: 'Caribbean Language Facility',
@@ -43,20 +45,11 @@ export const metadata: Metadata = {
         siteName: 'Caribbean Language Facility',
         locale: 'es_ES',
         type: 'website',
-        images: [
-            {
-                url: '/images/og-image.jpg', // We will need to ensure this image exists or use a logo as fallback
-                width: 1200,
-                height: 630,
-                alt: 'Caribbean Language Facility - Translations & Education',
-            },
-        ],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Caribbean Language Facility',
         description: SITE_DESCRIPTION,
-        images: ['/images/og-image.jpg'], // Consistent with OG
     },
     robots: {
         index: true,

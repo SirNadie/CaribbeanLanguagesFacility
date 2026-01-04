@@ -99,7 +99,7 @@ export default function ContactForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-8 rounded-xl border border-gray-200 bg-background-light" id="contact-form">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5 sm:gap-6 p-5 sm:p-8 rounded-xl border border-gray-200 bg-background-light" id="contact-form">
             {/* Honeypot for spam protection */}
             <input type="text" name="_gotcha" className="hidden" />
 
@@ -128,8 +128,8 @@ export default function ContactForm() {
             {/* Método de contacto */}
             <div>
                 <label className="text-sm font-medium text-text-light mb-3 block">{t('form.contactMethod')}</label>
-                <div className="grid grid-cols-2 gap-4">
-                    <label className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.contactMethod === 'whatsapp' ? 'border-[#25D366] bg-[#25D366]/10 shadow-lg shadow-[#25D366]/20' : 'border-gray-200 bg-white hover:border-[#25D366]/50 hover:bg-[#25D366]/5'}`}>
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    <label className={`flex flex-col items-center justify-center gap-2 p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.contactMethod === 'whatsapp' ? 'border-[#25D366] bg-[#25D366]/10 shadow-lg shadow-[#25D366]/20' : 'border-gray-200 bg-white hover:border-[#25D366]/50 hover:bg-[#25D366]/5'}`}>
                         <input
                             type="radio"
                             name="contactMethod"
@@ -139,18 +139,18 @@ export default function ContactForm() {
                             className="sr-only"
                             disabled={status === 'submitting'}
                         />
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                             {/* WhatsApp Icon */}
-                            <svg className={`w-8 h-8 ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 16 16">
+                            <svg className={`w-6 h-6 sm:w-8 sm:h-8 ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-400'}`} fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
                             </svg>
                             {/* Phone Icon */}
-                            <span className={`material-symbols-outlined text-3xl ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-400'}`}>call</span>
+                            <span className={`material-symbols-outlined text-2xl sm:text-3xl ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-400'}`}>call</span>
                         </div>
-                        <span className={`font-bold text-sm ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-600'}`}>{t('form.whatsapp')}</span>
+                        <span className={`font-bold text-xs sm:text-sm text-center ${formData.contactMethod === 'whatsapp' ? 'text-[#25D366]' : 'text-gray-600'}`}>{t('form.whatsapp')}</span>
                     </label>
 
-                    <label className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.contactMethod === 'email' ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' : 'border-gray-200 bg-white hover:border-primary/50 hover:bg-primary/5'}`}>
+                    <label className={`flex flex-col items-center justify-center gap-2 p-3 sm:p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.contactMethod === 'email' ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20' : 'border-gray-200 bg-white hover:border-primary/50 hover:bg-primary/5'}`}>
                         <input
                             type="radio"
                             name="contactMethod"
@@ -161,8 +161,8 @@ export default function ContactForm() {
                             disabled={status === 'submitting'}
                         />
                         {/* Email Icon */}
-                        <span className={`material-symbols-outlined text-4xl ${formData.contactMethod === 'email' ? 'text-primary' : 'text-gray-400'}`}>mail</span>
-                        <span className={`font-bold text-sm ${formData.contactMethod === 'email' ? 'text-primary' : 'text-gray-600'}`}>{t('form.emailOption')}</span>
+                        <span className={`material-symbols-outlined text-3xl sm:text-4xl ${formData.contactMethod === 'email' ? 'text-primary' : 'text-gray-400'}`}>mail</span>
+                        <span className={`font-bold text-xs sm:text-sm text-center ${formData.contactMethod === 'email' ? 'text-primary' : 'text-gray-600'}`}>{t('form.emailOption')}</span>
                     </label>
                 </div>
             </div>

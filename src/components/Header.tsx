@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -37,20 +38,21 @@ export default function Header() {
             animate={{ y: 0 }}
             transition={{ duration: 0.5 }}
             className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${scrolled
-                ? 'bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm py-2'
-                : 'bg-transparent py-4'
+                ? 'bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm py-2'
+                : 'bg-white/90 md:bg-transparent backdrop-blur-sm md:backdrop-blur-none py-4'
                 }`}
         >
             <div className="flex items-center justify-between whitespace-nowrap px-4 sm:px-10 max-w-7xl mx-auto">
                 {/* Logo & Title */}
                 <Link href="/" className="flex items-center gap-2 sm:gap-4 z-[101] group" onClick={closeMenu}>
                     <div className="h-10 sm:h-12 w-auto flex-shrink-0 relative transition-transform duration-300 group-hover:scale-105">
-                        <img
+                        <Image
                             src="/images/logos/INSIlogo.png"
                             alt="INSI Logo"
-                            className="h-full w-auto object-contain drop-shadow-sm"
-                            height={48}
+                            className="object-contain drop-shadow-sm"
                             width={48}
+                            height={48}
+                            priority
                         />
                     </div>
                     <h2 className="font-display font-bold text-lg sm:text-xl tracking-tight text-primary truncate max-w-[200px] sm:max-w-none">
@@ -115,7 +117,7 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3 }}
-                        className="fixed inset-0 h-[100dvh] bg-white/98 backdrop-blur-xl z-[100] pt-28 px-6 pb-[env(safe-area-inset-bottom)] flex flex-col gap-8 md:hidden shadow-xl overflow-y-auto"
+                        className="fixed inset-0 h-[100dvh] bg-white z-[100] pt-28 px-6 pb-[env(safe-area-inset-bottom)] flex flex-col gap-8 md:hidden shadow-xl overflow-y-auto"
                     >
                         <nav className="flex flex-col gap-6 text-3xl font-medium text-primary text-center">
                             {['home', 'services', 'education', 'contact'].map((item, i) => (

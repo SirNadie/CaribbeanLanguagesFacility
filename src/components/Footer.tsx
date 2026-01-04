@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
 import { ADDRESS_LINE_1, ADDRESS_LINE_2, EMAIL_ADDRESS, PHONE_NUMBER } from '../consts';
@@ -13,8 +14,14 @@ export default function Footer() {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-16">
                     {/* Brand - Full width on mobile */}
                     <div className="col-span-2 lg:col-span-1 space-y-6">
-                        <div className="h-16 w-16 bg-white rounded-2xl p-2">
-                            <img src="/images/logos/INSIlogo.png" alt="INSI Logo" className="h-full w-full object-contain" />
+                        <div className="h-16 w-16 bg-white rounded-2xl p-2 relative">
+                            <Image
+                                src="/images/logos/INSIlogo.png"
+                                alt="INSI Logo"
+                                fill
+                                className="object-contain p-2"
+                                sizes="64px"
+                            />
                         </div>
                         <h3 className="font-display text-2xl font-bold">Caribbean Language Facility</h3>
                         <p className="text-white/60 text-sm leading-relaxed">
