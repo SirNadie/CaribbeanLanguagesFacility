@@ -115,7 +115,7 @@ export default function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3 }}
-                        className="fixed inset-0 bg-white/98 backdrop-blur-xl z-[100] pt-28 px-6 flex flex-col gap-8 md:hidden shadow-xl"
+                        className="fixed inset-0 h-[100dvh] bg-white/98 backdrop-blur-xl z-[100] pt-28 px-6 pb-[env(safe-area-inset-bottom)] flex flex-col gap-8 md:hidden shadow-xl overflow-y-auto"
                     >
                         <nav className="flex flex-col gap-6 text-3xl font-medium text-primary text-center">
                             {['home', 'services', 'education', 'contact'].map((item, i) => (
