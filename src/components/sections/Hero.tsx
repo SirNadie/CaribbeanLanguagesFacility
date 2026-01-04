@@ -29,26 +29,33 @@ export default function Hero() {
                     <motion.p variants={fadeIn} className="text-lg sm:text-xl text-text-light/80 max-w-xl font-body leading-relaxed">
                         {t('hero.subtitle')}
                     </motion.p>
-                    <motion.div variants={fadeIn} className="flex flex-col sm:flex-row flex-wrap gap-4 w-full pt-4">
+                    <motion.div variants={fadeIn} className="flex flex-col sm:flex-row flex-wrap gap-4 w-full pt-6">
                         <Link
                             href="#services"
-                            className="group relative flex h-12 items-center justify-center overflow-hidden rounded-full bg-primary px-8 font-medium text-white shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all duration-300 hover:scale-105"
+                            className="group relative flex h-14 items-center justify-center overflow-hidden rounded-full bg-primary px-10 font-bold text-white shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all duration-300 hover:scale-105"
                         >
-                            <span className="relative z-10">{t('hero.ctaTranslation')}</span>
+                            <span className="relative z-10 flex items-center gap-2">
+                                {t('hero.ctaTranslation')}
+                                <span className="material-symbols-outlined text-sm">translate</span>
+                            </span>
                             <div className="absolute inset-0 -translate-x-[100%] group-hover:translate-x-0 bg-accent transition-transform duration-500 ease-out"></div>
                         </Link>
                         <Link
                             href="#education-section"
-                            className="group relative flex h-12 items-center justify-center overflow-hidden rounded-full bg-secondary px-8 font-medium text-white shadow-lg shadow-secondary/25 hover:shadow-secondary/40 transition-all duration-300 hover:scale-105"
+                            className="group relative flex h-14 items-center justify-center overflow-hidden rounded-full bg-secondary px-10 font-bold text-white shadow-xl shadow-secondary/30 hover:shadow-secondary/50 transition-all duration-300 hover:scale-105"
                         >
-                            <span className="relative z-10">{t('hero.ctaEducation')}</span>
+                            <span className="relative z-10 flex items-center gap-2">
+                                {t('hero.ctaEducation')}
+                                <span className="material-symbols-outlined text-sm">school</span>
+                            </span>
                             <div className="absolute inset-0 -translate-x-[100%] group-hover:translate-x-0 bg-orange-600 transition-transform duration-500 ease-out"></div>
                         </Link>
                         <Link
                             href="#casa-section"
-                            className="flex h-12 items-center justify-center rounded-full border border-gray-300 bg-white/50 backdrop-blur-sm px-8 font-medium text-text-light hover:bg-white hover:border-gray-400 transition-all duration-300"
+                            className="group flex h-14 items-center justify-center gap-2 rounded-full border-2 border-primary/20 bg-white/80 backdrop-blur-sm px-10 font-bold text-primary shadow-lg shadow-gray-200/50 hover:border-accent hover:text-accent hover:shadow-accent/20 transition-all duration-300 hover:scale-105"
                         >
                             {t('hero.ctaCasa')}
+                            <span className="material-symbols-outlined text-sm">workspace_premium</span>
                         </Link>
                     </motion.div>
                 </motion.div>

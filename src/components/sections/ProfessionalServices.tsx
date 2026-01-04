@@ -26,7 +26,7 @@ export default function ProfessionalServices() {
     };
 
     return (
-        <section className="py-20 bg-gradient-to-b from-white to-slate-50">
+        <section className="py-24 sm:py-32 bg-gradient-to-b from-white to-slate-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

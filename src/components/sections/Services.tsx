@@ -10,7 +10,7 @@ export default function Services() {
     const { t } = useLanguage();
 
     return (
-        <section id="services" className="py-20 bg-slate-50 border-t border-slate-200">
+        <section id="services" className="py-24 sm:py-32 bg-slate-50 border-t border-slate-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <motion.div

@@ -6,7 +6,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { selectService } from '../../lib/utils';
 
 export default function CASA() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
 
     return (
         <section id="casa-section" className="py-20 sm:py-32 bg-slate-50 relative overflow-hidden">
@@ -44,14 +44,22 @@ export default function CASA() {
                         </div>
                         <h3 className="font-display text-3xl font-bold mb-4 text-primary relative z-10">{t('casa.title')}</h3>
                         <p className="text-text-light/70 mb-8 relative z-10 text-lg">{t('casa.description')}</p>
-                        <div className="mt-auto relative z-10">
+                        <div className="mt-auto relative z-10 flex flex-wrap gap-3">
                             <button
                                 onClick={() => selectService('Capacitación (CASA)')}
-                                className="text-accent font-bold mt-4 flex items-center gap-2 group-hover:gap-4 transition-all"
+                                className="text-accent font-bold flex items-center gap-2 group-hover:gap-4 transition-all"
                             >
                                 {t('translation.requestInfo')}
                                 <span className="material-symbols-outlined">arrow_forward</span>
                             </button>
+                            <span className="text-gray-300">|</span>
+                            <a
+                                href="/programas"
+                                className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary font-semibold rounded-full hover:bg-primary/20 transition-colors text-sm"
+                            >
+                                <span className="material-symbols-outlined text-sm">school</span>
+                                {language === 'es' ? 'Ver programas' : 'View programs'}
+                            </a>
                         </div>
                     </motion.div>
 

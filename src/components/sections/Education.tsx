@@ -8,7 +8,7 @@ import { selectService } from '../../lib/utils';
 import eduImg from '../../assets/images/kids.jpg';
 
 export default function Education() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [showModal, setShowModal] = useState(false);
 
     const openModalAndScroll = () => {
@@ -22,7 +22,7 @@ export default function Education() {
 
     return (
         <>
-            <section id="education-section" className="py-20 bg-white">
+            <section id="education-section" className="py-24 sm:py-32 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-10">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <motion.div
@@ -56,6 +56,13 @@ export default function Education() {
                                 {t('translation.requestInfo')}
                                 <span className="material-symbols-outlined text-sm">arrow_forward</span>
                             </button>
+                            <a
+                                href="/inscripciones"
+                                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-secondary text-secondary font-bold rounded-full hover:bg-secondary/10 transition-all"
+                            >
+                                {language === 'es' ? 'Ver detalles de inscripción' : 'View enrollment details'}
+                                <span className="material-symbols-outlined text-sm">info</span>
+                            </a>
                         </motion.div>
 
                         <motion.div
