@@ -3,6 +3,7 @@ import { Playfair_Display, Plus_Jakarta_Sans, Nunito } from 'next/font/google';
 import './globals.css';
 import { LanguageProvider } from '../context/LanguageContext';
 import { SITE_DESCRIPTION } from '../consts';
+import JsonLd from '../components/JsonLd';
 
 const playfair = Playfair_Display({
     subsets: ['latin'],
@@ -21,8 +22,53 @@ const nunito = Nunito({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://caribbeanlanguagefacility.com'),
-    title: 'Caribbean Language Facility',
+    title: {
+        default: 'Caribbean Language Facility | Translations & Education',
+        template: '%s | Caribbean Language Facility'
+    },
     description: SITE_DESCRIPTION,
+    keywords: ['Traducción Trinidad', 'Translation Services Trinidad', 'Clases de Inglés', 'English Classes', 'Lisa\'s Kids', 'CASA', 'Spanish Classes', 'Interpreting Services', 'Legal Translation'],
+    authors: [{ name: 'Caribbean Language Facility' }],
+    creator: 'Caribbean Language Facility',
+    publisher: 'Caribbean Language Facility',
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+    openGraph: {
+        title: 'Caribbean Language Facility',
+        description: SITE_DESCRIPTION,
+        url: 'https://caribbeanlanguagefacility.com',
+        siteName: 'Caribbean Language Facility',
+        locale: 'es_ES',
+        type: 'website',
+        images: [
+            {
+                url: '/images/og-image.jpg', // We will need to ensure this image exists or use a logo as fallback
+                width: 1200,
+                height: 630,
+                alt: 'Caribbean Language Facility - Translations & Education',
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Caribbean Language Facility',
+        description: SITE_DESCRIPTION,
+        images: ['/images/og-image.jpg'], // Consistent with OG
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
 };
 
 export default function RootLayout({
@@ -57,6 +103,7 @@ export default function RootLayout({
                         </a>
                     </div>
                 </LanguageProvider>
+                <JsonLd />
             </body>
         </html>
     );
