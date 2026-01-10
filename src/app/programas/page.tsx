@@ -63,6 +63,55 @@ const content = {
             }
         ],
 
+        // Online Classes
+        onlineClassesTitle: "Clases en Línea",
+        onlineClasses: [
+            {
+                title: "Clases de inglés",
+                days: "Lunes, miércoles",
+                duration: "1 hora académica por sesión",
+                schedule: "4:15 p.m. a 5:00 p.m.",
+                price: "$400 / mes",
+                registration: "$100 inscripción",
+                note: "(pago al principio de cada mes)",
+                icon: "language",
+                color: "blue"
+            },
+            {
+                title: "Clases de nivelación – Primaria",
+                days: "Lunes, miércoles, viernes",
+                duration: "2 horas académicas (90 mins)",
+                schedule: "2:30 PM - 4:00 PM",
+                programDuration: "3 meses",
+                price: "$1,800 inversión del programa",
+                registration: "$150 inscripción",
+                icon: "child_care",
+                color: "green"
+            },
+            {
+                title: "Clases de nivelación – Secundaria",
+                days: "Martes, jueves y viernes",
+                duration: "2 horas académicas por sesión",
+                schedule: "6:00 p.m. a 7:30 p.m.",
+                programDuration: "6 meses",
+                price: "$2,400 inversión del programa",
+                registration: "$200 inscripción",
+                note: "(No reembolso)",
+                icon: "school",
+                color: "orange"
+            },
+            {
+                title: "Clases de lectura y comprensión",
+                days: "Lunes a jueves",
+                duration: "30 minutos por sesión",
+                schedule: "Horario personalizado",
+                price: "$400 / mes",
+                note: "(Clases individuales)",
+                icon: "menu_book",
+                color: "purple"
+            }
+        ],
+
         // Approach
         approachTitle: "Nuestro Enfoque",
         approach: [
@@ -80,6 +129,12 @@ const content = {
         modalityLabel: "Modalidad:",
         certLabel: "Certificación:",
         learnLabel: "Aprenderás:",
+
+        // Class Labels
+        daysLabel: "Días:",
+        scheduleLabel: "Horario:",
+        priceLabel: "Inversión:",
+        registrationLabel: "Inscripción:",
 
         // CTA
         cta: "Solicitar Información",
@@ -138,6 +193,55 @@ const content = {
             }
         ],
 
+        // Online Classes
+        onlineClassesTitle: "Online Classes",
+        onlineClasses: [
+            {
+                title: "English Classes",
+                days: "Monday, Wednesday",
+                duration: "1 academic hour per session",
+                schedule: "4:15 p.m. to 5:00 p.m.",
+                price: "$400 / month",
+                registration: "$100 registration",
+                note: "(payment at the beginning of each month)",
+                icon: "language",
+                color: "blue"
+            },
+            {
+                title: "Leveling Classes – Primary",
+                days: "Monday, Wednesday, Friday",
+                duration: "2 academic hours (90 mins)",
+                schedule: "2:30 PM - 4:00 PM",
+                programDuration: "3 months",
+                price: "$1,800 program investment",
+                registration: "$150 registration",
+                icon: "child_care",
+                color: "green"
+            },
+            {
+                title: "Leveling Classes – Secondary",
+                days: "Tuesday, Thursday, Friday",
+                duration: "2 academic hours per session",
+                schedule: "6:00 p.m. to 7:30 p.m.",
+                programDuration: "6 months",
+                price: "$2,400 program investment",
+                registration: "$200 registration",
+                note: "(No refund)",
+                icon: "school",
+                color: "orange"
+            },
+            {
+                title: "Reading and Comprehension",
+                days: "Monday to Thursday",
+                duration: "30 minutes per session",
+                schedule: "Customized schedule",
+                price: "$400 / month",
+                note: "(Individual classes)",
+                icon: "menu_book",
+                color: "purple"
+            }
+        ],
+
         approachTitle: "Our Approach",
         approach: [
             { icon: "diversity_3", text: "Accessible and humane education" },
@@ -154,6 +258,12 @@ const content = {
         certLabel: "Certification:",
         learnLabel: "You'll learn:",
 
+        // Class Labels
+        daysLabel: "Days:",
+        scheduleLabel: "Schedule:",
+        priceLabel: "Investment:",
+        registrationLabel: "Registration:",
+
         cta: "Request Information",
         back: "Back to home"
     }
@@ -162,8 +272,31 @@ const content = {
 const colorClasses: Record<string, { bg: string; text: string; bgLight: string }> = {
     blue: { bg: "bg-blue-500", text: "text-blue-600", bgLight: "bg-blue-100" },
     purple: { bg: "bg-purple-500", text: "text-purple-600", bgLight: "bg-purple-100" },
-    pink: { bg: "bg-pink-500", text: "text-pink-600", bgLight: "bg-pink-100" }
+    pink: { bg: "bg-pink-500", text: "text-pink-600", bgLight: "bg-pink-100" },
+    green: { bg: "bg-emerald-500", text: "text-emerald-600", bgLight: "bg-emerald-100" },
+    orange: { bg: "bg-orange-500", text: "text-orange-600", bgLight: "bg-orange-100" }
 };
+
+function SectionHeading({ title }: { title: string }) {
+    return (
+        <div className="flex items-center gap-4 mb-8">
+            <h2 className="text-3xl font-bold text-primary">{title}</h2>
+            <div className="h-1 flex-1 bg-gray-100 rounded-full" />
+        </div>
+    );
+}
+
+function InfoRow({ icon, label, value }: { icon: string; label: string; value: string }) {
+    return (
+        <div className="flex items-start gap-3">
+            <span className="material-symbols-outlined text-gray-400 text-xl">{icon}</span>
+            <div>
+                <p className="text-xs text-text-light/60 uppercase tracking-wider font-semibold">{label}</p>
+                <p className="text-sm font-medium text-text-light">{value}</p>
+            </div>
+        </div>
+    );
+}
 
 export default function ProgramasPage() {
     const { language } = useLanguage();
@@ -197,7 +330,7 @@ export default function ProgramasPage() {
                     </motion.div>
 
                     {/* Programs */}
-                    <div className="space-y-8 mb-16">
+                    <div className="space-y-8 mb-20">
                         {t.programs.map((program, index) => {
                             const colors = colorClasses[program.color];
                             return (
@@ -268,6 +401,62 @@ export default function ProgramasPage() {
                                 </motion.div>
                             );
                         })}
+                    </div>
+
+                    {/* Online Classes Section */}
+                    <div className="mb-20">
+                        <SectionHeading title={t.onlineClassesTitle} />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {t.onlineClasses.map((item, index) => {
+                                const colors = colorClasses[item.color] || colorClasses.blue;
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.1 }}
+                                        className="bg-white rounded-3xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all relative overflow-hidden group"
+                                    >
+                                        <div className={`absolute top-0 right-0 w-24 h-24 ${colors.bg} rounded-bl-full opacity-10 group-hover:scale-110 transition-transform`} />
+
+                                        <div className="flex items-start gap-4 mb-4">
+                                            <div className={`w-12 h-12 ${colors.bgLight} ${colors.text} rounded-2xl flex items-center justify-center shrink-0`}>
+                                                <span className="material-symbols-outlined text-2xl">{item.icon}</span>
+                                            </div>
+                                            <div>
+                                                <h3 className="text-xl font-bold text-primary leading-tight mb-1">{item.title}</h3>
+                                                {item.note && <p className="text-xs text-text-light/60 italic">{item.note}</p>}
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <InfoRow icon="calendar_month" label={t.daysLabel} value={item.days} />
+                                            <InfoRow icon="schedule" label={t.scheduleLabel} value={item.schedule} />
+                                            <InfoRow icon="timer" label={t.durationLabel} value={item.duration} />
+                                            {item.programDuration && (
+                                                <InfoRow icon="timelapse" label={t.durationLabel} value={item.programDuration} />
+                                            )}
+
+                                            <div className="pt-3 border-t border-gray-100 mt-4 flex flex-col gap-2">
+                                                {item.price && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-text-light/70">{t.priceLabel}</span>
+                                                        <span className={`font-bold ${colors.text}`}>{item.price}</span>
+                                                    </div>
+                                                )}
+                                                {item.registration && (
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-sm text-text-light/70">{t.registrationLabel}</span>
+                                                        <span className="font-semibold text-primary">{item.registration}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* Approach Section */}
