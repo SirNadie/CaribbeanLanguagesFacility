@@ -73,12 +73,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="es" className={`${playfair.variable} ${jakarta.variable} scroll-smooth`}>
-            <head>
-                <link
-                    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0&display=swap"
-                    rel="stylesheet"
-                />
-            </head>
+
             <body className={`${jakarta.className} bg-background-light text-text-light antialiased`}>
                 <LanguageProvider>
                     <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
