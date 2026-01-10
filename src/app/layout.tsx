@@ -31,10 +31,7 @@ export const metadata: Metadata = {
     alternates: {
         canonical: '/',
     },
-    icons: {
-        icon: '/favicon.ico',
-        apple: '/images/logos/CLFlogo.png',
-    },
+
     openGraph: {
         title: 'Caribbean Language Facility',
         description: SITE_DESCRIPTION,
