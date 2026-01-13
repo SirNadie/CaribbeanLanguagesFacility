@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
-import { selectService } from '../../lib/utils';
 import { translations } from '../../i18n/translations';
 
 const services = [
@@ -14,7 +13,7 @@ const services = [
 ] as const;
 
 export default function ProfessionalServices() {
-    const { language, t } = useLanguage();
+    const { language, t, openModal } = useLanguage();
 
     const getServiceData = (key: keyof typeof translations.professionalServices.services) => {
         const service = translations.professionalServices.services[key];
@@ -70,7 +69,7 @@ export default function ProfessionalServices() {
                                 </p>
 
                                 <button
-                                    onClick={() => selectService('Servicios Profesionales')}
+                                    onClick={() => openModal('Servicios Profesionales')}
                                     className="inline-flex items-center gap-2 text-accent font-bold hover:gap-3 transition-all"
                                 >
                                     {t('professionalServices.cta')}

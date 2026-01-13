@@ -4,11 +4,10 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
-import { selectService } from '../../lib/utils';
 import eduImg from '../../assets/images/kids.jpg';
 
 export default function Education() {
-    const { t, language } = useLanguage();
+    const { t, language, openModal } = useLanguage();
     const [showModal, setShowModal] = useState(false);
 
     const openModalAndScroll = () => {
@@ -17,7 +16,7 @@ export default function Education() {
 
     const closeModalAndContact = () => {
         setShowModal(false);
-        selectService("Educación Bilingüe (Lisa's Kids)");
+        openModal("Educación Bilingüe (Lisa's Kids)");
     };
 
     return (
@@ -114,11 +113,12 @@ export default function Education() {
                             {/* Flyer Image */}
                             <div className="relative w-full">
                                 <Image
-                                    src="/images/spanish-kids-program.jpg"
-                                    alt="Spanish Fun for Kids 3-5 Program"
-                                    width={600}
-                                    height={900}
-                                    className="w-full h-auto"
+                                    src="/images/spanish-kids-program.webp"
+                                    alt={t('education.lisasKidsAlt')}
+                                    width={800}
+                                    height={600}
+                                    quality={85}
+                                    className="w-full h-64 object-cover rounded-xl"
                                     priority
                                 />
                             </div>

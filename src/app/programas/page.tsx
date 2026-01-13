@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
-import { selectService } from '../../lib/utils';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { PHONE_NUMBER } from '../../consts';
@@ -299,11 +298,11 @@ function InfoRow({ icon, label, value }: { icon: string; label: string; value: s
 }
 
 export default function ProgramasPage() {
-    const { language } = useLanguage();
+    const { language, openModal } = useLanguage();
     const t = content[language];
 
     const handleCTA = () => {
-        selectService("Capacitación (CASA)");
+        openModal("Capacitación (CASA)");
     };
 
     return (
@@ -493,9 +492,9 @@ export default function ProgramasPage() {
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <button
                                 onClick={handleCTA}
-                                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-accent font-bold rounded-full hover:bg-gray-100 transition-colors shadow-lg"
+                                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-accent font-bold rounded-full hover:bg-gray-100 transition-all shadow-lg hover:shadow-2xl hover:scale-105 hover:-translate-y-0.5 duration-300"
                             >
-                                <span className="material-symbols-outlined">mail</span>
+                                <span className="material-symbols-outlined animate-pulse">mail</span>
                                 {t.cta}
                             </button>
                             <a

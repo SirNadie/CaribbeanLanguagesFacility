@@ -3,10 +3,9 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
-import { selectService } from '../../lib/utils';
 
 export default function CASA() {
-    const { t, language } = useLanguage();
+    const { t, language, openModal } = useLanguage();
 
     return (
         <section id="casa-section" className="py-20 sm:py-32 bg-slate-50 relative overflow-hidden">
@@ -46,7 +45,7 @@ export default function CASA() {
                         <p className="text-text-light/70 mb-8 relative z-10 text-lg">{t('casa.description')}</p>
                         <div className="mt-auto relative z-10 flex flex-wrap gap-3">
                             <button
-                                onClick={() => selectService('Capacitación (CASA)')}
+                                onClick={() => openModal('Capacitación (CASA)')}
                                 className="text-accent font-bold flex items-center gap-2 group-hover:gap-4 transition-all"
                             >
                                 {t('translation.requestInfo')}
@@ -77,7 +76,7 @@ export default function CASA() {
                         <p className="text-white/70 mb-8 relative z-10 text-lg">{t('classes.subtitle')}</p>
                         <div className="mt-auto relative z-10">
                             <button
-                                onClick={() => selectService('Other')}
+                                onClick={() => openModal('Otro')}
                                 className="px-8 py-3 bg-white text-primary font-bold rounded-full hover:bg-gray-100 transition-colors w-fit"
                             >
                                 {t('translation.requestInfo')}

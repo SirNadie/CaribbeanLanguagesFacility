@@ -4,6 +4,7 @@ import './globals.css';
 import { LanguageProvider } from '../context/LanguageContext';
 import { SITE_DESCRIPTION } from '../consts';
 import JsonLd from '../components/JsonLd';
+import ContactModal from '../components/ContactModal';
 
 const playfair = Playfair_Display({
     subsets: ['latin'],
@@ -31,6 +32,11 @@ export const metadata: Metadata = {
     alternates: {
         canonical: '/',
     },
+    icons: {
+        icon: '/favicon.png',
+        shortcut: '/favicon.png',
+        apple: '/favicon.png',
+    },
 
     openGraph: {
         title: 'Caribbean Language Facility',
@@ -39,7 +45,7 @@ export const metadata: Metadata = {
         siteName: 'Caribbean Language Facility',
         images: [
             {
-                url: '/images/logos/INSIlogo.png',
+                url: '/images/logos/CLFlogo.png',
                 width: 512,
                 height: 512,
                 alt: 'Caribbean Language Facility Logo',
@@ -73,9 +79,19 @@ export default function RootLayout({
 }) {
     return (
         <html lang="es" className={`${playfair.variable} ${jakarta.variable} scroll-smooth`}>
+            <head>
+                {/* Resource hints for performance */}
+                <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://hook.us2.make.com" crossOrigin="anonymous" />
 
+                <link
+                    rel="stylesheet"
+                    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0&display=swap"
+                />
+            </head>
             <body className={`${jakarta.className} bg-background-light text-text-light antialiased`}>
                 <LanguageProvider>
+                    <ContactModal />
                     <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
                         <main className="layout-container flex h-full grow flex-col pt-16">
                             {children}

@@ -65,10 +65,10 @@ export default function Ecosystem() {
                         <div className="h-20 w-20 mb-2 relative">
                             <Image
                                 src="/images/logos/INSIlogo.png"
-                                alt="Translations"
+                                alt="Caribbean Language Facility"
                                 fill
+                                className="object-contain p-4"
                                 sizes="80px"
-                                className="object-contain"
                             />
                         </div>
                         <h3 className="font-bold text-primary text-lg leading-tight">{t('ecosystem.linguisticServices')}</h3>

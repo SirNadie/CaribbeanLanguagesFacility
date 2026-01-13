@@ -49,10 +49,10 @@ export default function Header() {
                         <Image
                             src="/images/logos/INSIlogo.png"
                             alt="INSI Logo"
-                            className="object-contain drop-shadow-sm"
-                            fill
-                            sizes="48px"
+                            width={48}
+                            height={48}
                             priority
+                            className="h-12 w-12"
                         />
                     </div>
                     <h2 className="font-display font-bold text-lg sm:text-xl tracking-tight text-primary truncate max-w-[200px] sm:max-w-none">

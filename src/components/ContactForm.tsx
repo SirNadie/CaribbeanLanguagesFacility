@@ -6,10 +6,9 @@ import { useLanguage } from '../context/LanguageContext';
 // Configura tu webhook de Make aquí
 const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/ifvratfq5tl9d9tnzl8e72m9g80lb6af';
 
-export default function ContactForm() {
-    const { t, language } = useLanguage();
+export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
+    const { t, language, selectedService, setSelectedService } = useLanguage();
     const [status, setStatus] = useState('idle'); // idle, submitting, success, error
-    const [selectedService, setSelectedService] = useState('Traducción/Interpretación');
     const [formData, setFormData] = useState({
         name: '',
         contactMethod: 'whatsapp', // 'whatsapp' o 'email'
@@ -18,18 +17,6 @@ export default function ContactForm() {
         message: ''
     });
 
-    useEffect(() => {
-        const handleSelection = (e: any) => {
-            if (e.detail) {
-                setSelectedService(e.detail);
-                const form = document.getElementById('contact-form');
-                if (form) form.scrollIntoView({ behavior: 'smooth' });
-            }
-        };
-
-        window.addEventListener('selectService', handleSelection);
-        return () => window.removeEventListener('selectService', handleSelection);
-    }, []);
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
@@ -71,7 +58,10 @@ export default function ContactForm() {
             if (response.ok) {
                 setStatus('success');
                 setFormData({ name: '', contactMethod: 'whatsapp', contactInfo: '', modality: 'Presencial', message: '' });
-                setSelectedService('Traducción/Interpretación');
+                // Call onSuccess callback if provided (for closing modal)
+                if (onSuccess) {
+                    setTimeout(() => onSuccess(), 2000); // Close after 2 seconds to show success message
+                }
             } else {
                 throw new Error('Error en el envío');
             }
