@@ -45,16 +45,14 @@ export default function Header() {
             <div className="flex items-center justify-between whitespace-nowrap px-4 sm:px-10 max-w-7xl mx-auto">
                 {/* Logo & Title */}
                 <Link href="/" className="flex items-center gap-2 sm:gap-4 z-[101] group" onClick={closeMenu}>
-                    <div className="h-10 sm:h-12 w-10 sm:w-12 flex-shrink-0 relative transition-transform duration-300 group-hover:scale-105">
-                        <Image
-                            src="/images/logos/INSIlogo.png"
-                            alt="INSI Logo"
-                            width={48}
-                            height={48}
-                            priority
-                            className="h-12 w-12"
-                        />
-                    </div>
+                    <Image
+                        src="/images/logos/INSIlogo.png"
+                        alt="INSI Logo"
+                        width={48}
+                        height={48}
+                        priority
+                        className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-105 object-contain"
+                    />
                     <h2 className="font-display font-bold text-lg sm:text-xl tracking-tight text-primary truncate max-w-[200px] sm:max-w-none">
                         <span>{t('header.siteTitle')}</span>
                     </h2>
