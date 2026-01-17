@@ -45,7 +45,7 @@ export const metadata: Metadata = {
         siteName: 'Caribbean Language Facility',
         images: [
             {
-                url: '/images/logos/CLFlogo.png',
+                url: '/images/logos/INSIlogo.png',
                 width: 512,
                 height: 512,
                 alt: 'Caribbean Language Facility Logo',
