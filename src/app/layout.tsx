@@ -33,7 +33,10 @@ export const metadata: Metadata = {
         canonical: '/',
     },
     icons: {
-        // icon.png en src/app/ se detecta automáticamente por Next.js
+        icon: [
+            { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+            { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+        ],
         apple: '/apple-touch-icon.png',
     },
 
