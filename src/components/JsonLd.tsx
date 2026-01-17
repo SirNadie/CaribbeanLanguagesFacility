@@ -106,7 +106,7 @@ export default function JsonLd() {
     };
 
     return (
-        <section>
+        <>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
@@ -119,6 +119,6 @@ export default function JsonLd() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
             />
-        </section>
+        </>
     );
 }

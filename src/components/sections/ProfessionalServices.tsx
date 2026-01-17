@@ -36,7 +36,7 @@ export default function ProfessionalServices() {
                     <h2 className="font-display text-4xl sm:text-5xl font-bold text-primary mb-4">
                         {t('professionalServices.title')}
                     </h2>
-                    <p className="text-xl text-text-light/70 max-w-2xl mx-auto">
+                    <p className="text-xl text-text-light/80 max-w-2xl mx-auto">
                         {t('professionalServices.subtitle')}
                     </p>
                 </motion.div>
@@ -64,7 +64,7 @@ export default function ProfessionalServices() {
                                     {data.title}
                                 </h3>
 
-                                <p className="text-text-light/70 mb-6 leading-relaxed">
+                                <p className="text-text-light/80 mb-6 leading-relaxed">
                                     {data.description}
                                 </p>
 

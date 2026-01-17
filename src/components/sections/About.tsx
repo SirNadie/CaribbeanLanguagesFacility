@@ -17,7 +17,7 @@ export default function About() {
                     variants={fadeIn}
                 >
                     <h2 className="font-display text-4xl sm:text-5xl font-bold mb-8 text-primary">{t('about.title')}</h2>
-                    <p className="text-xl text-text-light/70 mb-16 leading-relaxed bg-clip-text">
+                    <p className="text-xl text-text-light/80 mb-16 leading-relaxed bg-clip-text">
                         {t('about.description')}
                     </p>
                 </motion.div>
@@ -37,7 +37,7 @@ export default function About() {
                         >
                             <span className={`material-symbols-outlined text-4xl mb-4 ${item.color}`}>{item.icon}</span>
                             <h3 className={`font-display text-2xl font-bold ${item.color} mb-3`}>{t(item.title)}</h3>
-                            <p className="text-text-light/70 leading-relaxed font-body">{t(item.text)}</p>
+                            <p className="text-text-light/80 leading-relaxed font-body">{t(item.text)}</p>
                         </motion.div>
                     ))}
                 </div>

@@ -39,29 +39,32 @@ export default function Education() {
                                         fill
                                         className="object-contain"
                                         sizes="64px"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <h2 className="text-4xl sm:text-5xl font-bold text-primary">{t('education.title')}</h2>
                             </div>
                             <h3 className="text-2xl font-bold text-secondary">{t('education.lisasKids')}</h3>
-                            <p className="text-lg text-text-light/80 leading-relaxed border-l-4 border-secondary/20 pl-6">
+                            <p className="text-lg text-text-light/85 leading-relaxed border-l-4 border-secondary/20 pl-6">
                                 {t('education.description')}
                             </p>
 
-                            <button
-                                onClick={openModalAndScroll}
-                                className="inline-flex items-center gap-2 px-8 py-4 bg-secondary text-white font-bold rounded-full hover:bg-secondary/90 hover:gap-4 transition-all shadow-lg shadow-secondary/20"
-                            >
-                                {t('translation.requestInfo')}
-                                <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                            </button>
-                            <a
-                                href="/inscripciones"
-                                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-secondary text-secondary font-bold rounded-full hover:bg-secondary/10 transition-all"
-                            >
-                                {language === 'es' ? 'Ver detalles de inscripción' : 'View enrollment details'}
-                                <span className="material-symbols-outlined text-sm">info</span>
-                            </a>
+                            <div className="flex flex-col sm:flex-row flex-wrap gap-4">
+                                <button
+                                    onClick={openModalAndScroll}
+                                    className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-secondary text-white font-bold rounded-full hover:bg-secondary/90 hover:gap-4 transition-all shadow-lg shadow-secondary/20"
+                                >
+                                    {t('translation.requestInfo')}
+                                    <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                                </button>
+                                <a
+                                    href="/inscripciones"
+                                    className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-secondary text-secondary font-bold rounded-full hover:bg-secondary/10 transition-all"
+                                >
+                                    {language === 'es' ? 'Ver detalles de inscripción' : 'View enrollment details'}
+                                    <span className="material-symbols-outlined text-sm">info</span>
+                                </a>
+                            </div>
                         </motion.div>
 
                         <motion.div
@@ -77,7 +80,8 @@ export default function Education() {
                                 className="object-cover w-full h-full hover:scale-105 transition-transform duration-700"
                                 fill
                                 sizes="(max-width: 768px) 100vw, 50vw"
-                                priority
+                                loading="lazy"
+                                placeholder="blur"
                             />
                         </motion.div>
                     </div>
@@ -111,14 +115,14 @@ export default function Education() {
                             </button>
 
                             {/* Flyer Image */}
-                            <div className="relative w-full">
+                            <div className="relative w-full max-h-[60vh] overflow-y-auto">
                                 <Image
                                     src="/images/spanish-kids-program.webp"
                                     alt={t('education.lisasKidsAlt')}
                                     width={800}
-                                    height={600}
+                                    height={1000}
                                     quality={85}
-                                    className="w-full h-64 object-cover rounded-xl"
+                                    className="w-full h-auto object-contain"
                                     priority
                                 />
                             </div>

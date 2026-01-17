@@ -1,24 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --accent: 136, 58, 234;
-  --accent-light: 224, 204, 250;
-  --accent-dark: 49, 10, 101;
-  --accent-gradient: linear-gradient(45deg,
-      rgb(var(--accent)),
-      rgb(var(--accent-light)) 30%,
-      white 60%);
+/* ===== SMOOTH SCROLL ===== */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Compensa el header fijo */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
-  font-family: 'Nunito', system-ui, sans-serif;
+  font-family: var(--font-jakarta), system-ui, sans-serif;
   background-color: #f8fafc;
-  /* background-light */
-  color: #1f2937;
-  /* text-light */
+  color: #1e293b;
+}
+
+/* ===== ACCESSIBILITY ===== */
+
+/* Focus Visible - Better keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #0e7490;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default outline for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for buttons and links */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #0e7490;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(14, 116, 144, 0.2);
+}
+
+/* ===== CONTRAST IMPROVEMENTS ===== */
+
+/* Better text contrast - override /70 opacity with darker values */
+@layer utilities {
+  .text-improved {
+    color: rgba(30, 41, 59, 0.85);
+  }
 }
 
 /* Material Symbols */
@@ -109,34 +140,46 @@ body {
   transform: translateY(0) translateX(0) scale(1) !important;
 }
 
-/* WhatsApp Animation */
-.whatsapp-btn {
-  animation: whatsappEntrance 0.6s ease-out 1s both,
-    whatsappPulse 2s ease-in-out 2s infinite;
+/* WhatsApp Floating Button Animation */
+.whatsapp-float {
+  animation: whatsappEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s both,
+    whatsappPulse 3s ease-in-out 2s infinite;
 }
 
 @keyframes whatsappEntrance {
   0% {
     opacity: 0;
-    transform: scale(0) rotate(-180deg);
+    transform: scale(0) translateY(20px);
   }
-
   100% {
     opacity: 1;
-    transform: scale(1) rotate(0deg);
+    transform: scale(1) translateY(0);
   }
 }
 
 @keyframes whatsappPulse {
-
-  0%,
-  100% {
-    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
   }
-
   50% {
-    box-shadow: 0 4px 25px rgba(37, 211, 102, 0.6), 0 0 0 8px rgba(37, 211, 102, 0.15);
+    box-shadow: 0 4px 30px rgba(37, 211, 102, 0.6), 0 0 0 12px rgba(37, 211, 102, 0.1);
   }
+}
+
+/* ===== BUTTON INTERACTIONS ===== */
+
+/* Efecto de presión táctil - funciona en móvil y desktop */
+.btn-interactive {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-interactive:active {
+  transform: scale(0.96);
+}
+
+/* Para botones con hover slide effect */
+.btn-slide:active .absolute {
+  transition-duration: 0.1s;
 }
 
 /* Hover Effects */

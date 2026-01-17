@@ -20,7 +20,7 @@ export default function Contact() {
                     >
                         <div>
                             <h2 className="font-display text-4xl sm:text-5xl font-bold text-primary mb-4">{t('contact.title')}</h2>
-                            <p className="text-xl text-text-light/60">{t('contact.subtitle')}</p>
+                            <p className="text-xl text-text-light/75">{t('contact.subtitle')}</p>
                         </div>
 
                         <div className="space-y-6">
@@ -50,7 +50,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-lg text-primary">{t(item.title)}</h4>
-                                        <p className="text-text-light/70">{item.content}</p>
+                                        <p className="text-text-light/80">{item.content}</p>
                                     </div>
                                 </div>
                             ))}

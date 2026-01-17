@@ -21,6 +21,7 @@ export default function Footer() {
                                 fill
                                 className="object-contain p-2"
                                 sizes="64px"
+                                loading="lazy"
                             />
                         </div>
                         <h3 className="font-display text-2xl font-bold">Caribbean Language Facility</h3>
@@ -59,13 +60,13 @@ export default function Footer() {
 
                     {/* Quick Links - Half width on mobile */}
                     <div className="col-span-1">
-                        <h4 className="font-display text-lg font-bold mb-6 text-secondary">Quick Links</h4>
+                        <h4 className="font-display text-lg font-bold mb-6 text-secondary">{t('footer.explore')}</h4>
                         <ul className="space-y-4 text-white/70">
                             {[
-                                { id: 'home', label: 'Home', href: '/' },
-                                { id: 'services', label: 'Translation', href: '/#services' },
-                                { id: 'education', label: 'Education', href: '/#education-section' },
-                                { id: 'casa', label: 'CASA', href: '/#casa-section' },
+                                { id: 'home', label: t('footer.home'), href: '/' },
+                                { id: 'services', label: t('footer.translationServices'), href: '/#services' },
+                                { id: 'education', label: t('footer.bilingualEducation'), href: '/#education-section' },
+                                { id: 'casa', label: t('footer.casaCenter'), href: '/#casa-section' },
                             ].map((link) => (
                                 <li key={link.id}>
                                     <Link href={link.href} className="hover:text-accent hover:pl-2 transition-all duration-300 inline-block">
@@ -78,18 +79,18 @@ export default function Footer() {
 
                     {/* Services - Half width on mobile */}
                     <div className="col-span-1">
-                        <h4 className="font-display text-lg font-bold mb-6 text-accent">Services</h4>
+                        <h4 className="font-display text-lg font-bold mb-6 text-accent">{t('footer.services')}</h4>
                         <ul className="space-y-4 text-white/70">
-                            <li>Legal Translation</li>
-                            <li>Academic Documents</li>
-                            <li>Bilingual Education</li>
-                            <li>Professional Training</li>
+                            <li>{t('footer.legalTranslation')}</li>
+                            <li>{t('footer.interpretation')}</li>
+                            <li>{t('footer.englishSpanishClasses')}</li>
+                            <li>{t('footer.corporateTraining')}</li>
                         </ul>
                     </div>
 
                     {/* Contact - Full width on mobile */}
                     <div className="col-span-2 lg:col-span-1">
-                        <h4 className="font-display text-lg font-bold mb-6 text-white">Contact Us</h4>
+                        <h4 className="font-display text-lg font-bold mb-6 text-white">{t('footer.contact')}</h4>
                         <ul className="space-y-6 text-white/70">
                             <li className="flex items-start gap-3">
                                 <span className="material-symbols-outlined text-secondary shrink-0">location_on</span>

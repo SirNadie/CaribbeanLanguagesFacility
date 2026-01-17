@@ -21,7 +21,7 @@ export default function CASA() {
                     viewport={{ once: true }}
                     className="font-display text-4xl text-center font-bold text-primary mb-16"
                 >
-                    Professional Development
+                    {language === 'es' ? 'Desarrollo Profesional' : 'Professional Development'}
                 </motion.h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -39,10 +39,11 @@ export default function CASA() {
                                 width={64}
                                 height={64}
                                 className="h-full w-auto object-contain bg-white rounded-lg p-1"
+                                loading="lazy"
                             />
                         </div>
                         <h3 className="font-display text-3xl font-bold mb-4 text-primary relative z-10">{t('casa.title')}</h3>
-                        <p className="text-text-light/70 mb-8 relative z-10 text-lg">{t('casa.description')}</p>
+                        <p className="text-text-light/80 mb-8 relative z-10 text-lg">{t('casa.description')}</p>
                         <div className="mt-auto relative z-10 flex flex-wrap gap-3">
                             <button
                                 onClick={() => openModal('Capacitación (CASA)')}
@@ -73,7 +74,7 @@ export default function CASA() {
                             <span className="material-symbols-outlined text-6xl">cast_for_education</span>
                         </div>
                         <h3 className="font-display text-3xl font-bold mb-4 relative z-10">{t('classes.title')}</h3>
-                        <p className="text-white/70 mb-8 relative z-10 text-lg">{t('classes.subtitle')}</p>
+                        <p className="text-white/80 mb-8 relative z-10 text-lg">{t('classes.subtitle')}</p>
                         <div className="mt-auto relative z-10">
                             <button
                                 onClick={() => openModal('Otro')}

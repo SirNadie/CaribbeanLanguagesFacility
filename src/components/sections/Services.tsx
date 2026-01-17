@@ -25,6 +25,8 @@ export default function Services() {
                             className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                             fill
                             sizes="(max-width: 768px) 100vw, 50vw"
+                            loading="lazy"
+                            placeholder="blur"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
                     </motion.div>
@@ -44,6 +46,7 @@ export default function Services() {
                                     fill
                                     className="object-contain"
                                     sizes="64px"
+                                    loading="lazy"
                                 />
                             </div>
                             <h2 className="text-4xl sm:text-5xl font-bold text-primary">{t('translation.title')}</h2>
@@ -57,7 +60,7 @@ export default function Services() {
                                     t('translation.certificates'), t('translation.academicDocs'),
                                     t('translation.formalLetters')
                                 ].map((item, i) => (
-                                    <li key={i} className="flex items-center gap-3 text-text-light/80">
+                                    <li key={i} className="flex items-center gap-3 text-text-light/85">
                                         <span className="material-symbols-outlined text-accent text-sm">check_circle</span>
                                         {item}
                                     </li>

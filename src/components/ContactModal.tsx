@@ -6,7 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import ContactForm from './ContactForm';
 
 export default function ContactModal() {
-    const { isModalOpen, closeModal } = useLanguage();
+    const { isModalOpen, closeModal, t } = useLanguage();
 
     // Handle ESC key to close modal
     useEffect(() => {
@@ -76,10 +76,10 @@ export default function ContactModal() {
                                 {/* Title */}
                                 <div className="mb-6 pr-12">
                                     <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">
-                                        Contáctanos
+                                        {t('contact.title')}
                                     </h2>
                                     <p className="text-text-light/70">
-                                        Completa el formulario y nos pondremos en contacto contigo pronto.
+                                        {t('contact.subtitle')}
                                     </p>
                                 </div>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { translations, TranslationKey, Language } from '../i18n/translations';
+import { translations, Language } from '../i18n/translations';
 
 type LanguageContextType = {
     language: Language;
@@ -18,7 +18,6 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const [language, setLanguageState] = useState<Language>('es');
-    const [mounted, setMounted] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedService, setSelectedService] = useState('Traducción/Interpretación');
 
@@ -30,7 +29,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
             const browserLang = navigator.language.startsWith('en') ? 'en' : 'es';
             setLanguageState(browserLang);
         }
-        setMounted(true);
     }, []);
 
     // Listen for modal open events
@@ -76,14 +74,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         }
 
         if (typeof value === 'object' && value !== null) {
-            // @ts-ignore
-            return value[language] || value['es'] || keyStr;
+            const langValue = value as Record<string, string>;
+            return langValue[language] || langValue['es'] || keyStr;
         }
 
         return value || keyStr;
     };
-
-
 
     return (
         <LanguageContext.Provider value={{ language, setLanguage, t, isModalOpen, selectedService, setSelectedService, openModal, closeModal }}>
