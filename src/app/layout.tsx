@@ -34,10 +34,12 @@ export const metadata: Metadata = {
     },
     icons: {
         icon: [
+            { url: '/favicon.ico', sizes: 'any' },
             { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
             { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
         ],
         apple: '/apple-touch-icon.png',
+        shortcut: '/favicon.ico',
     },
 
     openGraph: {
@@ -83,7 +85,7 @@ export default function RootLayout({
                 {/* Material Symbols - optimizado con subset de iconos usados */}
                 <link
                     rel="stylesheet"
-                    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap&text=arrow_forward,arrow_back,info,close,mail,school,cast_for_education,call,location_on,email,phone,check_circle,check,translate,workspace_premium,visibility,diamond,menu,group,schedule,home,payments,fact_check,assignment,checklist,apparel,restaurant,lunch_dining,alarm,description,edit_document,contract,shield,gavel,psychology,favorite,account_balance,expand_more"
+                    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap&text=arrow_forward,arrow_back,info,close,mail,school,cast_for_education,call,location_on,email,phone,check_circle,check,translate,workspace_premium,visibility,diamond,menu,group,schedule,home,payments,fact_check,assignment,checklist,apparel,restaurant,lunch_dining,alarm,description,edit_document,contract,shield,gavel,psychology,favorite,account_balance,expand_more,diversity_3,work,child_care,menu_book,language,timelapse,calendar_month,timer"
                 />
             </head>
             <body className={`${jakarta.className} bg-background-light text-text-light antialiased`}>
@@ -113,6 +115,7 @@ export default function RootLayout({
                             <a
                                 href="https://wa.me/18682693510"
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 className="whatsapp-float flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl active:scale-95"
                                 aria-label="Chat on WhatsApp"
                             >

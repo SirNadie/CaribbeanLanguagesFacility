@@ -33,9 +33,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
     // Listen for modal open events
     useEffect(() => {
-        const handleOpenModal = (e: any) => {
-            if (e.detail) {
-                setSelectedService(e.detail);
+        const handleOpenModal = (e: Event) => {
+            const customEvent = e as CustomEvent<string>;
+            if (customEvent.detail) {
+                setSelectedService(customEvent.detail);
             }
             setIsModalOpen(true);
         };

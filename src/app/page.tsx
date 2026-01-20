@@ -15,7 +15,7 @@ export default function Home() {
     return (
         <>
             <Header />
-            <main className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden">
                 <Hero />
                 <About />
                 <Services />
@@ -24,7 +24,7 @@ export default function Home() {
                 <ProfessionalServices />
                 <Ecosystem />
                 <Contact />
-            </main>
+            </div>
             <Footer />
         </>
     );

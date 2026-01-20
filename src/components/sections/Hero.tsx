@@ -77,7 +77,7 @@ export default function Hero() {
                     <div className="relative w-full h-full rounded-[2rem] overflow-hidden shadow-2xl border-[6px] border-white/40">
                         <Image
                             src={heroImg}
-                            alt="Hero"
+                            alt={language === 'es' ? 'Estudiantes en clase de idiomas bilingüe' : 'Students in bilingual language class'}
                             className="object-cover w-full h-full hover:scale-105 transition-transform duration-700"
                             fill
                             placeholder="blur"

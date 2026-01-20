@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
-// Configura tu webhook de Make aquí
-const MAKE_WEBHOOK_URL = 'https://hook.us2.make.com/ifvratfq5tl9d9tnzl8e72m9g80lb6af';
+// Webhook URL desde variables de entorno
+const MAKE_WEBHOOK_URL = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL || '';
 
 export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
     const { t, language, selectedService, setSelectedService } = useLanguage();
@@ -18,7 +18,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
     });
 
 
-    const handleInputChange = (e: any) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         // Si cambia el método de contacto, limpiar el campo de info
         if (name === 'contactMethod') {
@@ -28,7 +28,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
         }
     };
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setStatus('submitting');
 
