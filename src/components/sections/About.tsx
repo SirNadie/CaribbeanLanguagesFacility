@@ -8,7 +8,7 @@ export default function About() {
     const { t } = useLanguage();
 
     return (
-        <section className="relative py-20 sm:py-32 bg-white">
+        <section className="relative py-24 sm:py-32 bg-white">
             <div className="max-w-4xl mx-auto px-4 sm:px-10 text-center">
                 <motion.div
                     initial="hidden"

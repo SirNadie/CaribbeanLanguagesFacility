@@ -8,7 +8,7 @@ export default function CASA() {
     const { t, language, openModal } = useLanguage();
 
     return (
-        <section id="casa-section" className="py-20 sm:py-32 bg-slate-50 relative overflow-hidden">
+        <section id="casa-section" className="py-24 sm:py-32 bg-slate-50 relative overflow-hidden">
             {/* Decorative background */}
             <div className="absolute top-0 right-0 w-full h-full opacity-30 pointer-events-none">
                 <div className="absolute right-[-10%] top-20 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl"></div>
@@ -47,7 +47,7 @@ export default function CASA() {
                         <div className="mt-auto relative z-10 flex flex-wrap gap-3">
                             <button
                                 onClick={() => openModal('Capacitación (CASA)')}
-                                className="text-accent font-bold flex items-center gap-2 group-hover:gap-4 transition-all"
+                                className="text-accent font-bold flex items-center gap-2 group-hover:gap-4 transition-all active:scale-95"
                             >
                                 {t('translation.requestInfo')}
                                 <span className="material-symbols-outlined">arrow_forward</span>
@@ -55,7 +55,7 @@ export default function CASA() {
                             <span className="text-gray-300">|</span>
                             <a
                                 href="/programas"
-                                className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary font-semibold rounded-full hover:bg-primary/20 transition-colors text-sm"
+                                className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary font-semibold rounded-full hover:bg-primary/20 transition-colors text-sm active:scale-95"
                             >
                                 <span className="material-symbols-outlined text-sm">school</span>
                                 {language === 'es' ? 'Ver programas' : 'View programs'}
@@ -78,7 +78,7 @@ export default function CASA() {
                         <div className="mt-auto relative z-10">
                             <button
                                 onClick={() => openModal('Otro')}
-                                className="px-8 py-3 bg-white text-primary font-bold rounded-full hover:bg-gray-100 transition-colors w-fit"
+                                className="px-8 py-3 bg-white text-primary font-bold rounded-full hover:bg-gray-100 transition-colors w-fit active:scale-95"
                             >
                                 {t('translation.requestInfo')}
                             </button>

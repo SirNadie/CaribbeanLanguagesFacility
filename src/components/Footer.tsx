@@ -67,6 +67,8 @@ export default function Footer() {
                                 { id: 'services', label: t('footer.translationServices'), href: '/#services' },
                                 { id: 'education', label: t('footer.bilingualEducation'), href: '/#education-section' },
                                 { id: 'casa', label: t('footer.casaCenter'), href: '/#casa-section' },
+                                { id: 'programas', label: t('footer.programas'), href: '/programas' },
+                                { id: 'inscripciones', label: t('footer.inscripciones'), href: '/inscripciones' },
                             ].map((link) => (
                                 <li key={link.id}>
                                     <Link href={link.href} className="hover:text-accent hover:pl-2 transition-all duration-300 inline-block">

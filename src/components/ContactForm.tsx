@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+
+const inputClass = "mt-1 block w-full border border-slate-300 rounded-xl bg-white text-text-light focus:ring-2 focus:ring-primary/25 focus:ring-offset-2 focus:border-primary transition-colors px-3 py-3";
 
 // Webhook URL desde variables de entorno
 const MAKE_WEBHOOK_URL = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL || '';
@@ -30,6 +33,17 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const form = e.currentTarget;
+        const gotcha = (form.elements.namedItem('_gotcha') as HTMLInputElement)?.value;
+        if (gotcha) {
+            setStatus('success');
+            setFormData({ name: '', contactMethod: 'whatsapp', contactInfo: '', modality: 'Presencial', message: '' });
+            return;
+        }
+        if (!MAKE_WEBHOOK_URL) {
+            setStatus('error');
+            return;
+        }
         setStatus('submitting');
 
         const payload = {
@@ -74,17 +88,23 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
     // Si el envío fue exitoso, mostrar mensaje de éxito
     if (status === 'success') {
         return (
-            <div className="flex flex-col items-center gap-4 p-8 rounded-xl border border-green-200 bg-green-50 text-center" id="contact-form">
+            <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center gap-4 p-8 rounded-xl border border-green-200 bg-green-50 text-center"
+                id="contact-form"
+            >
                 <span className="material-symbols-outlined text-5xl text-green-500">check_circle</span>
                 <h3 className="text-xl font-bold text-green-700">{t('form.successTitle')}</h3>
                 <p className="text-green-600">{t('form.successText')}</p>
                 <button
                     onClick={() => setStatus('idle')}
-                    className="mt-2 px-6 py-2 text-sm font-medium text-green-700 border border-green-300 rounded-lg hover:bg-green-100 transition-colors"
+                    className="mt-2 px-6 py-2 text-sm font-medium text-green-700 border border-green-300 rounded-xl hover:bg-green-100 transition-colors active:scale-95"
                 >
                     {t('form.sendAnother')}
                 </button>
-            </div>
+            </motion.div>
         );
     }
 
@@ -94,8 +114,9 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
             <input type="text" name="_gotcha" className="hidden" />
 
             {status === 'error' && (
-                <div className="p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
-                    {t('form.errorText')}
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
+                    <span className="material-symbols-outlined text-red-600 shrink-0">error</span>
+                    <span>{t('form.errorText')}</span>
                 </div>
             )}
 
@@ -103,7 +124,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
             <div>
                 <label className="text-sm font-medium text-text-light" htmlFor="name">{t('form.name')}</label>
                 <input
-                    className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
+                    className={inputClass}
                     id="name"
                     name="name"
                     placeholder={t('form.namePlaceholder')}
@@ -163,7 +184,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                     {formData.contactMethod === 'whatsapp' ? t('form.phoneLabel') : t('form.emailLabel')}
                 </label>
                 <input
-                    className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
+                    className={inputClass}
                     id="contactInfo"
                     name="contactInfo"
                     placeholder={formData.contactMethod === 'whatsapp' ? t('form.phonePlaceholder') : t('form.emailPlaceholder')}
@@ -180,7 +201,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                 <div>
                     <label className="text-sm font-medium text-text-light" htmlFor="service">{t('form.service')}</label>
                     <select
-                        className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
+                        className={inputClass}
                         id="service"
                         name="service"
                         value={selectedService}
@@ -197,7 +218,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                 <div>
                     <label className="text-sm font-medium text-text-light" htmlFor="modality">{t('form.modality')}</label>
                     <select
-                        className="mt-1 block w-full rounded-lg border-gray-300 bg-white text-text-light focus:ring-primary focus:border-primary px-3 py-3"
+                        className={inputClass}
                         id="modality"
                         name="modality"
                         value={formData.modality}
@@ -229,7 +250,7 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
 
             {/* Botón de envío */}
             <button
-                className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-lg shadow-sm text-base font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-xl shadow-sm text-base font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                 type="submit"
                 disabled={status === 'submitting'}
             >

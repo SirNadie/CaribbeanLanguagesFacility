@@ -70,7 +70,7 @@ export default function ProfessionalServices() {
 
                                 <button
                                     onClick={() => openModal('Servicios Profesionales')}
-                                    className="inline-flex items-center gap-2 text-accent font-bold hover:gap-3 transition-all"
+                                    className="inline-flex items-center gap-2 text-accent font-bold hover:gap-3 transition-all active:scale-95"
                                 >
                                     {t('professionalServices.cta')}
                                     <span className="material-symbols-outlined text-sm">arrow_forward</span>

@@ -31,7 +31,7 @@ export default function JsonLd() {
         '@type': 'ProfessionalService',
         '@id': `${SITE_URL}/#localBusiness`,
         name: SITE_TITLE,
-        image: `${SITE_URL}/images/hero.jpg`,
+        image: `${SITE_URL}/images/logos/CLFlogo.png`,
         description: SITE_DESCRIPTION,
         url: SITE_URL,
         telephone: PHONE_NUMBER,

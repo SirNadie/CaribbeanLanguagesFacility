@@ -93,7 +93,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.2, duration: 0.6 }}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2 text-text-light/50"
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-light/50 opacity-75 lg:opacity-100"
             >
                 <span className="text-xs font-medium uppercase tracking-wider">{language === 'es' ? 'Explorar' : 'Explore'}</span>
                 <motion.div

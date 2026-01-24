@@ -195,6 +195,8 @@ export const translations = {
         translationServices: { es: 'Servicios de Traducción', en: 'Translation Services' },
         bilingualEducation: { es: 'Educación Bilingüe', en: 'Bilingual Education' },
         casaCenter: { es: 'Centro CASA', en: 'CASA Center' },
+        programas: { es: 'Programas de Formación', en: 'Training Programs' },
+        inscripciones: { es: 'Inscripciones', en: 'Enrollment' },
         services: { es: 'Servicios', en: 'Services' },
         legalTranslation: { es: 'Traducción Legal', en: 'Legal Translation' },
         interpretation: { es: 'Interpretación', en: 'Interpretation' },
@@ -204,6 +206,11 @@ export const translations = {
         rights: { es: 'Todos los derechos reservados.', en: 'All rights reserved.' },
         privacy: { es: 'Política de Privacidad', en: 'Privacy Policy' },
         terms: { es: 'Términos y Condiciones', en: 'Terms & Conditions' }
+    },
+
+    // WhatsApp
+    whatsapp: {
+        tooltip: { es: '¿Necesitas ayuda? 💬', en: 'Need help? 💬' }
     },
 
     // Thank You Page
@@ -227,6 +234,12 @@ export const translations = {
             en: 'The page you are looking for does not exist or has been moved. Go back to home to find the right way.'
         },
         backHome: { es: 'Volver al Inicio', en: 'Back to Home' }
+    },
+
+    // Accessibility
+    accessibility: {
+        skipToContent: { es: 'Saltar al contenido principal', en: 'Skip to main content' },
+        closeModal: { es: 'Cerrar modal', en: 'Close modal' }
     },
 
     // Language Toggle

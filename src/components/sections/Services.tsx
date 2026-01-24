@@ -68,7 +68,7 @@ export default function Services() {
                             </ul>
                             <button
                                 onClick={() => openModal('Traducción/Interpretación')}
-                                className="inline-flex items-center gap-2 mt-4 px-8 py-4 bg-primary text-white font-bold rounded-full hover:bg-primary/90 hover:gap-4 transition-all shadow-lg shadow-primary/20"
+                                className="inline-flex items-center gap-2 mt-4 px-8 py-4 bg-primary text-white font-bold rounded-full hover:bg-primary/90 hover:gap-4 transition-all shadow-lg shadow-primary/20 active:scale-95"
                             >
                                 {t('translation.requestInfo')}
                                 <span className="material-symbols-outlined text-sm">arrow_forward</span>

@@ -52,14 +52,14 @@ export default function Education() {
                             <div className="flex flex-col sm:flex-row flex-wrap gap-4">
                                 <button
                                     onClick={openModalAndScroll}
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-secondary text-white font-bold rounded-full hover:bg-secondary/90 hover:gap-4 transition-all shadow-lg shadow-secondary/20"
+                                    className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-secondary text-white font-bold rounded-full hover:bg-secondary/90 hover:gap-4 transition-all shadow-lg shadow-secondary/20 active:scale-95"
                                 >
                                     {t('translation.requestInfo')}
                                     <span className="material-symbols-outlined text-sm">arrow_forward</span>
                                 </button>
                                 <a
                                     href="/inscripciones"
-                                    className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-secondary text-secondary font-bold rounded-full hover:bg-secondary/10 transition-all"
+                                    className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-secondary text-secondary font-bold rounded-full hover:bg-secondary/10 transition-all active:scale-95"
                                 >
                                     {language === 'es' ? 'Ver detalles de inscripción' : 'View enrollment details'}
                                     <span className="material-symbols-outlined text-sm">info</span>
@@ -99,6 +99,9 @@ export default function Education() {
                         onClick={() => setShowModal(false)}
                     >
                         <motion.div
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label={t('education.lisasKids')}
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
@@ -106,10 +109,10 @@ export default function Education() {
                             className="relative max-w-lg w-full max-h-[90vh] overflow-hidden rounded-3xl shadow-2xl bg-white"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            {/* Close button */}
                             <button
                                 onClick={() => setShowModal(false)}
                                 className="absolute top-4 right-4 z-10 p-2 bg-white/90 hover:bg-white rounded-full shadow-lg transition-colors"
+                                aria-label={t('accessibility.closeModal')}
                             >
                                 <span className="material-symbols-outlined text-gray-700">close</span>
                             </button>
@@ -131,7 +134,7 @@ export default function Education() {
                             <div className="p-4 bg-white border-t border-gray-100">
                                 <button
                                     onClick={closeModalAndContact}
-                                    className="w-full py-4 bg-secondary hover:bg-secondary/90 text-white font-bold rounded-full shadow-lg transition-all flex items-center justify-center gap-2"
+                                    className="w-full py-4 bg-secondary hover:bg-secondary/90 text-white font-bold rounded-full shadow-lg transition-all flex items-center justify-center gap-2 active:scale-95"
                                 >
                                     <span className="material-symbols-outlined">mail</span>
                                     {t('translation.requestInfo')}

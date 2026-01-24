@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -21,59 +22,42 @@ export default function Ecosystem() {
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* Lisa's Kids */}
-                    <motion.div
-                        whileHover={{ y: -5 }}
-                        className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100"
-                    >
-                        <div className="h-20 w-20 mb-2 relative">
-                            <Image
-                                src="/images/logos/CASAlogo.png"
-                                alt="Lisa's Kids"
-                                fill
-                                sizes="80px"
-                                className="object-contain brightness-95"
-                            />
-                        </div>
-                        <h3 className="font-bold text-secondary text-lg leading-tight">{t('ecosystem.childEducation')}</h3>
-                        <p className="text-sm text-text-light/70">{t('education.lisasKids')}</p>
-                    </motion.div>
-
-                    {/* CASA */}
-                    <motion.div
-                        whileHover={{ y: -5 }}
-                        className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100"
-                    >
-                        <div className="h-20 w-20 mb-2 relative">
-                            <Image
-                                src="/images/logos/CLFlogo.png"
-                                alt="CASA"
-                                fill
-                                sizes="80px"
-                                className="object-contain"
-                            />
-                        </div>
-                        <h3 className="font-bold text-accent text-lg leading-tight">{t('ecosystem.technicalTraining')}</h3>
-                        <p className="text-sm text-text-light/70">{t('casa.title')}</p>
-                    </motion.div>
-
-                    {/* Translations */}
-                    <motion.div
-                        whileHover={{ y: -5 }}
-                        className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100"
-                    >
-                        <div className="h-20 w-20 mb-2 relative">
-                            <Image
-                                src="/images/logos/INSIlogo.png"
-                                alt="Caribbean Language Facility"
-                                fill
-                                className="object-contain p-4"
-                                sizes="80px"
-                            />
-                        </div>
-                        <h3 className="font-bold text-primary text-lg leading-tight">{t('ecosystem.linguisticServices')}</h3>
-                        <p className="text-sm text-text-light/70">{t('ecosystem.translationInterp')}</p>
-                    </motion.div>
+                    <Link href="/inscripciones" className="block">
+                        <motion.div
+                            whileHover={{ y: -5 }}
+                            className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 cursor-pointer"
+                        >
+                            <div className="h-20 w-20 mb-2 relative">
+                                <Image src="/images/logos/CASAlogo.png" alt="Lisa's Kids" fill sizes="80px" className="object-contain brightness-95" />
+                            </div>
+                            <h3 className="font-bold text-secondary text-lg leading-tight">{t('ecosystem.childEducation')}</h3>
+                            <p className="text-sm text-text-light/70">{t('education.lisasKids')}</p>
+                        </motion.div>
+                    </Link>
+                    <Link href="/programas" className="block">
+                        <motion.div
+                            whileHover={{ y: -5 }}
+                            className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 cursor-pointer"
+                        >
+                            <div className="h-20 w-20 mb-2 relative">
+                                <Image src="/images/logos/CLFlogo.png" alt="CASA" fill sizes="80px" className="object-contain" />
+                            </div>
+                            <h3 className="font-bold text-accent text-lg leading-tight">{t('ecosystem.technicalTraining')}</h3>
+                            <p className="text-sm text-text-light/70">{t('casa.title')}</p>
+                        </motion.div>
+                    </Link>
+                    <Link href="/#services" className="block">
+                        <motion.div
+                            whileHover={{ y: -5 }}
+                            className="flex flex-col items-center gap-4 p-8 rounded-3xl bg-slate-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 cursor-pointer"
+                        >
+                            <div className="h-20 w-20 mb-2 relative">
+                                <Image src="/images/logos/INSIlogo.png" alt="Caribbean Language Facility" fill className="object-contain p-4" sizes="80px" />
+                            </div>
+                            <h3 className="font-bold text-primary text-lg leading-tight">{t('ecosystem.linguisticServices')}</h3>
+                            <p className="text-sm text-text-light/70">{t('ecosystem.translationInterp')}</p>
+                        </motion.div>
+                    </Link>
                 </div>
             </div>
         </section>

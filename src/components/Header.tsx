@@ -117,22 +117,15 @@ export default function Header() {
                         className="fixed inset-0 h-[100dvh] bg-white z-[100] pt-28 px-6 pb-[env(safe-area-inset-bottom)] flex flex-col gap-8 md:hidden shadow-xl overflow-y-auto"
                     >
                         <nav className="flex flex-col gap-6 text-3xl font-medium text-primary text-center">
-                            {['home', 'services', 'education', 'contact'].map((item, i) => (
-                                <motion.div
-                                    key={item}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: i * 0.1 }}
-                                >
-                                    <Link
-                                        href={item === 'home' ? '/' : `/#${item === 'contact' ? 'contact-section' : item === 'education' ? 'education-section' : 'services'}`}
-                                        onClick={closeMenu}
-                                        className="block py-2 hover:text-accent transition-colors"
-                                    >
-                                        {t(`header.${item}`)}
-                                    </Link>
-                                </motion.div>
-                            ))}
+                            {['home', 'services', 'education', 'contact', 'programas', 'inscripciones'].map((item, i) => {
+                                const href = item === 'home' ? '/' : item === 'programas' ? '/programas' : item === 'inscripciones' ? '/inscripciones' : `/#${item === 'contact' ? 'contact-section' : item === 'education' ? 'education-section' : 'services'}`;
+                                const label = item === 'programas' ? t('footer.programas') : item === 'inscripciones' ? t('footer.inscripciones') : t(`header.${item}`);
+                                return (
+                                    <motion.div key={item} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
+                                        <Link href={href} onClick={closeMenu} className="block py-2 hover:text-accent transition-colors">{label}</Link>
+                                    </motion.div>
+                                );
+                            })}
                         </nav>
 
                         <motion.div

@@ -9,7 +9,7 @@ export default function Contact() {
     const { t } = useLanguage();
 
     return (
-        <section id="contact-section" className="relative py-20 sm:py-32 bg-white">
+        <section id="contact-section" className="relative py-24 sm:py-32 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
                     <motion.div
