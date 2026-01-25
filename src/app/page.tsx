@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Hero from '../components/sections/Hero';
@@ -10,8 +11,27 @@ import CASA from '../components/sections/CASA';
 import ProfessionalServices from '../components/sections/ProfessionalServices';
 import Ecosystem from '../components/sections/Ecosystem';
 import Contact from '../components/sections/Contact';
+import WelcomeModal from '../components/WelcomeModal';
+
+const WELCOME_STORAGE_KEY = 'clf-welcome-seen';
 
 export default function Home() {
+    const [isWelcomeOpen, setIsWelcomeOpen] = useState(false);
+
+    useEffect(() => {
+        const id = setTimeout(() => {
+            if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(WELCOME_STORAGE_KEY) !== '1') {
+                setIsWelcomeOpen(true);
+            }
+        }, 700);
+        return () => clearTimeout(id);
+    }, []);
+
+    const handleWelcomeClose = () => {
+        if (typeof sessionStorage !== 'undefined') sessionStorage.setItem(WELCOME_STORAGE_KEY, '1');
+        setIsWelcomeOpen(false);
+    };
+
     return (
         <>
             <Header />
@@ -26,6 +46,7 @@ export default function Home() {
                 <Contact />
             </div>
             <Footer />
+            <WelcomeModal isOpen={isWelcomeOpen} onClose={handleWelcomeClose} />
         </>
     );
 }

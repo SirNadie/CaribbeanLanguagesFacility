@@ -11,15 +11,18 @@ const content = {
     es: {
         title: "Programas de Formación",
         subtitle: "Nivelación Educativa",
-        intro: "Segundas oportunidades para continuar, crecer y avanzar. Ofrecemos programas educativos diseñados para jóvenes y adultos cuyo proceso académico fue interrumpido.",
+        intro: "Si dejaste de estudiar, aquí puedes continuar. Tenemos programas para completar primaria, secundaria y cursos para trabajar en preescolar.",
 
-        // Programs
-        programs: [
+        levelingProgramsTitle: "Programas de Nivelación",
+        coursesTitle: "Cursos",
+
+        levelingPrograms: [
             {
                 icon: "menu_book",
                 color: "blue",
                 title: "Programa Intensivo de Nivelación Primaria",
-                audience: "Jóvenes y adultos que interrumpieron su educación primaria",
+                subtitle: "Completa tu educación primaria",
+                audience: "Si dejaste la primaria y quieres terminarla",
                 duration: "4 a 6 meses",
                 modality: "Intensiva | Presencial / Mixta",
                 certification: "Constancia de culminación",
@@ -33,7 +36,8 @@ const content = {
                 icon: "school",
                 color: "purple",
                 title: "Programa de Educación Secundaria Básica",
-                audience: "Jóvenes que interrumpieron su educación desde 7mo grado",
+                subtitle: "Completa tu educación secundaria",
+                audience: "Si dejaste el bachillerato desde 7mo grado",
                 duration: "6 a 9 meses",
                 modality: "Intensiva | Presencial / Mixta",
                 certification: "Constancia académica del programa",
@@ -44,12 +48,16 @@ const content = {
                     "Tecnología básica",
                     "Formación en valores y orientación vocacional"
                 ]
-            },
+            }
+        ],
+
+        courses: [
             {
                 icon: "child_care",
                 color: "pink",
-                title: "Programa de Asistente de Preescolar",
-                audience: "Personas interesadas en trabajar en educación infantil",
+                title: "Cursos de Asistente de Preescolar",
+                subtitle: "Aprende a trabajar en preescolar",
+                audience: "Si quieres trabajar con niños en preescolar",
                 duration: "6 meses",
                 modality: "Teórico–práctica",
                 certification: "Asistente de Preescolar",
@@ -115,7 +123,7 @@ const content = {
         approachTitle: "Nuestro Enfoque",
         approach: [
             { icon: "diversity_3", text: "Educación accesible y humana" },
-            { icon: "psychology", text: "Aprendizaje práctico y significativo" },
+            { icon: "psychology", text: "Aprendes cosas que usas en la vida" },
             { icon: "favorite", text: "Acompañamiento académico y emocional" },
             { icon: "work", text: "Formación para la vida y el trabajo" }
         ],
@@ -123,11 +131,11 @@ const content = {
         motto: "Nunca es tarde para continuar tu educación. Tu proceso no terminó, solo fue interrumpido.",
 
         // Labels
-        audienceLabel: "Dirigido a:",
+        audienceLabel: "Para quién:",
         durationLabel: "Duración:",
-        modalityLabel: "Modalidad:",
-        certLabel: "Certificación:",
-        learnLabel: "Aprenderás:",
+        modalityLabel: "Cómo se da:",
+        certLabel: "Al terminar recibes:",
+        learnLabel: "Vas a aprender:",
 
         // Class Labels
         daysLabel: "Días:",
@@ -142,14 +150,18 @@ const content = {
     en: {
         title: "Training Programs",
         subtitle: "Educational Leveling",
-        intro: "Second chances to continue, grow, and advance. We offer educational programs designed for youth and adults whose academic process was interrupted.",
+        intro: "If you left school, you can continue here. We have programs to complete primary, secondary, and courses to work in preschool.",
 
-        programs: [
+        levelingProgramsTitle: "Leveling Programs",
+        coursesTitle: "Courses",
+
+        levelingPrograms: [
             {
                 icon: "menu_book",
                 color: "blue",
                 title: "Intensive Primary Level Program",
-                audience: "Youth and adults who interrupted their primary education",
+                subtitle: "Complete your primary education",
+                audience: "If you left primary school and want to finish it",
                 duration: "4 to 6 months",
                 modality: "Intensive | In-person / Hybrid",
                 certification: "Completion certificate",
@@ -163,7 +175,8 @@ const content = {
                 icon: "school",
                 color: "purple",
                 title: "Basic Secondary Education Program",
-                audience: "Youth who interrupted their education from 7th grade",
+                subtitle: "Complete your secondary education",
+                audience: "If you left school from 7th grade",
                 duration: "6 to 9 months",
                 modality: "Intensive | In-person / Hybrid",
                 certification: "Academic program certificate",
@@ -174,12 +187,16 @@ const content = {
                     "Basic technology",
                     "Values training and vocational guidance"
                 ]
-            },
+            }
+        ],
+
+        courses: [
             {
                 icon: "child_care",
                 color: "pink",
-                title: "Preschool Assistant Program",
-                audience: "People interested in working in early childhood education",
+                title: "Preschool Assistant Courses",
+                subtitle: "Learn to work in preschool",
+                audience: "If you want to work with children in preschool",
                 duration: "6 months",
                 modality: "Theoretical-practical",
                 certification: "Preschool Assistant",
@@ -244,7 +261,7 @@ const content = {
         approachTitle: "Our Approach",
         approach: [
             { icon: "diversity_3", text: "Accessible and humane education" },
-            { icon: "psychology", text: "Practical and meaningful learning" },
+            { icon: "psychology", text: "You learn things you use in life" },
             { icon: "favorite", text: "Academic and emotional support" },
             { icon: "work", text: "Training for life and work" }
         ],
@@ -253,8 +270,8 @@ const content = {
 
         audienceLabel: "For:",
         durationLabel: "Duration:",
-        modalityLabel: "Modality:",
-        certLabel: "Certification:",
+        modalityLabel: "How it's done:",
+        certLabel: "When you finish you get:",
         learnLabel: "You'll learn:",
 
         // Class Labels
@@ -268,12 +285,12 @@ const content = {
     }
 };
 
-const colorClasses: Record<string, { bg: string; text: string; bgLight: string }> = {
-    blue: { bg: "bg-blue-500", text: "text-blue-600", bgLight: "bg-blue-100" },
-    purple: { bg: "bg-purple-500", text: "text-purple-600", bgLight: "bg-purple-100" },
-    pink: { bg: "bg-pink-500", text: "text-pink-600", bgLight: "bg-pink-100" },
-    green: { bg: "bg-emerald-500", text: "text-emerald-600", bgLight: "bg-emerald-100" },
-    orange: { bg: "bg-orange-500", text: "text-orange-600", bgLight: "bg-orange-100" }
+const colorClasses: Record<string, { bg: string; text: string; bgLight: string; panelGradient: string }> = {
+    blue: { bg: "bg-blue-500", text: "text-blue-600", bgLight: "bg-blue-100", panelGradient: "from-blue-500 to-blue-700" },
+    purple: { bg: "bg-purple-500", text: "text-purple-600", bgLight: "bg-purple-100", panelGradient: "from-purple-500 to-purple-700" },
+    pink: { bg: "bg-pink-500", text: "text-pink-600", bgLight: "bg-pink-100", panelGradient: "from-pink-500 to-pink-600" },
+    green: { bg: "bg-emerald-500", text: "text-emerald-600", bgLight: "bg-emerald-100", panelGradient: "from-emerald-500 to-emerald-700" },
+    orange: { bg: "bg-orange-500", text: "text-orange-600", bgLight: "bg-orange-100", panelGradient: "from-orange-500 to-orange-700" }
 };
 
 function SectionHeading({ title }: { title: string }) {
@@ -328,25 +345,28 @@ export default function ProgramasPage() {
                         </p>
                     </motion.div>
 
-                    {/* Programs */}
-                    <div className="space-y-8 mb-20">
-                        {t.programs.map((program, index) => {
-                            const colors = colorClasses[program.color];
-                            return (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                                    className="bg-white rounded-3xl shadow-xl shadow-gray-100 border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow"
-                                >
-                                    <div className="flex flex-col lg:flex-row">
-                                        {/* Left side - Icon and Title */}
-                                        <div className={`${colors.bg} p-8 lg:w-1/3 text-white flex flex-col justify-center`}>
-                                            <span className="material-symbols-outlined text-6xl mb-4">{program.icon}</span>
-                                            <h3 className="text-2xl font-bold">{program.title}</h3>
-                                        </div>
+                    {/* Programas de Nivelación */}
+                    <div className="mb-20">
+                        <SectionHeading title={t.levelingProgramsTitle} />
+                        <div className="space-y-8">
+                            {t.levelingPrograms.map((program, index) => {
+                                const colors = colorClasses[program.color];
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                        className="bg-white rounded-3xl shadow-xl shadow-gray-100 border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow"
+                                    >
+                                        <div className="flex flex-col lg:flex-row">
+                                            {/* Left side - Icon and Title */}
+                                            <div className={`bg-gradient-to-br ${colors.panelGradient} p-8 lg:p-10 lg:w-1/3 text-white flex flex-col justify-center relative overflow-hidden shadow-inner`}>
+                                                <span className="material-symbols-outlined text-7xl lg:text-8xl mb-5 opacity-90" aria-hidden="true">{program.icon}</span>
+                                                {program.subtitle && <h3 className="text-3xl lg:text-4xl font-bold text-white leading-tight">{program.subtitle}</h3>}
+                                                <p className="text-base lg:text-lg font-medium text-white/80 mt-2">{program.title}</p>
+                                            </div>
 
                                         {/* Right side - Details */}
                                         <div className="p-8 lg:w-2/3">
@@ -400,6 +420,81 @@ export default function ProgramasPage() {
                                 </motion.div>
                             );
                         })}
+                        </div>
+                    </div>
+
+                    {/* Cursos */}
+                    <div className="mb-20">
+                        <SectionHeading title={t.coursesTitle} />
+                        <div className="space-y-8">
+                            {t.courses.map((program, index) => {
+                                const colors = colorClasses[program.color];
+                                return (
+                                    <motion.div
+                                        key={index}
+                                        initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
+                                        whileInView={{ opacity: 1, x: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                                        className="bg-white rounded-3xl shadow-xl shadow-gray-100 border border-gray-100 overflow-hidden hover:shadow-2xl transition-shadow"
+                                    >
+                                        <div className="flex flex-col lg:flex-row">
+                                            <div className={`bg-gradient-to-br ${colors.panelGradient} p-8 lg:p-10 lg:w-1/3 text-white flex flex-col justify-center relative overflow-hidden shadow-inner`}>
+                                                <span className="material-symbols-outlined text-7xl lg:text-8xl mb-5 opacity-90" aria-hidden="true">{program.icon}</span>
+                                                {program.subtitle && <h3 className="text-3xl lg:text-4xl font-bold text-white leading-tight">{program.subtitle}</h3>}
+                                                <p className="text-base lg:text-lg font-medium text-white/80 mt-2">{program.title}</p>
+                                            </div>
+                                            <div className="p-8 lg:w-2/3">
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                                    <div className="flex items-start gap-3">
+                                                        <span className={`material-symbols-outlined ${colors.text}`}>group</span>
+                                                        <div>
+                                                            <p className="text-sm text-text-light/60">{t.audienceLabel}</p>
+                                                            <p className="text-text-light font-medium">{program.audience}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-start gap-3">
+                                                        <span className={`material-symbols-outlined ${colors.text}`}>schedule</span>
+                                                        <div>
+                                                            <p className="text-sm text-text-light/60">{t.durationLabel}</p>
+                                                            <p className="text-text-light font-medium">{program.duration}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-start gap-3">
+                                                        <span className={`material-symbols-outlined ${colors.text}`}>location_on</span>
+                                                        <div>
+                                                            <p className="text-sm text-text-light/60">{t.modalityLabel}</p>
+                                                            <p className="text-text-light font-medium">{program.modality}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-start gap-3">
+                                                        <span className={`material-symbols-outlined ${colors.text}`}>workspace_premium</span>
+                                                        <div>
+                                                            <p className="text-sm text-text-light/60">{t.certLabel}</p>
+                                                            <p className="text-text-light font-medium">{program.certification}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm text-text-light/60 mb-3">{t.learnLabel}</p>
+                                                    <div className="flex flex-wrap gap-2">
+                                                        {program.features.map((feature, idx) => (
+                                                            <span
+                                                                key={idx}
+                                                                className={`inline-flex items-center gap-1 px-3 py-1.5 ${colors.bgLight} ${colors.text} rounded-full text-sm`}
+                                                            >
+                                                                <span className="material-symbols-outlined text-sm">check</span>
+                                                                {feature}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
                     </div>
 
                     {/* Online Classes Section */}
