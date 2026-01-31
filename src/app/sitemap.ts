@@ -1,8 +1,6 @@
 import { MetadataRoute } from 'next';
 import { SITE_URL } from '../consts';
 
-export const revalidate = 60 * 60 * 24; // 24h
-
 export default function sitemap(): MetadataRoute.Sitemap {
     return [
         {
