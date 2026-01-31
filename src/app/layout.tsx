@@ -8,6 +8,9 @@ import ContactModal from '../components/ContactModal';
 import SkipLink from '../components/SkipLink';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 
+// Prefer static rendering on Vercel to minimize per-request compute.
+export const dynamic = 'force-static';
+
 const playfair = Playfair_Display({
     subsets: ['latin'],
     variable: '--font-playfair',
