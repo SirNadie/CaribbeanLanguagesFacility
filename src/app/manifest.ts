@@ -1,8 +1,6 @@
 import { MetadataRoute } from 'next';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
-export const revalidate = 60 * 60 * 24; // 24h
-
 export default function manifest(): MetadataRoute.Manifest {
     return {
         name: SITE_TITLE,
