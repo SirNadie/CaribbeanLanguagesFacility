@@ -25,7 +25,7 @@ export default function Footer() {
                             />
                         </div>
                         <h3 className="font-display text-2xl font-bold">Caribbean Language Facility</h3>
-                        <p className="text-white/60 text-sm leading-relaxed">
+                        <p className="text-white/70 text-sm leading-relaxed">
                             Breaking barriers, building bridges, and fostering connections through language and education.
                         </p>
                         {/* Social Media Icons */}
@@ -93,7 +93,7 @@ export default function Footer() {
                     {/* Contact - Full width on mobile */}
                     <div className="col-span-2 lg:col-span-1">
                         <h4 className="font-display text-lg font-bold mb-6 text-white">{t('footer.contact')}</h4>
-                        <ul className="space-y-6 text-white/70">
+                        <ul className="space-y-6 text-white/80">
                             <li className="flex items-start gap-3">
                                 <span className="material-symbols-outlined text-secondary shrink-0">location_on</span>
                                 <div className="text-sm space-y-2">

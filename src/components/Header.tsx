@@ -51,6 +51,7 @@ export default function Header() {
                         width={48}
                         height={48}
                         className="h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 transition-transform duration-300 group-hover:scale-105 object-contain"
+                        loading="eager"
                     />
                     <h2 className="font-display font-bold text-lg sm:text-xl tracking-tight text-primary truncate max-w-[200px] sm:max-w-none">
                         <span>{t('header.siteTitle')}</span>

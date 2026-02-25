@@ -94,8 +94,10 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
                 transition={{ duration: 0.3 }}
                 className="flex flex-col items-center gap-4 p-8 rounded-xl border border-green-200 bg-green-50 text-center"
                 id="contact-form"
+                role="status"
+                aria-live="polite"
             >
-                <span className="material-symbols-outlined text-5xl text-green-500">check_circle</span>
+                <span className="material-symbols-outlined text-5xl text-green-500" aria-hidden="true">check_circle</span>
                 <h3 className="text-xl font-bold text-green-700">{t('form.successTitle')}</h3>
                 <p className="text-green-600">{t('form.successText')}</p>
                 <button
@@ -114,8 +116,8 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
             <input type="text" name="_gotcha" className="hidden" />
 
             {status === 'error' && (
-                <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-                    <span className="material-symbols-outlined text-red-600 shrink-0">error</span>
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm" role="alert" aria-live="assertive">
+                    <span className="material-symbols-outlined text-red-600 shrink-0" aria-hidden="true">error</span>
                     <span>{t('form.errorText')}</span>
                 </div>
             )}

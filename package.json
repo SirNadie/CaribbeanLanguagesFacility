@@ -2,11 +2,15 @@
   "name": "caribbean-language-facility",
   "type": "module",
   "version": "0.0.1",
+  "description": "Caribbean Language Facility - Translation & Education Services Website",
+  "author": "Caribbean Language Facility",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next"
   },
   "dependencies": {
     "framer-motion": "^12.23.26",
@@ -21,5 +25,9 @@
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
     "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
