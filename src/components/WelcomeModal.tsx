@@ -15,6 +15,10 @@ const content = {
             title: "Ver programas",
             desc: "Programas para completar primaria, secundaria y cursos. Todo en un solo lugar."
         },
+        taller: {
+            title: "Nuevo Taller",
+            desc: "Fundamentos del Manejo de Herramientas. ¡Aprende habilidades prácticas!"
+        },
         inscripciones: {
             title: "Inscripciones",
             desc: "Cómo inscribir a tu hijo en Lisa's Kids. Precios, horario y pasos."
@@ -30,6 +34,10 @@ const content = {
         programs: {
             title: "See programs",
             desc: "Programs to complete primary, secondary, and courses. All in one place."
+        },
+        taller: {
+            title: "New Workshop",
+            desc: "Fundamentals of Tool Handling. Learn practical skills!"
         },
         inscripciones: {
             title: "Enrollment",
@@ -95,6 +103,11 @@ export default function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
         router.push('/programas');
     };
 
+    const handleTaller = () => {
+        onClose();
+        router.push('/programas#cursos');
+    };
+
     const handleInscripciones = () => {
         onClose();
         router.push('/inscripciones');
@@ -139,6 +152,18 @@ export default function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
                                     {c.title}
                                 </h2>
                                 <div className="space-y-4">
+                                    <button
+                                        type="button"
+                                        onClick={handleTaller}
+                                        className="w-full flex items-start gap-4 p-5 rounded-2xl border-2 border-orange-300 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50 hover:from-orange-100 hover:via-amber-100 hover:to-orange-100 hover:border-orange-400 transition-all text-left group shadow-md hover:shadow-lg hover:shadow-orange-100"
+                                    >
+                                        <span className="material-symbols-outlined text-4xl text-orange-500 shrink-0 animate-pulse">build</span>
+                                        <div className="flex-1">
+                                            <strong className="block text-orange-700 font-bold text-lg mb-1 group-hover:text-orange-600 transition-colors">{c.taller.title}</strong>
+                                            <p className="text-orange-600/80 text-sm">{c.taller.desc}</p>
+                                        </div>
+                                        <span className="material-symbols-outlined text-orange-400 group-hover:text-orange-500 ml-auto shrink-0 transition-transform group-hover:translate-x-1">arrow_forward</span>
+                                    </button>
                                     <button
                                         type="button"
                                         onClick={handlePrograms}

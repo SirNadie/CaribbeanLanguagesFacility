@@ -13,6 +13,11 @@ const content = {
         subtitle: "Nivelación Educativa",
         intro: "Si dejaste de estudiar, aquí puedes continuar. Tenemos programas para completar primaria, secundaria y cursos para trabajar en preescolar.",
 
+        // Promo Banner
+        promoTitle: "Nuevo Taller Disponible",
+        promoDescription: "Aprende habilidades prácticas con herramientas. ¡Inscríbete ahora!",
+        promoButton: "Ver Programa",
+
         levelingProgramsTitle: "Programas de Nivelación",
         coursesTitle: "Cursos",
 
@@ -52,6 +57,26 @@ const content = {
         ],
 
         courses: [
+            {
+                icon: "build",
+                color: "orange",
+                title: "Fundamentos Prácticos del Manejo de Herramientas",
+                subtitle: "Taller práctico con Career and Skills Academy",
+                audience: "Jóvenes de 13 a 25+ años",
+                duration: "1 día (8:00 am - 5:00 pm)",
+                modality: "Presencial | Centro Comunitario St. Charles, Princes Town",
+                certification: "Certificado de Participación",
+                features: [
+                    "Uso de herramientas manuales y eléctricas",
+                    "Medición y ensamblaje",
+                    "Proyecto práctico (caja o repisa)",
+                    "Instructor Bilingüe Profesional",
+                    "Materiales del Proyecto incluidos",
+                    "Desayuno, Almuerzo y Merienda incluidos"
+                ],
+                price: "$550 TTD",
+                registration: "$100 TTD"
+            },
             {
                 icon: "child_care",
                 color: "pink",
@@ -152,6 +177,11 @@ const content = {
         subtitle: "Educational Leveling",
         intro: "If you left school, you can continue here. We have programs to complete primary, secondary, and courses to work in preschool.",
 
+        // Promo Banner
+        promoTitle: "New Workshop Available",
+        promoDescription: "Learn practical skills with tools. Sign up now!",
+        promoButton: "View Program",
+
         levelingProgramsTitle: "Leveling Programs",
         coursesTitle: "Courses",
 
@@ -191,6 +221,26 @@ const content = {
         ],
 
         courses: [
+            {
+                icon: "build",
+                color: "orange",
+                title: "Practical Fundamentals of Tool Handling",
+                subtitle: "Practical workshop with Career and Skills Academy",
+                audience: "Youth ages 13 to 25+",
+                duration: "1 day (8:00 am - 5:00 pm)",
+                modality: "In-person | St. Charles Community Centre, Princes Town",
+                certification: "Participation Certificate",
+                features: [
+                    "Use of manual and power tools",
+                    "Measurement and assembly",
+                    "Practical project (box or shelf)",
+                    "Professional Bilingual Instructor",
+                    "Project Materials included",
+                    "Breakfast, Lunch and Snack included"
+                ],
+                price: "$550 TTD",
+                registration: "$100 TTD"
+            },
             {
                 icon: "child_care",
                 color: "pink",
@@ -345,6 +395,33 @@ export default function ProgramasPage() {
                         </p>
                     </motion.div>
 
+                    {/* Promo Banner - Nuevo Taller */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5 }}
+                        className="mb-16"
+                    >
+                        <a
+                            href="#cursos"
+                            className="w-full flex items-start gap-4 p-6 rounded-2xl border border-orange-200 bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 hover:border-orange-300 transition-all text-left group shadow-lg"
+                        >
+                            <span className="material-symbols-outlined text-4xl text-orange-500 shrink-0">build</span>
+                            <div className="flex-1">
+                                <strong className="block text-orange-700 font-bold text-lg mb-1 group-hover:text-orange-600 transition-colors">
+                                    {t.promoTitle}
+                                </strong>
+                                <p className="text-orange-600/80 text-sm">
+                                    {t.promoDescription}
+                                </p>
+                            </div>
+                            <span className="material-symbols-outlined text-orange-400 group-hover:text-orange-500 ml-auto shrink-0 transition-transform group-hover:translate-x-1">
+                                arrow_forward
+                            </span>
+                        </a>
+                    </motion.div>
+
                     {/* Programas de Nivelación */}
                     <div className="mb-20">
                         <SectionHeading title={t.levelingProgramsTitle} />
@@ -424,7 +501,7 @@ export default function ProgramasPage() {
                     </div>
 
                     {/* Cursos */}
-                    <div className="mb-20">
+                    <div id="cursos" className="mb-20">
                         <SectionHeading title={t.coursesTitle} />
                         <div className="space-y-8">
                             {t.courses.map((program, index) => {
@@ -474,6 +551,24 @@ export default function ProgramasPage() {
                                                             <p className="text-text-light font-medium">{program.certification}</p>
                                                         </div>
                                                     </div>
+                                                    {program.price && (
+                                                        <div className="flex items-start gap-3">
+                                                            <span className={`material-symbols-outlined ${colors.text}`}>payments</span>
+                                                            <div>
+                                                                <p className="text-sm text-text-light/60">{t.priceLabel}</p>
+                                                                <p className="text-text-light font-bold">{program.price}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {program.registration && (
+                                                        <div className="flex items-start gap-3">
+                                                            <span className={`material-symbols-outlined ${colors.text}`}>edit_note</span>
+                                                            <div>
+                                                                <p className="text-sm text-text-light/60">{t.registrationLabel}</p>
+                                                                <p className="text-text-light font-medium">{program.registration}</p>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div>
                                                     <p className="text-sm text-text-light/60 mb-3">{t.learnLabel}</p>
