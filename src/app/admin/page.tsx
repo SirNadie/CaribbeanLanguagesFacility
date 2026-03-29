@@ -6,7 +6,8 @@ export default async function AdminPage() {
   
   if (authenticated) {
     redirect('/admin/dashboard')
-  } else {
-    redirect('/admin/login')
   }
+  
+  // If not authenticated, redirect to login
+  redirect('/admin/login')
 }
