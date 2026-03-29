@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
         // Validate input
         if (!email || !password) {
             return NextResponse.json(
-                { error: 'Email y contraseña son requeridos' },
+                { error: 'Email y contrasena son requeridos' },
                 { status: 400 }
             );
         }
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 
         if (!user) {
             return NextResponse.json(
-                { error: 'Credenciales inválidas' },
+                { error: 'Credenciales invalidas' },
                 { status: 401 }
             );
         }
