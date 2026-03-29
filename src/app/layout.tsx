@@ -6,7 +6,7 @@ import { SITE_DESCRIPTION } from '../consts';
 import JsonLd from '../components/JsonLd';
 import ContactModal from '../components/ContactModal';
 import SkipLink from '../components/SkipLink';
-import WhatsAppFloat from '../components/WhatsAppFloat';
+import WhatsAppFloatWrapper from '../components/WhatsAppFloatWrapper';
 
 const playfair = Playfair_Display({
     subsets: ['latin'],
@@ -96,11 +96,11 @@ export default function RootLayout({
                     <SkipLink />
                     <ContactModal />
                     <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
-                        <main id="main-content" className="layout-container flex h-full grow flex-col pt-16">
+                        <main id="main-content" className="layout-container flex h-full grow flex-col pt-0">
                             {children}
                         </main>
 
-                        <WhatsAppFloat />
+                        <WhatsAppFloatWrapper />
                     </div>
                 </LanguageProvider>
                 <JsonLd />
