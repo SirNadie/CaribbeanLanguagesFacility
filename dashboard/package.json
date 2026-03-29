@@ -6,8 +6,7 @@
     "dev": "next dev -p 3001",
     "build": "next build",
     "start": "next start -p 3001",
-    "lint": "eslint",
-    "db:init": "tsx scripts/init-db.ts"
+    "lint": "eslint"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",

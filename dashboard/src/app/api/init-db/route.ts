@@ -1,21 +1,9 @@
-import { hashPassword } from '../src/lib/auth';
+import { NextResponse } from 'next/server';
+import sql from '@/lib/db';
+import { hashPassword } from '@/lib/auth';
 
-// This script should be run once to initialize the database
-// Usage: npx tsx scripts/init-db.ts
-
-const NEON_DATABASE_URL = process.env.DATABASE_URL;
-
-async function initDatabase() {
-    if (!NEON_DATABASE_URL) {
-        console.error('❌ DATABASE_URL is not set in environment variables');
-        process.exit(1);
-    }
-
+export async function GET() {
     try {
-        // Import neon dynamically
-        const { neon } = await import('@neondatabase/serverless');
-        const sql = neon(NEON_DATABASE_URL);
-
         console.log('🔄 Initializing database...');
 
         // Create users table
@@ -49,19 +37,23 @@ async function initDatabase() {
         `;
         console.log('✅ Admin user created/updated');
 
-        console.log('\n========================================');
-        console.log('✅ Database initialized successfully!');
-        console.log('========================================');
-        console.log('\n📧 Login credentials:');
-        console.log('   Email: liscetaguilera2022@gmail.com');
-        console.log('   Password: CLF#2026!Dashboard$Secure');
-        console.log('\n⚠️  Please save these credentials securely!');
-        console.log('========================================\n');
-
+        return NextResponse.json({
+            success: true,
+            message: 'Database initialized successfully',
+            credentials: {
+                email: 'liscetaguilera2022@gmail.com',
+                password: 'CLF#2026!Dashboard$Secure'
+            }
+        });
     } catch (error) {
         console.error('❌ Error initializing database:', error);
-        process.exit(1);
+        return NextResponse.json(
+            { 
+                success: false, 
+                error: 'Error initializing database',
+                details: error instanceof Error ? error.message : 'Unknown error'
+            },
+            { status: 500 }
+        );
     }
 }
-
-initDatabase();

@@ -21,10 +21,10 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 ### 2. Inicializar la Base de Datos
 
-Ejecuta el script para crear la tabla de usuarios y el usuario administrador:
+Después de hacer deploy, visita esta URL para crear la tabla de usuarios y el usuario administrador:
 
-```bash
-npm run db:init
+```
+https://portal.caribbeanlanguagefacility.com/api/init-db
 ```
 
 Esto creará:
@@ -35,6 +35,8 @@ Esto creará:
 📧 Email: liscetaguilera2022@gmail.com
 🔑 Contraseña: CLF#2026!Dashboard$Secure
 ```
+
+**Nota:** Solo necesitas hacer esto una vez.
 
 ### 3. Iniciar el Servidor de Desarrollo
 
@@ -70,8 +72,6 @@ dashboard/
 │   │   ├── auth.ts                   # Funciones de autenticación JWT
 │   │   └── db.ts                     # Conexión a Neon PostgreSQL
 │   └── middleware.ts                 # Protección de rutas
-├── scripts/
-│   └── init-db.ts                    # Script de inicialización
 ├── .env.local                        # Variables de entorno
 └── package.json
 ```
@@ -90,7 +90,6 @@ dashboard/
 | `npm run dev` | Iniciar servidor de desarrollo (puerto 3001) |
 | `npm run build` | Construir para producción |
 | `npm run start` | Iniciar servidor de producción |
-| `npm run db:init` | Inicializar base de datos y crear usuario admin |
 | `npm run lint` | Ejecutar linter |
 
 ## 📊 Funcionalidades Actuales
