@@ -2,15 +2,12 @@
 const nextConfig = {
     // Image optimization
     images: {
-        // IMPORTANT:
-        // Disables the runtime Image Optimization API (`/_next/image`) which relies on `sharp`
-        // and can generate high CPU usage on some hosting providers.
-        //
-        // Images will be served as static assets (no on-demand resizing/format conversion).
-        unoptimized: true,
+        // Enable optimization for better performance
+        // Formats will be applied when unoptimized is false
         formats: ['image/avif', 'image/webp'],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920],
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+        minimumCacheTTL: 60 * 60 * 24 * 365, // 1 year cache
     },
 
     // Enable compression

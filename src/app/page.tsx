@@ -5,31 +5,32 @@ import dynamic from 'next/dynamic';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import WelcomeModal from '../components/WelcomeModal';
+import { HeroSkeleton, SectionSkeleton } from '../components/Skeleton';
 
 // Dynamic imports for below-the-fold sections to improve initial load
 const Hero = dynamic(() => import('../components/sections/Hero'), {
-    loading: () => <div className="min-h-[90vh]" />
+    loading: () => <HeroSkeleton />
 });
 const About = dynamic(() => import('../components/sections/About'), {
-    loading: () => <div className="py-24 bg-white" />
+    loading: () => <SectionSkeleton className="bg-white" />
 });
 const Services = dynamic(() => import('../components/sections/Services'), {
-    loading: () => <div className="py-24 bg-slate-50" />
+    loading: () => <SectionSkeleton className="bg-slate-50" />
 });
 const Education = dynamic(() => import('../components/sections/Education'), {
-    loading: () => <div className="py-24 bg-white" />
+    loading: () => <SectionSkeleton className="bg-white" />
 });
 const CASA = dynamic(() => import('../components/sections/CASA'), {
-    loading: () => <div className="py-24 bg-slate-50" />
+    loading: () => <SectionSkeleton className="bg-slate-50" />
 });
 const ProfessionalServices = dynamic(() => import('../components/sections/ProfessionalServices'), {
-    loading: () => <div className="py-24 bg-white" />
+    loading: () => <SectionSkeleton className="bg-white" />
 });
 const Ecosystem = dynamic(() => import('../components/sections/Ecosystem'), {
-    loading: () => <div className="py-24 bg-slate-50" />
+    loading: () => <SectionSkeleton className="bg-slate-50" />
 });
 const Contact = dynamic(() => import('../components/sections/Contact'), {
-    loading: () => <div className="py-24 bg-white" />
+    loading: () => <SectionSkeleton className="bg-white" />
 });
 
 const WELCOME_STORAGE_KEY = 'clf-welcome-seen-v1';

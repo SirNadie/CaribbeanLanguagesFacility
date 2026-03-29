@@ -99,7 +99,9 @@ export default function Header() {
                     <button
                         onClick={toggleMenu}
                         className="p-2 -mr-2 text-primary hover:bg-gray-100 rounded-lg transition-colors"
-                        aria-label="Menu"
+                        aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+                        aria-expanded={isMenuOpen}
+                        aria-controls="mobile-menu"
                     >
                         <span className={`material-symbols-outlined text-3xl transition-transform duration-300 ${isMenuOpen ? 'rotate-90 opacity-0 absolute' : 'rotate-0 opacity-100'}`}>menu</span>
                         <span className={`material-symbols-outlined text-3xl transition-transform duration-300 ${isMenuOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0 absolute'}`}>close</span>
@@ -111,11 +113,15 @@ export default function Header() {
             <AnimatePresence>
                 {isMenuOpen && (
                     <motion.div
+                        id="mobile-menu"
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3 }}
                         className="fixed inset-0 h-[100dvh] bg-white z-[100] pt-28 px-6 pb-[env(safe-area-inset-bottom)] flex flex-col gap-8 md:hidden shadow-xl overflow-y-auto"
+                        role="dialog"
+                        aria-modal="true"
+                        aria-label="Menú de navegación"
                     >
                         <nav className="flex flex-col gap-6 text-3xl font-medium text-primary text-center">
                             {['home', 'services', 'education', 'contact', 'programas', 'inscripciones'].map((item, i) => {

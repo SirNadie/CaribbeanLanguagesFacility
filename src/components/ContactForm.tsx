@@ -1,13 +1,24 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 
 const inputClass = "mt-1 block w-full border border-slate-300 rounded-xl bg-white text-text-light focus:ring-2 focus:ring-primary/25 focus:ring-offset-2 focus:border-primary transition-colors px-3 py-3";
 
 // Webhook URL desde variables de entorno
-const MAKE_WEBHOOK_URL = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL || '';
+const MAKE_WEBHOOK_URL = process.env.NEXT_PUBLIC_MAKE_WEBHOOK_URL;
+
+// Validation helpers
+const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
+const validatePhone = (phone: string): boolean => {
+    const phoneRegex = /^[\d\s\-\+\(\)]{7,20}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+};
 
 export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
     const { t, language, selectedService, setSelectedService } = useLanguage();
@@ -40,7 +51,19 @@ export default function ContactForm({ onSuccess }: { onSuccess?: () => void }) {
             setFormData({ name: '', contactMethod: 'whatsapp', contactInfo: '', modality: 'Presencial', message: '' });
             return;
         }
+
+        // Validate contact info
+        const isValidContact = formData.contactMethod === 'whatsapp' 
+            ? validatePhone(formData.contactInfo)
+            : validateEmail(formData.contactInfo);
+
+        if (!isValidContact) {
+            setStatus('error');
+            return;
+        }
+
         if (!MAKE_WEBHOOK_URL) {
+            console.warn('NEXT_PUBLIC_MAKE_WEBHOOK_URL is not configured');
             setStatus('error');
             return;
         }

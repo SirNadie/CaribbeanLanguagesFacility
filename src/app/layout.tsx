@@ -82,7 +82,8 @@ export default function RootLayout({
             <head>
                 {/* Resource hints for performance */}
                 <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://hook.us2.make.com" crossOrigin="anonymous" />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
                 {/* Material Symbols - optimizado con subset de iconos usados */}
                 <link
