@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 export default function AlumnosPage() {
   return (
     <div className="space-y-6">
@@ -10,12 +12,15 @@ export default function AlumnosPage() {
             <h1 className="text-2xl lg:text-3xl font-bold text-white">Gestión de Alumnos</h1>
             <p className="text-indigo-100 mt-1 text-sm lg:text-base">Administra los estudiantes del programa</p>
           </div>
-          <button className="inline-flex items-center justify-center px-5 py-2.5 bg-white text-indigo-600 text-sm font-semibold rounded-xl hover:bg-indigo-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          <Link
+            href="/admin/dashboard/alumnos/crear"
+            className="inline-flex items-center justify-center px-5 py-2.5 bg-white text-indigo-600 text-sm font-semibold rounded-xl hover:bg-indigo-50 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+          >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Nuevo Alumno
-          </button>
+          </Link>
         </div>
       </div>
 
