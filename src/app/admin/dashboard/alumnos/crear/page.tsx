@@ -43,14 +43,28 @@ export default function CrearAlumnoPage() {
     e.preventDefault()
     setIsLoading(true)
     
-    // Simular creación - se conectará con el backend después
-    console.log('Creando alumno:', formData)
-    
-    setTimeout(() => {
-      setIsLoading(false)
-      alert('Alumno creado exitosamente (simulado)')
+    try {
+      const response = await fetch('/api/alumnos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Error al crear el alumno')
+      }
+
+      alert('Alumno creado exitosamente')
       router.push('/admin/dashboard/alumnos')
-    }, 1000)
+    } catch (error) {
+      console.error('Error al crear alumno:', error)
+      alert(error instanceof Error ? error.message : 'Error al crear el alumno')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (

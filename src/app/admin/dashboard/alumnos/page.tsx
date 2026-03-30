@@ -1,8 +1,51 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
+interface Alumno {
+  id: string
+  telefono: string
+  direccion: string
+  mensualidad: number
+  montoTransporte: number
+  transporte: string
+  representante: string
+  fechaRegistro: string
+  estado: string
+  solvente: boolean
+  motivoRetiro: string | null
+  createdAt: string
+  updatedAt: string
+}
+
 export default function AlumnosPage() {
+  const [alumnos, setAlumnos] = useState<Alumno[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchAlumnos = async () => {
+      try {
+        const response = await fetch('/api/alumnos')
+        if (!response.ok) {
+          throw new Error('Error al cargar alumnos')
+        }
+        const data = await response.json()
+        setAlumnos(data)
+      } catch (error) {
+        console.error('Error al cargar alumnos:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchAlumnos()
+  }, [])
+
+  const totalAlumnos = alumnos.length
+  const alumnosActivos = alumnos.filter(a => a.estado === 'Activo').length
+  const alumnosSolventes = alumnos.filter(a => a.solvente).length
+  const alumnosNoSolventes = alumnos.filter(a => !a.solvente).length
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -34,7 +77,7 @@ export default function AlumnosPage() {
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">--</p>
+              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : totalAlumnos}</p>
               <p className="text-xs text-gray-500">Total Alumnos</p>
             </div>
           </div>
@@ -47,7 +90,7 @@ export default function AlumnosPage() {
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">--</p>
+              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : alumnosActivos}</p>
               <p className="text-xs text-gray-500">Activos</p>
             </div>
           </div>
@@ -60,7 +103,7 @@ export default function AlumnosPage() {
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">--</p>
+              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : alumnosSolventes}</p>
               <p className="text-xs text-gray-500">Solventes</p>
             </div>
           </div>
@@ -73,7 +116,7 @@ export default function AlumnosPage() {
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">--</p>
+              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : alumnosNoSolventes}</p>
               <p className="text-xs text-gray-500">No Solventes</p>
             </div>
           </div>
@@ -126,7 +169,7 @@ export default function AlumnosPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Mostrando 1 de -- alumnos</span>
+              <span className="text-sm text-gray-500">Mostrando {alumnos.length} de {totalAlumnos} alumnos</span>
             </div>
           </div>
         </div>
@@ -144,57 +187,100 @@ export default function AlumnosPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              <tr className="hover:bg-gray-50 transition-all duration-200 group">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                      <span className="text-white font-bold text-sm">JD</span>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center">
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                      <span className="ml-3 text-gray-600">Cargando alumnos...</span>
                     </div>
-                    <div>
-                      <div className="text-sm font-semibold text-gray-900">Juan Doe</div>
-                      <div className="text-xs text-gray-500">ID: 1</div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                      <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </td>
+                </tr>
+              ) : alumnos.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center">
+                    <div className="text-gray-500">
+                      <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
+                      <p className="text-lg font-medium">No hay alumnos registrados</p>
+                      <p className="text-sm">Comienza agregando tu primer alumno al sistema.</p>
                     </div>
-                    <span className="text-sm text-gray-900">María García</span>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
-                    <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Si
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
-                    <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                    Activo
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center gap-2">
-                    <a
-                      href="/admin/dashboard/alumnos/1"
-                      className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                    >
-                      <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      Ver
-                    </a>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              ) : (
+                alumnos.map((alumno) => (
+                  <tr key={alumno.id} className="hover:bg-gray-50 transition-all duration-200 group">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                          <span className="text-white font-bold text-sm">
+                            {alumno.representante.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-gray-900">{alumno.representante}</div>
+                          <div className="text-xs text-gray-500">ID: {alumno.id.substring(0, 8)}...</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                          <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                        </div>
+                        <span className="text-sm text-gray-900">{alumno.representante}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border ${
+                        alumno.solvente 
+                          ? 'bg-green-100 text-green-800 border-green-200' 
+                          : 'bg-red-100 text-red-800 border-red-200'
+                      }`}>
+                        {alumno.solvente ? (
+                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        )}
+                        {alumno.solvente ? 'Sí' : 'No'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border ${
+                        alumno.estado === 'Activo'
+                          ? 'bg-green-100 text-green-800 border-green-200'
+                          : 'bg-red-100 text-red-800 border-red-200'
+                      }`}>
+                        <span className={`w-2 h-2 rounded-full mr-2 ${
+                          alumno.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
+                        }`}></span>
+                        {alumno.estado}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={`/admin/dashboard/alumnos/${alumno.id}`}
+                          className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                        >
+                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          Ver
+                        </Link>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -245,51 +331,86 @@ export default function AlumnosPage() {
 
         {/* Mobile Card View */}
         <div className="md:hidden divide-y divide-gray-100">
-          <div className="p-4 hover:bg-gray-50 transition-all duration-200 group">
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                  <span className="text-white font-bold text-sm">JD</span>
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-gray-900">Juan Doe</div>
-                  <div className="text-xs text-gray-500 mt-0.5">ID: 1</div>
-                </div>
-              </div>
-              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
-                Activo
-              </span>
-            </div>
-            <div className="space-y-2 mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-orange-100 rounded-md flex items-center justify-center">
-                  <svg className="w-3 h-3 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <span className="text-xs text-gray-600">Representante: <span className="font-medium text-gray-900">María García</span></span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-emerald-100 rounded-md flex items-center justify-center">
-                  <svg className="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <span className="text-xs text-gray-600">Solvente: <span className="font-semibold text-green-600">Si</span></span>
+          {isLoading ? (
+            <div className="p-8 text-center">
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+                <span className="ml-3 text-gray-600">Cargando alumnos...</span>
               </div>
             </div>
-            <a
-              href="/admin/dashboard/alumnos/1"
-              className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              Ver Detalles
-            </a>
-          </div>
+          ) : alumnos.length === 0 ? (
+            <div className="p-8 text-center">
+              <div className="text-gray-500">
+                <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <p className="text-lg font-medium">No hay alumnos registrados</p>
+                <p className="text-sm">Comienza agregando tu primer alumno al sistema.</p>
+              </div>
+            </div>
+          ) : (
+            alumnos.map((alumno) => (
+              <div key={alumno.id} className="p-4 hover:bg-gray-50 transition-all duration-200 group">
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                      <span className="text-white font-bold text-sm">
+                        {alumno.representante.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                      </span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-gray-900">{alumno.representante}</div>
+                      <div className="text-xs text-gray-500 mt-0.5">ID: {alumno.id.substring(0, 8)}...</div>
+                    </div>
+                  </div>
+                  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                    alumno.estado === 'Activo'
+                      ? 'bg-green-100 text-green-800 border-green-200'
+                      : 'bg-red-100 text-red-800 border-red-200'
+                  }`}>
+                    <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
+                      alumno.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
+                    }`}></span>
+                    {alumno.estado}
+                  </span>
+                </div>
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-orange-100 rounded-md flex items-center justify-center">
+                      <svg className="w-3 h-3 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-gray-600">Representante: <span className="font-medium text-gray-900">{alumno.representante}</span></span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className={`w-6 h-6 rounded-md flex items-center justify-center ${
+                      alumno.solvente ? 'bg-emerald-100' : 'bg-red-100'
+                    }`}>
+                      <svg className={`w-3 h-3 ${
+                        alumno.solvente ? 'text-emerald-600' : 'text-red-600'
+                      }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-gray-600">Solvente: <span className={`font-semibold ${
+                      alumno.solvente ? 'text-green-600' : 'text-red-600'
+                    }`}>{alumno.solvente ? 'Sí' : 'No'}</span></span>
+                  </div>
+                </div>
+                <Link
+                  href={`/admin/dashboard/alumnos/${alumno.id}`}
+                  className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Ver Detalles
+                </Link>
+              </div>
+            ))
+          )}
         </div>
         
         {/* Empty State */}

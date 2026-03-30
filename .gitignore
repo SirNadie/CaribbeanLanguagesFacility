@@ -98,4 +98,29 @@ Desktop.ini
 logs
 *.log
 
+# ===========================================
+# Prisma
+# ===========================================
 /src/generated/prisma
+prisma/migrations/**/*.sql.bak
+prisma/*.db
+prisma/*.db-journal
+
+# ===========================================
+# Session / Cookies
+# ===========================================
+cookies.txt
+
+# ===========================================
+# Configuration Backups
+# ===========================================
+*.config.js.bak
+*.config.ts.bak
+middleware.ts.bak
+
+# ===========================================
+# Temporary Documentation
+# ===========================================
+plans/*.md.bak
+TODO*.md
+NOTES*.md

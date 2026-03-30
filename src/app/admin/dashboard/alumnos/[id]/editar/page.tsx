@@ -34,21 +34,36 @@ export default function EditarAlumnoPage() {
     motivoRetiro: ''
   })
 
-  // Cargar datos del alumno (simulado)
+  // Cargar datos del alumno
   useEffect(() => {
-    // Datos de ejemplo - se conectará con el backend después
-    setFormData({
-      telefono: '+591 70000000',
-      direccion: 'Av. Principal #123',
-      mensualidad: '500',
-      montoTransporte: '200',
-      transporte: 'Transporte García',
-      representante: 'María García',
-      fechaRegistro: '15 Enero 2024',
-      estado: 'Retirado',
-      solvente: false,
-      motivoRetiro: 'Razones personales'
-    })
+    const fetchAlumno = async () => {
+      try {
+        const response = await fetch(`/api/alumnos/${alumnoId}`)
+        if (!response.ok) {
+          throw new Error('Error al cargar el alumno')
+        }
+        const alumno = await response.json()
+        setFormData({
+          telefono: alumno.telefono,
+          direccion: alumno.direccion,
+          mensualidad: alumno.mensualidad.toString(),
+          montoTransporte: alumno.montoTransporte.toString(),
+          transporte: alumno.transporte,
+          representante: alumno.representante,
+          fechaRegistro: new Date(alumno.fechaRegistro).toISOString().split('T')[0],
+          estado: alumno.estado,
+          solvente: alumno.solvente,
+          motivoRetiro: alumno.motivoRetiro || ''
+        })
+      } catch (error) {
+        console.error('Error al cargar alumno:', error)
+        alert('Error al cargar los datos del alumno')
+      }
+    }
+
+    if (alumnoId) {
+      fetchAlumno()
+    }
   }, [alumnoId])
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -62,14 +77,28 @@ export default function EditarAlumnoPage() {
     e.preventDefault()
     setIsLoading(true)
     
-    // Simular guardado - se conectará con el backend después
-    console.log('Guardando cambios:', formData)
-    
-    setTimeout(() => {
-      setIsLoading(false)
-      alert('Cambios guardados exitosamente (simulado)')
+    try {
+      const response = await fetch(`/api/alumnos/${alumnoId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Error al actualizar el alumno')
+      }
+
+      alert('Cambios guardados exitosamente')
       router.push(`/admin/dashboard/alumnos/${alumnoId}`)
-    }, 1000)
+    } catch (error) {
+      console.error('Error al actualizar alumno:', error)
+      alert(error instanceof Error ? error.message : 'Error al actualizar el alumno')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (

@@ -1,15 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 
 export default function AlumnoDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const alumnoId = params.id
   const [showIngresoModal, setShowIngresoModal] = useState(false)
   const [showPagoModal, setShowPagoModal] = useState(false)
   const [selectedPago, setSelectedPago] = useState<typeof ultimosPagos[0] | null>(null)
+  const [alumno, setAlumno] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [ingresoForm, setIngresoForm] = useState({
     monto: '',
     concepto: '',
@@ -18,24 +21,30 @@ export default function AlumnoDetailPage() {
     notas: ''
   })
 
-  // Datos de ejemplo - se conectará con el backend después
-  const alumno = {
-    id: alumnoId,
-    nombre: 'Juan Doe',
-    representante: 'María García',
-    estado: 'Retirado',
-    motivoRetiro: 'Razones personales',
-    solvente: false,
-    escuela: 'Escuela Central',
-    fechaRegistro: '15 Enero 2024',
-    telefono: '+591 70000000',
-    direccion: 'Av. Principal #123',
-    mensualidad: 'Bs. 500',
-    transporte: 'Transporte García',
-    montoTransporte: 'Bs. 200',
-  }
+  // Cargar datos del alumno
+  useEffect(() => {
+    const fetchAlumno = async () => {
+      try {
+        const response = await fetch(`/api/alumnos/${alumnoId}`)
+        if (!response.ok) {
+          throw new Error('Error al cargar el alumno')
+        }
+        const data = await response.json()
+        setAlumno(data)
+      } catch (error) {
+        console.error('Error al cargar alumno:', error)
+        alert('Error al cargar los datos del alumno')
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
-  // Últimos 5 pagos de ejemplo
+    if (alumnoId) {
+      fetchAlumno()
+    }
+  }, [alumnoId])
+
+  // Últimos 5 pagos de ejemplo (se conectará con API después)
   const ultimosPagos = [
     { id: 1, fecha: '15 Mar 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo' },
     { id: 2, fecha: '15 Feb 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Transferencia' },
@@ -43,6 +52,27 @@ export default function AlumnoDetailPage() {
     { id: 4, fecha: '15 Dic 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo' },
     { id: 5, fecha: '15 Nov 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Transferencia' },
   ]
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando datos del alumno...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!alumno) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <p className="text-gray-600">No se encontró el alumno</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
