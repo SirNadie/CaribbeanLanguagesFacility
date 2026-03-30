@@ -4,10 +4,10 @@ import { prisma } from '@/lib/prisma'
 // GET /api/alumnos/[id] - Obtener un alumno por ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     
     const alumno = await prisma.alumno.findUnique({
       where: { id }
@@ -33,10 +33,10 @@ export async function GET(
 // PUT /api/alumnos/[id] - Actualizar un alumno
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
     
     const {
@@ -101,10 +101,10 @@ export async function PUT(
 // DELETE /api/alumnos/[id] - Eliminar un alumno
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
 
     // Verificar que el alumno existe
     const existingAlumno = await prisma.alumno.findUnique({
