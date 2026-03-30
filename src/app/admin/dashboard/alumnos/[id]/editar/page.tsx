@@ -183,7 +183,7 @@ export default function EditarAlumnoPage() {
           <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mensualidad (Bs.) <span className="text-red-500">*</span>
+                Mensualidad ($) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"
@@ -198,7 +198,7 @@ export default function EditarAlumnoPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Transporte - Monto (Bs.) <span className="text-red-500">*</span>
+                Transporte - Monto ($) <span className="text-red-500">*</span>
               </label>
               <input
                 type="number"

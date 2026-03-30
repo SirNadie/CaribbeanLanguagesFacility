@@ -151,7 +151,7 @@ export default function FinanzasPage() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{movimiento.fecha} {movimiento.hora}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">
                     <span className={movimiento.tipo === 'ingreso' ? 'text-green-600' : 'text-red-600'}>
-                      {movimiento.tipo === 'ingreso' ? '+' : '-'}TTD {movimiento.monto}
+                      {movimiento.tipo === 'ingreso' ? '+' : '-'}${movimiento.monto}
                     </span>
                   </td>
                 </tr>
@@ -173,7 +173,7 @@ export default function FinanzasPage() {
                   {movimiento.tipo === 'ingreso' ? 'Ingreso' : 'Egreso'}
                 </span>
                 <span className={`text-sm font-bold ${movimiento.tipo === 'ingreso' ? 'text-green-600' : 'text-red-600'}`}>
-                  {movimiento.tipo === 'ingreso' ? '+' : '-'}TTD {movimiento.monto}
+                  {movimiento.tipo === 'ingreso' ? '+' : '-'}${movimiento.monto}
                 </span>
               </div>
               <p className="text-sm font-medium text-gray-900">{movimiento.concepto}</p>

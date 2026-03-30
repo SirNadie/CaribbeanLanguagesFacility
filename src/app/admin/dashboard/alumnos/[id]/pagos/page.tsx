@@ -16,15 +16,15 @@ export default function PagosAlumnoPage() {
   }
 
   const todosPagos = [
-    { id: 1, fecha: '15 Mar 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
-    { id: 2, fecha: '15 Feb 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Transferencia', estado: 'Completado' },
-    { id: 3, fecha: '15 Ene 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
-    { id: 4, fecha: '15 Dic 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
-    { id: 5, fecha: '15 Nov 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Transferencia', estado: 'Completado' },
-    { id: 6, fecha: '15 Oct 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
-    { id: 7, fecha: '15 Sep 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
-    { id: 8, fecha: '15 Ago 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Transferencia', estado: 'Completado' },
-    { id: 9, fecha: '01 Ago 2023', monto: 'Bs. 200', concepto: 'Matrícula', metodo: 'Efectivo', estado: 'Completado' },
+    { id: 1, fecha: '15 Mar 2024', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
+    { id: 2, fecha: '15 Feb 2024', monto: '$500', concepto: 'Mensualidad', metodo: 'Transferencia', estado: 'Completado' },
+    { id: 3, fecha: '15 Ene 2024', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
+    { id: 4, fecha: '15 Dic 2023', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
+    { id: 5, fecha: '15 Nov 2023', monto: '$500', concepto: 'Mensualidad', metodo: 'Transferencia', estado: 'Completado' },
+    { id: 6, fecha: '15 Oct 2023', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
+    { id: 7, fecha: '15 Sep 2023', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo', estado: 'Completado' },
+    { id: 8, fecha: '15 Ago 2023', monto: '$500', concepto: 'Mensualidad', metodo: 'Transferencia', estado: 'Completado' },
+    { id: 9, fecha: '01 Ago 2023', monto: '$200', concepto: 'Matrícula', metodo: 'Efectivo', estado: 'Completado' },
   ]
 
   const pagosFiltrados = filtroMes === 'todos' 

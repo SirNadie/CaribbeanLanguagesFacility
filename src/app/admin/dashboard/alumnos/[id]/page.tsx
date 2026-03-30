@@ -46,11 +46,11 @@ export default function AlumnoDetailPage() {
 
   // Últimos 5 pagos de ejemplo (se conectará con API después)
   const ultimosPagos = [
-    { id: 1, fecha: '15 Mar 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo' },
-    { id: 2, fecha: '15 Feb 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Transferencia' },
-    { id: 3, fecha: '15 Ene 2024', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo' },
-    { id: 4, fecha: '15 Dic 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Efectivo' },
-    { id: 5, fecha: '15 Nov 2023', monto: 'Bs. 500', concepto: 'Mensualidad', metodo: 'Transferencia' },
+    { id: 1, fecha: '15 Mar 2024', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo' },
+    { id: 2, fecha: '15 Feb 2024', monto: '$500', concepto: 'Mensualidad', metodo: 'Transferencia' },
+    { id: 3, fecha: '15 Ene 2024', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo' },
+    { id: 4, fecha: '15 Dic 2023', monto: '$500', concepto: 'Mensualidad', metodo: 'Efectivo' },
+    { id: 5, fecha: '15 Nov 2023', monto: '$500', concepto: 'Mensualidad', metodo: 'Transferencia' },
   ]
 
   if (isLoading) {
@@ -465,7 +465,7 @@ export default function AlumnoDetailPage() {
               {/* Monto */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Monto (Bs.) <span className="text-red-500">*</span>
+                  Monto ($) <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"

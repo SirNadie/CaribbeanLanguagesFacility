@@ -118,7 +118,7 @@ export default function CategoriasEgresosPage() {
               {categorias.map((categoria) => (
                 <tr key={categoria.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{categoria.concepto}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">TTD {categoria.monto}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${categoria.monto}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button
                       onClick={() => handleOpenModal(categoria)}
@@ -145,7 +145,7 @@ export default function CategoriasEgresosPage() {
             <div key={categoria.id} className="p-4 hover:bg-gray-50 transition-colors">
               <div className="flex items-center justify-between mb-2">
                 <p className="text-sm font-medium text-gray-900">{categoria.concepto}</p>
-                <span className="text-sm font-semibold text-gray-900">TTD {categoria.monto}</span>
+                <span className="text-sm font-semibold text-gray-900">${categoria.monto}</span>
               </div>
               <div className="flex gap-3">
                 <button
@@ -207,7 +207,7 @@ export default function CategoriasEgresosPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Monto (TTD) <span className="text-red-500">*</span>
+                  Monto ($) <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
