@@ -5,6 +5,9 @@ import { prisma } from '@/lib/prisma'
 export async function GET() {
   try {
     const alumnos = await prisma.alumno.findMany({
+      include: {
+        pagos: true
+      },
       orderBy: {
         createdAt: 'desc'
       }
@@ -26,42 +29,122 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     
     const {
+      nombre,
+      edad,
       telefono,
-      direccion,
-      mensualidad,
+      tipoPago,
+      montoPago,
+      pagaTransporte,
       montoTransporte,
-      transporte,
-      representante,
+      transporteAsignado,
+      pagaOtrosPagos,
+      otrosPagos,
       fechaRegistro,
       estado,
-      solvente,
-      motivoRetiro
+      notasInactividad
     } = body
 
     // Validaciones básicas
-    if (!telefono || !direccion || !mensualidad || !montoTransporte || !transporte || !representante || !fechaRegistro) {
+    if (!nombre || !edad || !tipoPago || !montoPago || !fechaRegistro) {
       return NextResponse.json(
         { error: 'Todos los campos requeridos deben ser completados' },
         { status: 400 }
       )
     }
 
+    // Crear el alumno
     const alumno = await prisma.alumno.create({
       data: {
-        telefono,
-        direccion,
-        mensualidad: parseFloat(mensualidad),
-        montoTransporte: parseFloat(montoTransporte),
-        transporte,
-        representante,
+        nombre,
+        edad: parseInt(edad),
+        telefono: telefono || null,
+        tipoPago,
+        montoPago: parseFloat(montoPago),
+        pagaTransporte: pagaTransporte || false,
+        montoTransporte: pagaTransporte ? parseFloat(montoTransporte) : null,
+        transporteAsignado: pagaTransporte ? transporteAsignado : null,
+        pagaOtrosPagos: pagaOtrosPagos || false,
+        otrosPagos: pagaOtrosPagos ? parseFloat(otrosPagos) : null,
         fechaRegistro: new Date(fechaRegistro),
         estado: estado || 'Activo',
-        solvente: solvente || false,
-        motivoRetiro: motivoRetiro || null
+        notasInactividad: notasInactividad || null
+      },
+      include: {
+        pagos: true
       }
     })
 
-    return NextResponse.json(alumno, { status: 201 })
+    // Generar pagos automáticamente según el tipo de pago
+    const fechaBase = new Date(fechaRegistro)
+    const pagosACrear = []
+
+    // Generar pagos para los próximos 12 períodos
+    for (let i = 0; i < 12; i++) {
+      let fechaVencimiento = new Date(fechaBase)
+      
+      // Calcular fecha de vencimiento según tipo de pago
+      switch (tipoPago) {
+        case 'diario':
+          fechaVencimiento.setDate(fechaBase.getDate() + i)
+          break
+        case 'semanal':
+          fechaVencimiento.setDate(fechaBase.getDate() + (i * 7))
+          break
+        case 'mensual':
+          fechaVencimiento.setMonth(fechaBase.getMonth() + i)
+          break
+      }
+
+      // Pago de clases
+      pagosACrear.push({
+        alumnoId: alumno.id,
+        concepto: 'clase',
+        monto: parseFloat(montoPago),
+        fechaVencimiento,
+        pagado: false
+      })
+
+      // Pago de transporte si aplica
+      if (pagaTransporte && montoTransporte) {
+        pagosACrear.push({
+          alumnoId: alumno.id,
+          concepto: 'transporte',
+          monto: parseFloat(montoTransporte),
+          fechaVencimiento,
+          pagado: false
+        })
+      }
+
+      // Pago de otros si aplica
+      if (pagaOtrosPagos && otrosPagos) {
+        pagosACrear.push({
+          alumnoId: alumno.id,
+          concepto: 'otros',
+          monto: parseFloat(otrosPagos),
+          fechaVencimiento,
+          pagado: false
+        })
+      }
+    }
+
+    // Crear todos los pagos
+    await prisma.pago.createMany({
+      data: pagosACrear
+    })
+
+    // Obtener el alumno con los pagos creados
+    const alumnoConPagos = await prisma.alumno.findUnique({
+      where: { id: alumno.id },
+      include: {
+        pagos: {
+          orderBy: {
+            fechaVencimiento: 'asc'
+          }
+        }
+      }
+    })
+
+    return NextResponse.json(alumnoConPagos, { status: 201 })
   } catch (error) {
     console.error('Error al crear alumno:', error)
     return NextResponse.json(

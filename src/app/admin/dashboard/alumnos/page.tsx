@@ -3,18 +3,31 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
+interface Pago {
+  id: string
+  concepto: string
+  monto: number
+  fechaVencimiento: string
+  pagado: boolean
+  fechaPago: string | null
+}
+
 interface Alumno {
   id: string
+  nombre: string
+  edad: number
   telefono: string
   direccion: string
-  mensualidad: number
-  montoTransporte: number
-  transporte: string
-  representante: string
+  tipoPago: string
+  montoPago: number
+  pagaTransporte: boolean
+  montoTransporte: number | null
+  pagaOtrosPagos: boolean
+  otrosPagos: number | null
   fechaRegistro: string
   estado: string
-  solvente: boolean
-  motivoRetiro: string | null
+  notasInactividad: string | null
+  pagos: Pago[]
   createdAt: string
   updatedAt: string
 }
@@ -42,10 +55,33 @@ export default function AlumnosPage() {
     fetchAlumnos()
   }, [])
 
+  // Función para verificar si un alumno tiene pagos pendientes
+  const tienePagosPendientes = (alumno: Alumno): boolean => {
+    const hoy = new Date()
+    return alumno.pagos.some(pago => {
+      const fechaVencimiento = new Date(pago.fechaVencimiento)
+      return !pago.pagado && fechaVencimiento <= hoy
+    })
+  }
+
+  // Función para obtener el próximo pago pendiente
+  const getProximoPagoPendiente = (alumno: Alumno): Pago | null => {
+    const hoy = new Date()
+    const pagosPendientes = alumno.pagos
+      .filter(pago => {
+        const fechaVencimiento = new Date(pago.fechaVencimiento)
+        return !pago.pagado && fechaVencimiento <= hoy
+      })
+      .sort((a, b) => new Date(a.fechaVencimiento).getTime() - new Date(b.fechaVencimiento).getTime())
+    
+    return pagosPendientes[0] || null
+  }
+
   const totalAlumnos = alumnos.length
   const alumnosActivos = alumnos.filter(a => a.estado === 'Activo').length
-  const alumnosSolventes = alumnos.filter(a => a.solvente).length
-  const alumnosNoSolventes = alumnos.filter(a => !a.solvente).length
+  const alumnosConPagosPendientes = alumnos.filter(a => tienePagosPendientes(a)).length
+  const alumnosAlDia = alumnos.filter(a => !tienePagosPendientes(a) && a.estado === 'Activo').length
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -103,8 +139,8 @@ export default function AlumnosPage() {
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : alumnosSolventes}</p>
-              <p className="text-xs text-gray-500">Solventes</p>
+              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : alumnosAlDia}</p>
+              <p className="text-xs text-gray-500">Al Día</p>
             </div>
           </div>
         </div>
@@ -116,8 +152,8 @@ export default function AlumnosPage() {
               </svg>
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : alumnosNoSolventes}</p>
-              <p className="text-xs text-gray-500">No Solventes</p>
+              <p className="text-2xl font-bold text-gray-900">{isLoading ? '--' : alumnosConPagosPendientes}</p>
+              <p className="text-xs text-gray-500">Pago Pendiente</p>
             </div>
           </div>
         </div>
@@ -133,7 +169,7 @@ export default function AlumnosPage() {
               </svg>
               <input
                 type="text"
-                placeholder="Buscar por nombre o representante..."
+                placeholder="Buscar por nombre..."
                 className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
               />
             </div>
@@ -145,9 +181,9 @@ export default function AlumnosPage() {
               <option value="retirado">Retirado</option>
             </select>
             <select className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-700 text-sm">
-              <option value="">Solvente</option>
-              <option value="si">Si</option>
-              <option value="no">No</option>
+              <option value="">Estado de pago</option>
+              <option value="al-dia">Al día</option>
+              <option value="pago-pendiente">Pago pendiente</option>
             </select>
           </div>
         </div>
@@ -180,8 +216,8 @@ export default function AlumnosPage() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Alumno</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Representante</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Solvente</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tipo Pago</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Estado de Pago</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Estado</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Acciones</th>
               </tr>
@@ -209,128 +245,104 @@ export default function AlumnosPage() {
                   </td>
                 </tr>
               ) : (
-                alumnos.map((alumno) => (
-                  <tr key={alumno.id} className="hover:bg-gray-50 transition-all duration-200 group">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                          <span className="text-white font-bold text-sm">
-                            {alumno.representante.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
-                          </span>
+                alumnos.map((alumno) => {
+                  const proximoPago = getProximoPagoPendiente(alumno)
+                  const tienePagosPend = tienePagosPendientes(alumno)
+                  
+                  return (
+                    <tr key={alumno.id} className="hover:bg-gray-50 transition-all duration-200 group">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                            <span className="text-white font-bold text-sm">
+                              {alumno.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                            </span>
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-gray-900">{alumno.nombre}</div>
+                            <div className="text-xs text-gray-500">{alumno.edad} años • {alumno.telefono}</div>
+                          </div>
                         </div>
-                        <div>
-                          <div className="text-sm font-semibold text-gray-900">{alumno.representante}</div>
-                          <div className="text-xs text-gray-500">ID: {alumno.id.substring(0, 8)}...</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                            alumno.tipoPago === 'diario' ? 'bg-blue-100' :
+                            alumno.tipoPago === 'semanal' ? 'bg-purple-100' : 'bg-green-100'
+                          }`}>
+                            <svg className={`w-4 h-4 ${
+                              alumno.tipoPago === 'diario' ? 'text-blue-600' :
+                              alumno.tipoPago === 'semanal' ? 'text-purple-600' : 'text-green-600'
+                            }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <div className="text-sm font-medium text-gray-900 capitalize">{alumno.tipoPago}</div>
+                            <div className="text-xs text-gray-500">${alumno.montoPago}</div>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                          <svg className="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
-                        </div>
-                        <span className="text-sm text-gray-900">{alumno.representante}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border ${
-                        alumno.solvente 
-                          ? 'bg-green-100 text-green-800 border-green-200' 
-                          : 'bg-red-100 text-red-800 border-red-200'
-                      }`}>
-                        {alumno.solvente ? (
-                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {tienePagosPend ? (
+                          <div className="flex items-center gap-2">
+                            <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 border border-red-200 animate-pulse">
+                              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                              </svg>
+                              Pago Pendiente
+                            </span>
+                            {proximoPago && (
+                              <div className="text-xs text-red-600 font-medium">
+                                ${proximoPago.monto} - {new Date(proximoPago.fechaVencimiento).toLocaleDateString()}
+                              </div>
+                            )}
+                          </div>
                         ) : (
-                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
+                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">
+                            <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            Al Día
+                          </span>
                         )}
-                        {alumno.solvente ? 'Sí' : 'No'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border ${
-                        alumno.estado === 'Activo'
-                          ? 'bg-green-100 text-green-800 border-green-200'
-                          : 'bg-red-100 text-red-800 border-red-200'
-                      }`}>
-                        <span className={`w-2 h-2 rounded-full mr-2 ${
-                          alumno.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
-                        }`}></span>
-                        {alumno.estado}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <Link
-                          href={`/admin/dashboard/alumnos/${alumno.id}`}
-                          className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                        >
-                          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                          </svg>
-                          Ver
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold border ${
+                          alumno.estado === 'Activo'
+                            ? 'bg-green-100 text-green-800 border-green-200'
+                            : 'bg-red-100 text-red-800 border-red-200'
+                        }`}>
+                          <span className={`w-2 h-2 rounded-full mr-2 ${
+                            alumno.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
+                          }`}></span>
+                          {alumno.estado}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/admin/dashboard/alumnos/${alumno.id}`}
+                            className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                          >
+                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            Ver
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })
               )}
             </tbody>
           </table>
         </div>
 
-        {/* Tablet View */}
-        <div className="hidden md:block lg:hidden overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Alumno</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Representante</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Estado</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              <tr className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-lg flex items-center justify-center">
-                      <span className="text-white font-bold text-xs">JD</span>
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-gray-900">Juan Doe</div>
-                      <div className="text-xs text-gray-500">Solvente: Si</div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-sm text-gray-900">María García</td>
-                <td className="px-4 py-3">
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800">
-                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full mr-1.5"></span>
-                    Activo
-                  </span>
-                </td>
-                <td className="px-4 py-3">
-                  <a
-                    href="/admin/dashboard/alumnos/1"
-                    className="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
-                  >
-                    Ver
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
         {/* Mobile Card View */}
-        <div className="md:hidden divide-y divide-gray-100">
+        <div className="lg:hidden divide-y divide-gray-100">
           {isLoading ? (
             <div className="p-8 text-center">
               <div className="flex items-center justify-center">
@@ -349,85 +361,85 @@ export default function AlumnosPage() {
               </div>
             </div>
           ) : (
-            alumnos.map((alumno) => (
-              <div key={alumno.id} className="p-4 hover:bg-gray-50 transition-all duration-200 group">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                      <span className="text-white font-bold text-sm">
-                        {alumno.representante.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
-                      </span>
+            alumnos.map((alumno) => {
+              const proximoPago = getProximoPagoPendiente(alumno)
+              const tienePagosPend = tienePagosPendientes(alumno)
+              
+              return (
+                <div key={alumno.id} className="p-4 hover:bg-gray-50 transition-all duration-200 group">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                        <span className="text-white font-bold text-sm">
+                          {alumno.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-gray-900">{alumno.nombre}</div>
+                        <div className="text-xs text-gray-500 mt-0.5">{alumno.edad} años • {alumno.telefono}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="text-sm font-semibold text-gray-900">{alumno.representante}</div>
-                      <div className="text-xs text-gray-500 mt-0.5">ID: {alumno.id.substring(0, 8)}...</div>
-                    </div>
-                  </div>
-                  <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
-                    alumno.estado === 'Activo'
-                      ? 'bg-green-100 text-green-800 border-green-200'
-                      : 'bg-red-100 text-red-800 border-red-200'
-                  }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
-                      alumno.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
-                    }`}></span>
-                    {alumno.estado}
-                  </span>
-                </div>
-                <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-orange-100 rounded-md flex items-center justify-center">
-                      <svg className="w-3 h-3 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                    </div>
-                    <span className="text-xs text-gray-600">Representante: <span className="font-medium text-gray-900">{alumno.representante}</span></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className={`w-6 h-6 rounded-md flex items-center justify-center ${
-                      alumno.solvente ? 'bg-emerald-100' : 'bg-red-100'
+                    <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                      alumno.estado === 'Activo'
+                        ? 'bg-green-100 text-green-800 border-green-200'
+                        : 'bg-red-100 text-red-800 border-red-200'
                     }`}>
-                      <svg className={`w-3 h-3 ${
-                        alumno.solvente ? 'text-emerald-600' : 'text-red-600'
-                      }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <span className="text-xs text-gray-600">Solvente: <span className={`font-semibold ${
-                      alumno.solvente ? 'text-green-600' : 'text-red-600'
-                    }`}>{alumno.solvente ? 'Sí' : 'No'}</span></span>
+                      <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${
+                        alumno.estado === 'Activo' ? 'bg-green-500' : 'bg-red-500'
+                      }`}></span>
+                      {alumno.estado}
+                    </span>
                   </div>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className={`w-6 h-6 rounded-md flex items-center justify-center ${
+                        alumno.tipoPago === 'diario' ? 'bg-blue-100' :
+                        alumno.tipoPago === 'semanal' ? 'bg-purple-100' : 'bg-green-100'
+                      }`}>
+                        <svg className={`w-3 h-3 ${
+                          alumno.tipoPago === 'diario' ? 'text-blue-600' :
+                          alumno.tipoPago === 'semanal' ? 'text-purple-600' : 'text-green-600'
+                        }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <span className="text-xs text-gray-600">Pago: <span className="font-medium text-gray-900 capitalize">{alumno.tipoPago}</span> - <span className="font-semibold">${alumno.montoPago}</span></span>
+                    </div>
+                    
+                    {tienePagosPend && proximoPago && (
+                      <div className="flex items-center gap-2 bg-red-50 p-2 rounded-lg border border-red-200">
+                        <svg className="w-4 h-4 text-red-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                        </svg>
+                        <span className="text-xs text-red-700 font-semibold">Pago pendiente: ${proximoPago.monto} - Vence: {new Date(proximoPago.fechaVencimiento).toLocaleDateString()}</span>
+                      </div>
+                    )}
+                    
+                    {!tienePagosPend && (
+                      <div className="flex items-center gap-2 bg-green-50 p-2 rounded-lg border border-green-200">
+                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-xs text-green-700 font-semibold">Al día con los pagos</span>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <Link
+                    href={`/admin/dashboard/alumnos/${alumno.id}`}
+                    className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                    Ver Detalles
+                  </Link>
                 </div>
-                <Link
-                  href={`/admin/dashboard/alumnos/${alumno.id}`}
-                  className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg"
-                >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  Ver Detalles
-                </Link>
-              </div>
-            ))
+              )
+            })
           )}
-        </div>
-        
-        {/* Empty State */}
-        <div className="px-6 py-16 text-center">
-          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No hay alumnos registrados</h3>
-          <p className="text-sm text-gray-500 mb-6">Comienza agregando tu primer alumno al sistema.</p>
-          <button className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-lg">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Agregar Primer Alumno
-          </button>
         </div>
       </div>
     </div>

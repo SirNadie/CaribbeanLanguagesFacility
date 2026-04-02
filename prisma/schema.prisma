@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model AdminUser {
@@ -17,19 +16,39 @@ model AdminUser {
 }
 
 model Alumno {
-  id              String   @id @default(cuid())
-  telefono        String
-  direccion       String
-  mensualidad     Decimal  @db.Decimal(10, 2)
-  montoTransporte Decimal  @db.Decimal(10, 2)
-  transporte      String
-  representante   String
-  fechaRegistro   DateTime
-  estado          String   @default("Activo")
-  solvente        Boolean  @default(false)
-  motivoRetiro    String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                  String    @id @default(cuid())
+  nombre              String
+  edad                Int
+  telefono            String?
+  tipoPago            String    // "diario", "semanal", "mensual"
+  montoPago           Decimal   @db.Decimal(10, 2)
+  pagaTransporte      Boolean   @default(false)
+  montoTransporte     Decimal?  @db.Decimal(10, 2)
+  transporteAsignado  String?
+  pagaOtrosPagos      Boolean   @default(false)
+  otrosPagos          Decimal?  @db.Decimal(10, 2)
+  fechaRegistro       DateTime
+  estado              String    @default("Activo")
+  notasInactividad    String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  pagos               Pago[]
 
   @@map("alumnos")
+}
+
+model Pago {
+  id                String   @id @default(cuid())
+  alumnoId          String
+  alumno            Alumno   @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
+  concepto          String   // "clase", "transporte", "otros"
+  monto             Decimal  @db.Decimal(10, 2)
+  fechaVencimiento  DateTime
+  pagado            Boolean  @default(false)
+  fechaPago         DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("pagos")
 }
