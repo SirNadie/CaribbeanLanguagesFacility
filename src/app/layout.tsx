@@ -7,6 +7,7 @@ import JsonLd from '../components/JsonLd';
 import ContactModal from '../components/ContactModal';
 import SkipLink from '../components/SkipLink';
 import WhatsAppFloatWrapper from '../components/WhatsAppFloatWrapper';
+import { Toaster } from 'sonner';
 
 const playfair = Playfair_Display({
     subsets: ['latin'],
@@ -104,6 +105,7 @@ export default function RootLayout({
                     </div>
                 </LanguageProvider>
                 <JsonLd />
+                <Toaster position="top-right" richColors />
             </body>
         </html>
     );

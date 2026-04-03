@@ -20,13 +20,12 @@ model Alumno {
   nombre              String
   edad                Int
   telefono            String?
+  clase               String?   // "1er Grado", "2do Grado", etc.
   tipoPago            String    // "diario", "semanal", "mensual"
   montoPago           Decimal   @db.Decimal(10, 2)
   pagaTransporte      Boolean   @default(false)
   montoTransporte     Decimal?  @db.Decimal(10, 2)
   transporteAsignado  String?
-  pagaOtrosPagos      Boolean   @default(false)
-  otrosPagos          Decimal?  @db.Decimal(10, 2)
   fechaRegistro       DateTime
   estado              String    @default("Activo")
   notasInactividad    String?

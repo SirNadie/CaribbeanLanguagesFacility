@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 interface Pago {
   id: string
@@ -18,13 +19,12 @@ interface Alumno {
   nombre: string
   edad: number
   telefono: string | null
+  clase: string | null
   tipoPago: string
   montoPago: number
   pagaTransporte: boolean
   montoTransporte: number | null
   transporteAsignado: string | null
-  pagaOtrosPagos: boolean
-  otrosPagos: number | null
   fechaRegistro: string
   estado: string
   notasInactividad: string | null
@@ -39,6 +39,11 @@ export default function AlumnoDetailPage() {
   const alumnoId = params.id
   const [alumno, setAlumno] = useState<Alumno | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [showAgregarPago, setShowAgregarPago] = useState(false)
+  const [showModificarPago, setShowModificarPago] = useState(false)
+  const [showEliminarPago, setShowEliminarPago] = useState(false)
+  const [pagoSeleccionado, setPagoSeleccionado] = useState<Pago | null>(null)
+  const [nuevoPago, setNuevoPago] = useState({ concepto: '', monto: '', fechaVencimiento: '' })
 
   useEffect(() => {
     const fetchAlumno = async () => {
@@ -49,7 +54,7 @@ export default function AlumnoDetailPage() {
         setAlumno(data)
       } catch (error) {
         console.error('Error:', error)
-        alert('Error al cargar los datos del alumno')
+        toast.error('Error al cargar los datos del alumno')
       } finally {
         setIsLoading(false)
       }
@@ -63,9 +68,91 @@ export default function AlumnoDetailPage() {
     return alumno.pagos.filter(pago => !pago.pagado && new Date(pago.fechaVencimiento) <= hoy)
   }
 
-  const getOtrosPagos = (): Pago[] => {
-    if (!alumno) return []
-    return alumno.pagos.filter(pago => pago.concepto === 'otros')
+  const handleAgregarPago = async () => {
+    if (!nuevoPago.concepto || !nuevoPago.monto || !nuevoPago.fechaVencimiento) {
+      toast.error('Todos los campos son requeridos')
+      return
+    }
+
+    try {
+      const response = await fetch(`/api/alumnos/${alumnoId}/pagos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          concepto: nuevoPago.concepto,
+          monto: parseFloat(nuevoPago.monto),
+          fechaVencimiento: nuevoPago.fechaVencimiento
+        })
+      })
+
+      if (!response.ok) throw new Error('Error al agregar pago')
+
+      toast.success('Pago agregado exitosamente')
+      setShowAgregarPago(false)
+      setNuevoPago({ concepto: '', monto: '', fechaVencimiento: '' })
+      
+      // Recargar datos del alumno
+      const res = await fetch(`/api/alumnos/${alumnoId}`)
+      const data = await res.json()
+      setAlumno(data)
+    } catch (error) {
+      console.error('Error:', error)
+      toast.error('Error al agregar pago')
+    }
+  }
+
+  const handleModificarPago = async () => {
+    if (!pagoSeleccionado) return
+
+    try {
+      const response = await fetch(`/api/alumnos/${alumnoId}/pagos/${pagoSeleccionado.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          concepto: pagoSeleccionado.concepto,
+          monto: pagoSeleccionado.monto,
+          fechaVencimiento: pagoSeleccionado.fechaVencimiento
+        })
+      })
+
+      if (!response.ok) throw new Error('Error al modificar pago')
+
+      toast.success('Pago modificado exitosamente')
+      setShowModificarPago(false)
+      setPagoSeleccionado(null)
+      
+      // Recargar datos del alumno
+      const res = await fetch(`/api/alumnos/${alumnoId}`)
+      const data = await res.json()
+      setAlumno(data)
+    } catch (error) {
+      console.error('Error:', error)
+      toast.error('Error al modificar pago')
+    }
+  }
+
+  const handleEliminarPago = async () => {
+    if (!pagoSeleccionado) return
+
+    try {
+      const response = await fetch(`/api/alumnos/${alumnoId}/pagos/${pagoSeleccionado.id}`, {
+        method: 'DELETE'
+      })
+
+      if (!response.ok) throw new Error('Error al eliminar pago')
+
+      toast.success('Pago eliminado exitosamente')
+      setShowEliminarPago(false)
+      setPagoSeleccionado(null)
+      
+      // Recargar datos del alumno
+      const res = await fetch(`/api/alumnos/${alumnoId}`)
+      const data = await res.json()
+      setAlumno(data)
+    } catch (error) {
+      console.error('Error:', error)
+      toast.error('Error al eliminar pago')
+    }
   }
 
   if (isLoading) {
@@ -79,7 +166,6 @@ export default function AlumnoDetailPage() {
   if (!alumno) return <div className="text-center py-12">Alumno no encontrado</div>
 
   const pagosPendientes = getPagosPendientes()
-  const otrosPagos = getOtrosPagos()
 
   return (
     <div className="space-y-6">
@@ -95,6 +181,12 @@ export default function AlumnoDetailPage() {
           <Link href={`/admin/dashboard/alumnos/${alumnoId}/editar`} className="px-4 py-2 bg-white/20 rounded-xl hover:bg-white/30">
             Editar
           </Link>
+          <button
+            disabled
+            className="px-4 py-2 bg-green-500/30 text-green-100 rounded-xl cursor-not-allowed opacity-50"
+          >
+            Registrar Pago
+          </button>
         </div>
       </div>
 
@@ -103,14 +195,14 @@ export default function AlumnoDetailPage() {
           <svg className="w-6 h-6 text-red-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
           <div>
             <h3 className="font-semibold text-red-800">Pago Pendiente</h3>
-            <p className="text-sm text-red-700">{pagosPendientes.length} pago(s) por ${pagosPendientes.reduce((s, p) => s + p.monto, 0).toFixed(2)}</p>
+            <p className="text-sm text-red-700">{pagosPendientes.length} pago(s) por ${pagosPendientes.reduce((s, p) => s + Number(p.monto || 0), 0).toFixed(2)}</p>
           </div>
         </div>
       )}
 
       <div className="bg-white rounded-2xl shadow-lg border p-6">
         <h3 className="font-semibold mb-4">Información Personal</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="bg-gray-50 p-4 rounded-xl">
             <p className="text-sm text-gray-500">Teléfono</p>
             <p className="font-medium">{alumno.telefono || 'No registrado'}</p>
@@ -118,6 +210,10 @@ export default function AlumnoDetailPage() {
           <div className="bg-gray-50 p-4 rounded-xl">
             <p className="text-sm text-gray-500">Edad</p>
             <p className="font-medium">{alumno.edad} años</p>
+          </div>
+          <div className="bg-gray-50 p-4 rounded-xl">
+            <p className="text-sm text-gray-500">Grado</p>
+            <p className="font-medium">{alumno.clase || 'No asignado'}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-xl">
             <p className="text-sm text-gray-500">Estado</p>
@@ -160,35 +256,147 @@ export default function AlumnoDetailPage() {
         </div>
       )}
 
-      {alumno.pagaOtrosPagos && otrosPagos.length > 0 && (
-        <div className="bg-white rounded-2xl shadow-lg border overflow-hidden">
-          <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-6 py-4 border-b">
-            <h3 className="font-semibold">Otros Pagos</h3>
+
+      {/* Modal Agregar Pago */}
+      {showAgregarPago && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Agregar Otro Pago</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Concepto</label>
+                <input
+                  type="text"
+                  value={nuevoPago.concepto}
+                  onChange={(e) => setNuevoPago({ ...nuevoPago, concepto: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Ej: Materiales, Uniforme, etc."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Monto ($)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={nuevoPago.monto}
+                  onChange={(e) => setNuevoPago({ ...nuevoPago, monto: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="0.00"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de Vencimiento</label>
+                <input
+                  type="date"
+                  value={nuevoPago.fechaVencimiento}
+                  onChange={(e) => setNuevoPago({ ...nuevoPago, fechaVencimiento: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowAgregarPago(false)
+                  setNuevoPago({ concepto: '', monto: '', fechaVencimiento: '' })
+                }}
+                className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleAgregarPago}
+                className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-all duration-200"
+              >
+                Agregar
+              </button>
+            </div>
           </div>
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Concepto</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Monto</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Vencimiento</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {otrosPagos.map(pago => (
-                <tr key={pago.id}>
-                  <td className="px-6 py-4">{pago.concepto}</td>
-                  <td className="px-6 py-4">${pago.monto}</td>
-                  <td className="px-6 py-4">{new Date(pago.fechaVencimiento).toLocaleDateString()}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${pago.pagado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                      {pago.pagado ? 'Pagado' : 'Pendiente'}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        </div>
+      )}
+
+      {/* Modal Modificar Pago */}
+      {showModificarPago && pagoSeleccionado && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Modificar Pago</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Concepto</label>
+                <input
+                  type="text"
+                  value={pagoSeleccionado.concepto}
+                  onChange={(e) => setPagoSeleccionado({ ...pagoSeleccionado, concepto: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Monto ($)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={pagoSeleccionado.monto}
+                  onChange={(e) => setPagoSeleccionado({ ...pagoSeleccionado, monto: parseFloat(e.target.value) })}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Fecha de Vencimiento</label>
+                <input
+                  type="date"
+                  value={pagoSeleccionado.fechaVencimiento.split('T')[0]}
+                  onChange={(e) => setPagoSeleccionado({ ...pagoSeleccionado, fechaVencimiento: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => {
+                  setShowModificarPago(false)
+                  setPagoSeleccionado(null)
+                }}
+                className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleModificarPago}
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-all duration-200"
+              >
+                Guardar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Eliminar Pago */}
+      {showEliminarPago && pagoSeleccionado && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold mb-4">Eliminar Pago</h3>
+            <p className="text-gray-600 mb-6">
+              ¿Estás seguro de que deseas eliminar el pago "{pagoSeleccionado.concepto}" por ${pagoSeleccionado.monto}?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowEliminarPago(false)
+                  setPagoSeleccionado(null)
+                }}
+                className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleEliminarPago}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-all duration-200"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

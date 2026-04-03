@@ -20,8 +20,6 @@ interface Alumno {
   pagaTransporte: boolean
   montoTransporte: number | null
   transporteAsignado: string | null
-  pagaOtrosPagos: boolean
-  otrosPagos: number | null
   fechaRegistro: string
   estado: string
   createdAt: string

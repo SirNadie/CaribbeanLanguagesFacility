@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export default function CrearAlumnoPage() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function CrearAlumnoPage() {
     nombre: '',
     edad: '',
     telefono: '',
+    clase: '',
     
     // Pago de clases
     tipoPago: 'mensual',
@@ -22,10 +24,6 @@ export default function CrearAlumnoPage() {
     pagaTransporte: false,
     montoTransporte: '',
     transporteAsignado: '',
-    
-    // Otros pagos (solo lectura por ahora)
-    pagaOtrosPagos: false,
-    otrosPagos: '',
     
     // Registro
     fechaRegistro: new Date().toISOString().split('T')[0],
@@ -59,7 +57,6 @@ export default function CrearAlumnoPage() {
           montoPago: parseFloat(formData.montoPago),
           montoTransporte: formData.pagaTransporte ? parseFloat(formData.montoTransporte) : null,
           transporteAsignado: formData.pagaTransporte ? formData.transporteAsignado : null,
-          otrosPagos: formData.pagaOtrosPagos ? parseFloat(formData.otrosPagos) : null,
         }),
       })
 
@@ -68,11 +65,11 @@ export default function CrearAlumnoPage() {
         throw new Error(error.error || 'Error al crear el alumno')
       }
 
-      alert('Alumno creado exitosamente')
+      toast.success('Alumno creado exitosamente')
       router.push('/admin/dashboard/alumnos')
     } catch (error) {
       console.error('Error al crear alumno:', error)
-      alert(error instanceof Error ? error.message : 'Error al crear el alumno')
+      toast.error(error instanceof Error ? error.message : 'Error al crear el alumno')
     } finally {
       setIsLoading(false)
     }
@@ -155,6 +152,28 @@ export default function CrearAlumnoPage() {
                 placeholder="+591 70000000"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               />
+              <p className="text-xs text-gray-500 mt-1">Opcional</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Clase
+              </label>
+              <select
+                value={formData.clase}
+                onChange={(e) => handleInputChange('clase', e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              >
+                <option value="">Seleccionar clase</option>
+                <option value="1er Grado">1er Grado</option>
+                <option value="2do Grado">2do Grado</option>
+                <option value="3er Grado">3er Grado</option>
+                <option value="4to Grado">4to Grado</option>
+                <option value="5to Grado">5to Grado</option>
+                <option value="6to Grado">6to Grado</option>
+                <option value="7mo Grado">7mo Grado</option>
+                <option value="8vo Grado">8vo Grado</option>
+                <option value="9no Grado">9no Grado</option>
+              </select>
               <p className="text-xs text-gray-500 mt-1">Opcional</p>
             </div>
           </div>
@@ -300,80 +319,7 @@ export default function CrearAlumnoPage() {
           </div>
         </div>
 
-        {/* Sección 4: Otros Pagos (Solo lectura por ahora) */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-100 rounded-lg">
-                <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">Otros Pagos</h3>
-            </div>
-          </div>
-          <div className="p-6 space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
-                ¿Tiene Otros Pagos? <span className="text-red-500">*</span>
-              </label>
-              <div className="flex gap-4">
-                <button
-                  type="button"
-                  onClick={() => handleInputChange('pagaOtrosPagos', true)}
-                  className={`flex-1 px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                    formData.pagaOtrosPagos
-                      ? 'border-orange-500 bg-orange-50 text-orange-700'
-                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Sí
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleInputChange('pagaOtrosPagos', false)}
-                  className={`flex-1 px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                    !formData.pagaOtrosPagos
-                      ? 'border-orange-500 bg-orange-50 text-orange-700'
-                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    No
-                  </div>
-                </button>
-              </div>
-            </div>
-            
-            {formData.pagaOtrosPagos && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Monto de Otros Pagos ($) <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={formData.otrosPagos}
-                  onChange={(e) => handleInputChange('otrosPagos', e.target.value)}
-                  placeholder="100.00"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
-                  required={formData.pagaOtrosPagos}
-                />
-                <p className="text-xs text-gray-500 mt-1">Monto de otros pagos variables (se gestionarán después)</p>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Sección 5: Registro y Estado */}
+        {/* Sección 4: Registro y Estado */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-gray-200">
             <div className="flex items-center gap-3">

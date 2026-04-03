@@ -18,12 +18,11 @@ interface Alumno {
   edad: number
   telefono: string
   direccion: string
+  clase: string | null
   tipoPago: string
   montoPago: number
   pagaTransporte: boolean
   montoTransporte: number | null
-  pagaOtrosPagos: boolean
-  otrosPagos: number | null
   fechaRegistro: string
   estado: string
   notasInactividad: string | null
@@ -35,6 +34,10 @@ interface Alumno {
 export default function AlumnosPage() {
   const [alumnos, setAlumnos] = useState<Alumno[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [busqueda, setBusqueda] = useState('')
+  const [filtroEstado, setFiltroEstado] = useState('')
+  const [filtroPago, setFiltroPago] = useState('')
+  const [filtroClase, setFiltroClase] = useState('')
 
   useEffect(() => {
     const fetchAlumnos = async () => {
@@ -76,6 +79,28 @@ export default function AlumnosPage() {
     
     return pagosPendientes[0] || null
   }
+
+  // Función para filtrar alumnos
+  const alumnosFiltrados = alumnos.filter(alumno => {
+    // Filtro por nombre
+    const coincideBusqueda = busqueda === '' || 
+      alumno.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    
+    // Filtro por estado
+    const coincideEstado = filtroEstado === '' || 
+      alumno.estado === filtroEstado
+    
+    // Filtro por tipo de pago
+    const coincidePago = filtroPago === '' || 
+      (filtroPago === 'al-dia' && !tienePagosPendientes(alumno)) ||
+      (filtroPago === 'pago-pendiente' && tienePagosPendientes(alumno))
+    
+    // Filtro por grado
+    const coincideClase = filtroClase === '' || 
+      alumno.clase === filtroClase
+    
+    return coincideBusqueda && coincideEstado && coincidePago && coincideClase
+  })
 
   const totalAlumnos = alumnos.length
   const alumnosActivos = alumnos.filter(a => a.estado === 'Activo').length
@@ -170,17 +195,43 @@ export default function AlumnosPage() {
               <input
                 type="text"
                 placeholder="Buscar por nombre..."
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
               />
             </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <select className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-700 text-sm">
-              <option value="">Todos los estados</option>
-              <option value="activo">Activo</option>
-              <option value="retirado">Retirado</option>
+            <select
+              value={filtroClase}
+              onChange={(e) => setFiltroClase(e.target.value)}
+              className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-700 text-sm"
+            >
+              <option value="">Todos los grados</option>
+              <option value="1er Grado">1er Grado</option>
+              <option value="2do Grado">2do Grado</option>
+              <option value="3er Grado">3er Grado</option>
+              <option value="4to Grado">4to Grado</option>
+              <option value="5to Grado">5to Grado</option>
+              <option value="6to Grado">6to Grado</option>
+              <option value="7mo Grado">7mo Grado</option>
+              <option value="8vo Grado">8vo Grado</option>
+              <option value="9no Grado">9no Grado</option>
             </select>
-            <select className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-700 text-sm">
+            <select
+              value={filtroEstado}
+              onChange={(e) => setFiltroEstado(e.target.value)}
+              className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-700 text-sm"
+            >
+              <option value="">Todos los estados</option>
+              <option value="Activo">Activo</option>
+              <option value="Retirado">Retirado</option>
+            </select>
+            <select
+              value={filtroPago}
+              onChange={(e) => setFiltroPago(e.target.value)}
+              className="px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white text-gray-700 text-sm"
+            >
               <option value="">Estado de pago</option>
               <option value="al-dia">Al día</option>
               <option value="pago-pendiente">Pago pendiente</option>
@@ -205,7 +256,7 @@ export default function AlumnosPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Mostrando {alumnos.length} de {totalAlumnos} alumnos</span>
+              <span className="text-sm text-gray-500">Mostrando {alumnosFiltrados.length} de {totalAlumnos} alumnos</span>
             </div>
           </div>
         </div>
@@ -232,27 +283,27 @@ export default function AlumnosPage() {
                     </div>
                   </td>
                 </tr>
-              ) : alumnos.length === 0 ? (
+              ) : alumnosFiltrados.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-6 py-12 text-center">
                     <div className="text-gray-500">
                       <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                       </svg>
-                      <p className="text-lg font-medium">No hay alumnos registrados</p>
-                      <p className="text-sm">Comienza agregando tu primer alumno al sistema.</p>
+                      <p className="text-lg font-medium">No se encontraron alumnos</p>
+                      <p className="text-sm">Intenta ajustar los filtros de búsqueda.</p>
                     </div>
                   </td>
                 </tr>
               ) : (
-                alumnos.map((alumno) => {
+                alumnosFiltrados.map((alumno) => {
                   const proximoPago = getProximoPagoPendiente(alumno)
                   const tienePagosPend = tienePagosPendientes(alumno)
                   
                   return (
                     <tr key={alumno.id} className="hover:bg-gray-50 transition-all duration-200 group">
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center gap-4">
+                        <Link href={`/admin/dashboard/alumnos/${alumno.id}`} className="flex items-center gap-4 hover:bg-gray-50 -mx-2 px-2 py-1 rounded-lg transition-colors">
                           <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
                             <span className="text-white font-bold text-sm">
                               {alumno.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
@@ -262,7 +313,7 @@ export default function AlumnosPage() {
                             <div className="text-sm font-semibold text-gray-900">{alumno.nombre}</div>
                             <div className="text-xs text-gray-500">{alumno.edad} años • {alumno.telefono}</div>
                           </div>
-                        </div>
+                        </Link>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
@@ -321,16 +372,15 @@ export default function AlumnosPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
-                          <Link
-                            href={`/admin/dashboard/alumnos/${alumno.id}`}
-                            className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                          <button
+                            disabled
+                            className="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-xl cursor-not-allowed opacity-50 transition-all duration-200 shadow-md"
                           >
                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Ver
-                          </Link>
+                            Registrar Pago
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -350,35 +400,36 @@ export default function AlumnosPage() {
                 <span className="ml-3 text-gray-600">Cargando alumnos...</span>
               </div>
             </div>
-          ) : alumnos.length === 0 ? (
+          ) : alumnosFiltrados.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-gray-500">
                 <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                <p className="text-lg font-medium">No hay alumnos registrados</p>
-                <p className="text-sm">Comienza agregando tu primer alumno al sistema.</p>
+                <p className="text-lg font-medium">No se encontraron alumnos</p>
+                <p className="text-sm">Intenta ajustar los filtros de búsqueda.</p>
               </div>
             </div>
           ) : (
-            alumnos.map((alumno) => {
+            alumnosFiltrados.map((alumno) => {
               const proximoPago = getProximoPagoPendiente(alumno)
               const tienePagosPend = tienePagosPendientes(alumno)
               
               return (
                 <div key={alumno.id} className="p-4 hover:bg-gray-50 transition-all duration-200 group">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                        <span className="text-white font-bold text-sm">
-                          {alumno.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
-                        </span>
+                  <Link href={`/admin/dashboard/alumnos/${alumno.id}`} className="block">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                          <span className="text-white font-bold text-sm">
+                            {alumno.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-gray-900">{alumno.nombre}</div>
+                          <div className="text-xs text-gray-500 mt-0.5">{alumno.edad} años • {alumno.telefono}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="text-sm font-semibold text-gray-900">{alumno.nombre}</div>
-                        <div className="text-xs text-gray-500 mt-0.5">{alumno.edad} años • {alumno.telefono}</div>
-                      </div>
-                    </div>
                     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
                       alumno.estado === 'Activo'
                         ? 'bg-green-100 text-green-800 border-green-200'
@@ -390,6 +441,7 @@ export default function AlumnosPage() {
                       {alumno.estado}
                     </span>
                   </div>
+                  </Link>
                   
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2">
@@ -426,16 +478,15 @@ export default function AlumnosPage() {
                     )}
                   </div>
                   
-                  <Link
-                    href={`/admin/dashboard/alumnos/${alumno.id}`}
-                    className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                  <button
+                    disabled
+                    className="w-full inline-flex items-center justify-center px-4 py-2.5 bg-green-600 text-white text-sm font-semibold rounded-xl cursor-not-allowed opacity-50 transition-all duration-200 shadow-md"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Ver Detalles
-                  </Link>
+                    Registrar Pago
+                  </button>
                 </div>
               )
             })

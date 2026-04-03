@@ -32,13 +32,12 @@ export async function POST(request: NextRequest) {
       nombre,
       edad,
       telefono,
+      clase,
       tipoPago,
       montoPago,
       pagaTransporte,
       montoTransporte,
       transporteAsignado,
-      pagaOtrosPagos,
-      otrosPagos,
       fechaRegistro,
       estado,
       notasInactividad
@@ -58,13 +57,12 @@ export async function POST(request: NextRequest) {
         nombre,
         edad: parseInt(edad),
         telefono: telefono || null,
+        clase: clase || null,
         tipoPago,
         montoPago: parseFloat(montoPago),
         pagaTransporte: pagaTransporte || false,
         montoTransporte: pagaTransporte ? parseFloat(montoTransporte) : null,
         transporteAsignado: pagaTransporte ? transporteAsignado : null,
-        pagaOtrosPagos: pagaOtrosPagos || false,
-        otrosPagos: pagaOtrosPagos ? parseFloat(otrosPagos) : null,
         fechaRegistro: new Date(fechaRegistro),
         estado: estado || 'Activo',
         notasInactividad: notasInactividad || null
@@ -110,17 +108,6 @@ export async function POST(request: NextRequest) {
           alumnoId: alumno.id,
           concepto: 'transporte',
           monto: parseFloat(montoTransporte),
-          fechaVencimiento,
-          pagado: false
-        })
-      }
-
-      // Pago de otros si aplica
-      if (pagaOtrosPagos && otrosPagos) {
-        pagosACrear.push({
-          alumnoId: alumno.id,
-          concepto: 'otros',
-          monto: parseFloat(otrosPagos),
           fechaVencimiento,
           pagado: false
         })
