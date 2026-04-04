@@ -1,22 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// GET /api/alumnos/[id] - Obtener un alumno por ID
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+interface Params {
+  params: Promise<{ id: string }>
+}
+
+// GET /api/alumnos/[id] - Obtener un alumno específico
+export async function GET(request: NextRequest, { params }: Params) {
   try {
     const { id } = await params
-
+    
     const alumno = await prisma.alumno.findUnique({
       where: { id },
       include: {
         pagos: {
-          orderBy: {
-            fechaVencimiento: 'asc'
-          }
-        }
+          orderBy: { fechaVencimiento: 'asc' }
+        },
+        otrasClases: true
       }
     })
 
@@ -29,7 +29,7 @@ export async function GET(
 
     return NextResponse.json(alumno)
   } catch (error) {
-    console.error('Error al obtener alumno:', error)
+    console.error('Error fetching alumno:', error)
     return NextResponse.json(
       { error: 'Error al obtener el alumno' },
       { status: 500 }
@@ -38,10 +38,7 @@ export async function GET(
 }
 
 // PUT /api/alumnos/[id] - Actualizar un alumno
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function PUT(request: NextRequest, { params }: Params) {
   try {
     const { id } = await params
     const body = await request.json()
@@ -57,49 +54,36 @@ export async function PUT(
       montoTransporte,
       transporteAsignado,
       estado,
-      notasInactividad
+      notasInactividad,
+      fechaRegistro // Del formulario (fechaCobro)
     } = body
 
-    // Verificar que el alumno existe
-    const alumnoExistente = await prisma.alumno.findUnique({
-      where: { id }
-    })
+    const updateData: any = {}
+    if (nombre !== undefined) updateData.nombre = nombre
+    if (edad !== undefined) updateData.edad = parseInt(edad)
+    if (telefono !== undefined) updateData.telefono = telefono
+    if (clase !== undefined) updateData.clase = clase
+    if (tipoPago !== undefined) updateData.tipoPago = tipoPago
+    if (montoPago !== undefined) updateData.montoPago = parseFloat(montoPago)
+    if (pagaTransporte !== undefined) updateData.pagaTransporte = pagaTransporte
+    if (montoTransporte !== undefined) updateData.montoTransporte = montoTransporte ? parseFloat(montoTransporte) : null
+    if (transporteAsignado !== undefined) updateData.transporteAsignado = transporteAsignado
+    if (estado !== undefined) updateData.estado = estado
+    if (notasInactividad !== undefined) updateData.notasInactividad = notasInactividad
+    if (fechaRegistro !== undefined) updateData.fechaCobro = fechaRegistro ? new Date(fechaRegistro) : null
 
-    if (!alumnoExistente) {
-      return NextResponse.json(
-        { error: 'Alumno no encontrado' },
-        { status: 404 }
-      )
-    }
-
-    // Actualizar el alumno
-    const alumnoActualizado = await prisma.alumno.update({
+    const alumno = await prisma.alumno.update({
       where: { id },
-      data: {
-        nombre: nombre || alumnoExistente.nombre,
-        edad: edad ? parseInt(edad) : alumnoExistente.edad,
-        telefono: telefono !== undefined ? telefono : alumnoExistente.telefono,
-        clase: clase !== undefined ? clase : alumnoExistente.clase,
-        tipoPago: tipoPago || alumnoExistente.tipoPago,
-        montoPago: montoPago ? parseFloat(montoPago) : alumnoExistente.montoPago,
-        pagaTransporte: pagaTransporte !== undefined ? pagaTransporte : alumnoExistente.pagaTransporte,
-        montoTransporte: pagaTransporte && montoTransporte ? parseFloat(montoTransporte) : (pagaTransporte === false ? null : alumnoExistente.montoTransporte),
-        transporteAsignado: pagaTransporte && transporteAsignado ? transporteAsignado : (pagaTransporte === false ? null : alumnoExistente.transporteAsignado),
-        estado: estado || alumnoExistente.estado,
-        notasInactividad: notasInactividad !== undefined ? notasInactividad : alumnoExistente.notasInactividad
-      },
+      data: updateData,
       include: {
-        pagos: {
-          orderBy: {
-            fechaVencimiento: 'asc'
-          }
-        }
+        pagos: true,
+        otrasClases: true
       }
     })
 
-    return NextResponse.json(alumnoActualizado)
+    return NextResponse.json(alumno)
   } catch (error) {
-    console.error('Error al actualizar alumno:', error)
+    console.error('Error updating alumno:', error)
     return NextResponse.json(
       { error: 'Error al actualizar el alumno' },
       { status: 500 }
@@ -108,33 +92,17 @@ export async function PUT(
 }
 
 // DELETE /api/alumnos/[id] - Eliminar un alumno
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function DELETE(request: NextRequest, { params }: Params) {
   try {
     const { id } = await params
-
-    // Verificar que el alumno existe
-    const alumnoExistente = await prisma.alumno.findUnique({
-      where: { id }
-    })
-
-    if (!alumnoExistente) {
-      return NextResponse.json(
-        { error: 'Alumno no encontrado' },
-        { status: 404 }
-      )
-    }
-
-    // Eliminar el alumno (los pagos se eliminan en cascada)
+    
     await prisma.alumno.delete({
       where: { id }
     })
 
-    return NextResponse.json({ message: 'Alumno eliminado correctamente' })
+    return NextResponse.json({ success: true, message: 'Alumno eliminado' })
   } catch (error) {
-    console.error('Error al eliminar alumno:', error)
+    console.error('Error deleting alumno:', error)
     return NextResponse.json(
       { error: 'Error al eliminar el alumno' },
       { status: 500 }

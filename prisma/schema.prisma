@@ -26,13 +26,14 @@ model Alumno {
   pagaTransporte      Boolean   @default(false)
   montoTransporte     Decimal?  @db.Decimal(10, 2)
   transporteAsignado  String?
-  fechaRegistro       DateTime
+  fechaCobro          DateTime?
   estado              String    @default("Activo")
   notasInactividad    String?
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
   
   pagos               Pago[]
+  otrasClases         OtrasClases[]
 
   @@map("alumnos")
 }
@@ -41,13 +42,32 @@ model Pago {
   id                String   @id @default(cuid())
   alumnoId          String
   alumno            Alumno   @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
-  concepto          String   // "clase", "transporte", "otros"
+  concepto          String   // Nombre del pago: "Cuota Marzo 2025", "Transporte", "Excursión Playa", etc.
+  tipo              String   @default("adicional") // "cuota", "transporte", "adicional", "multa"
+  frecuencia        String?  // null = unico | "diario" | "semanal" | "mensual"
   monto             Decimal  @db.Decimal(10, 2)
   fechaVencimiento  DateTime
   pagado            Boolean  @default(false)
   fechaPago         DateTime?
+  activo            Boolean  @default(true)
+  notas             String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
   @@map("pagos")
+}
+
+model OtrasClases {
+  id          String    @id @default(cuid())
+  alumnoId    String
+  alumno      Alumno    @relation(fields: [alumnoId], references: [id], onDelete: Cascade)
+  nombre      String    // Nombre de la clase: "Danza", "Pintura", "Música", etc.
+  monto       Decimal   @db.Decimal(10, 2)
+  frecuencia  String    // "diario" | "semanal" | "mensual"
+  fechaInicio DateTime? // Fecha desde la que se Calculan los pagos (modificable)
+  activo      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("otras_clases")
 }

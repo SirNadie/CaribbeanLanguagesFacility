@@ -1,7 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// PUT /api/alumnos/[id]/pagos/[pagoId] - Modificar un pago
+// Normalizar fecha a medianoche (00:00:00) para evitar inconsistencias
+function normalizarFecha(fecha: Date): Date {
+  const normalizada = new Date(fecha)
+  normalizada.setHours(0, 0, 0, 0)
+  return normalizada
+}
+
+// Función para calcular próxima fecha de vencimiento - CORREGIDA para meses
+function getNextVencimiento(fechaActual: Date, frecuencia: string): Date {
+  const anio = fechaActual.getFullYear()
+  const mes = fechaActual.getMonth()
+  const dia = fechaActual.getDate()
+  
+  switch (frecuencia) {
+    case 'diario':
+      return normalizarFecha(new Date(anio, mes, dia + 1))
+    case 'semanal':
+      return normalizarFecha(new Date(anio, mes, dia + 7))
+    case 'mensual':
+      return normalizarFecha(new Date(anio, mes + 1, dia))
+    default:
+      return normalizarFecha(new Date(anio, mes + 1, dia))
+  }
+}
+
+// PUT /api/alumnos/[id]/pagos/[pagoId] - Modificar un pago (incluyendo marcar como pagado)
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string; pagoId: string }> }
@@ -13,7 +38,8 @@ export async function PUT(
     const {
       concepto,
       monto,
-      fechaVencimiento
+      fechaVencimiento,
+      pagado
     } = body
 
     // Verificar que el alumno existe
@@ -43,15 +69,52 @@ export async function PUT(
       )
     }
 
+    // Construir datos a actualizar
+    const dataToUpdate: any = {}
+    if (concepto !== undefined) dataToUpdate.concepto = concepto
+    if (monto !== undefined) dataToUpdate.monto = parseFloat(monto)
+    if (fechaVencimiento !== undefined) dataToUpdate.fechaVencimiento = normalizarFecha(new Date(fechaVencimiento))
+    if (pagado !== undefined) {
+      dataToUpdate.pagado = pagado
+      dataToUpdate.fechaPago = pagado ? normalizarFecha(new Date()) : null
+    }
+
     // Actualizar el pago
     const pagoActualizado = await prisma.pago.update({
       where: { id: pagoId },
-      data: {
-        concepto,
-        monto: parseFloat(monto),
-        fechaVencimiento: new Date(fechaVencimiento)
-      }
+      data: dataToUpdate
     })
+
+    // Si se marcó como pagado, crear el siguiente pago
+    if (pagado === true && pagoExistente.frecuencia) {
+      // Verificar que no exista ya un pago futuro para este concepto
+      const existePagoFuturo = await prisma.pago.findFirst({
+        where: {
+          alumnoId: id,
+          concepto: pagoExistente.concepto,
+          frecuencia: pagoExistente.frecuencia,
+          fechaVencimiento: { gt: normalizarFecha(new Date(pagoExistente.fechaVencimiento)) }
+        }
+      })
+
+      // Solo crear si no existe ya el siguiente pago
+      if (!existePagoFuturo) {
+        const siguienteFecha = getNextVencimiento(normalizarFecha(new Date(pagoExistente.fechaVencimiento)), pagoExistente.frecuencia)
+        
+        await prisma.pago.create({
+          data: {
+            alumnoId: id,
+            concepto: pagoExistente.concepto,
+            tipo: pagoExistente.tipo,
+            frecuencia: pagoExistente.frecuencia,
+            monto: pagoExistente.monto,
+            fechaVencimiento: siguienteFecha,
+            pagado: false,
+            activo: true
+          }
+        })
+      }
+    }
 
     return NextResponse.json(pagoActualizado)
   } catch (error) {

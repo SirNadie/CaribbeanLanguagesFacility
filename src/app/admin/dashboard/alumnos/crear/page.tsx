@@ -25,8 +25,17 @@ export default function CrearAlumnoPage() {
     montoTransporte: '',
     transporteAsignado: '',
     
+    // Otras clases
+    otrasClases: [] as Array<{
+      nombre: string
+      monto: string
+      frecuencia: string
+      activo: boolean
+      fechaInicio: string
+    }>,
+    
     // Registro
-    fechaRegistro: new Date().toISOString().split('T')[0],
+    fechaCobro: new Date().toISOString().split('T')[0],
     
     // Estado
     estado: 'Activo',
@@ -54,7 +63,7 @@ export default function CrearAlumnoPage() {
           ...formData,
           edad: parseInt(formData.edad),
           telefono: formData.telefono || null,
-          montoPago: parseFloat(formData.montoPago),
+          montoPago: formData.montoPago ? parseFloat(formData.montoPago) : 0,
           montoTransporte: formData.pagaTransporte ? parseFloat(formData.montoTransporte) : null,
           transporteAsignado: formData.pagaTransporte ? formData.transporteAsignado : null,
         }),
@@ -63,6 +72,25 @@ export default function CrearAlumnoPage() {
       if (!response.ok) {
         const error = await response.json()
         throw new Error(error.error || 'Error al crear el alumno')
+      }
+
+      const alumno = await response.json()
+
+      // Guardar otras clases
+      for (const otraClase of formData.otrasClases) {
+        if (otraClase.nombre && otraClase.monto) {
+          await fetch(`/api/alumnos/${alumno.id}/otras-clases`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              nombre: otraClase.nombre,
+              monto: parseFloat(otraClase.monto),
+              frecuencia: otraClase.frecuencia,
+              activo: otraClase.activo,
+              fechaInicio: otraClase.fechaInicio || null
+            })
+          })
+        }
       }
 
       toast.success('Alumno creado exitosamente')
@@ -214,7 +242,7 @@ export default function CrearAlumnoPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Monto ($) <span className="text-red-500">*</span>
+                Monto ($)
               </label>
               <input
                 type="number"
@@ -223,9 +251,8 @@ export default function CrearAlumnoPage() {
                 onChange={(e) => handleInputChange('montoPago', e.target.value)}
                 placeholder="500.00"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                required
               />
-              <p className="text-xs text-gray-500 mt-1">Monto que el alumno debe pagar según el tipo</p>
+              <p className="text-xs text-gray-500 mt-1">Monto que el alumno debe pagar según el tipo (0 = no se cobra)</p>
             </div>
           </div>
         </div>
@@ -319,7 +346,139 @@ export default function CrearAlumnoPage() {
           </div>
         </div>
 
-        {/* Sección 4: Registro y Estado */}
+        {/* Sección 4: Otras Clases */}
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="bg-gradient-to-r from-orange-50 to-amber-50 px-6 py-4 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">Otras Clases</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setFormData(prev => ({
+                    ...prev,
+                    otrasClases: [...prev.otrasClases, { nombre: '', monto: '', frecuencia: 'mensual', activo: false, fechaInicio: '' }]
+                  }))
+                }}
+                className="px-4 py-2 bg-orange-600 text-white text-sm font-semibold rounded-xl hover:bg-orange-700 transition-all duration-200"
+              >
+                + Agregar Clase
+              </button>
+            </div>
+          </div>
+          <div className="p-6 space-y-4">
+            {formData.otrasClases.length === 0 ? (
+              <p className="text-gray-500 text-center py-4">No hay otras clases configuradas</p>
+            ) : (
+              formData.otrasClases.map((otraClase, index) => (
+                <div key={index} className="border border-gray-200 rounded-xl p-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nuevasClases = [...formData.otrasClases]
+                          nuevasClases[index].activo = !nuevasClases[index].activo
+                          setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                        }}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          otraClase.activo ? 'bg-orange-600' : 'bg-gray-200'
+                        }`}
+                      >
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                          otraClase.activo ? 'translate-x-6' : 'translate-x-1'
+                        }`} />
+                      </button>
+                      <span className="text-sm font-medium text-gray-700">
+                        {otraClase.nombre || 'Nueva Clase'}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const nuevasClases = formData.otrasClases.filter((_, i) => i !== index)
+                        setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                      }}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                      <input
+                        type="text"
+                        value={otraClase.nombre}
+                        onChange={(e) => {
+                          const nuevasClases = [...formData.otrasClases]
+                          nuevasClases[index].nombre = e.target.value
+                          setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                        }}
+                        placeholder="Ej: Danza, Pintura, Música"
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Monto ($)</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={otraClase.monto}
+                        onChange={(e) => {
+                          const nuevasClases = [...formData.otrasClases]
+                          nuevasClases[index].monto = e.target.value
+                          setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                        }}
+                        placeholder="50.00"
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Frecuencia</label>
+                      <select
+                        value={otraClase.frecuencia}
+                        onChange={(e) => {
+                          const nuevasClases = [...formData.otrasClases]
+                          nuevasClases[index].frecuencia = e.target.value
+                          setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                        }}
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                      >
+                        <option value="diario">Diario</option>
+                        <option value="semanal">Semanal</option>
+                        <option value="mensual">Mensual</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+                      <input
+                        type="date"
+                        value={otraClase.fechaInicio}
+                        onChange={(e) => {
+                          const nuevasClases = [...formData.otrasClases]
+                          nuevasClases[index].fechaInicio = e.target.value
+                          setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                        }}
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+
+        {/* Sección 5: Registro y Estado */}
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
           <div className="bg-gradient-to-r from-purple-50 to-pink-50 px-6 py-4 border-b border-gray-200">
             <div className="flex items-center gap-3">
@@ -335,12 +494,12 @@ export default function CrearAlumnoPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Fecha de Registro <span className="text-red-500">*</span>
+                  Fecha de Cobro <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="date"
-                  value={formData.fechaRegistro}
-                  onChange={(e) => handleInputChange('fechaRegistro', e.target.value)}
+                  value={formData.fechaCobro}
+                  onChange={(e) => handleInputChange('fechaCobro', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                   required
                 />

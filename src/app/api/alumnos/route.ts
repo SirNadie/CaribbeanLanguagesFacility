@@ -6,16 +6,17 @@ export async function GET() {
   try {
     const alumnos = await prisma.alumno.findMany({
       include: {
-        pagos: true
+        pagos: {
+          orderBy: { fechaVencimiento: 'asc' }
+        },
+        otrasClases: true
       },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      orderBy: { nombre: 'asc' }
     })
-    
+
     return NextResponse.json(alumnos)
   } catch (error) {
-    console.error('Error al obtener alumnos:', error)
+    console.error('Error fetching alumnos:', error)
     return NextResponse.json(
       { error: 'Error al obtener los alumnos' },
       { status: 500 }
@@ -23,7 +24,64 @@ export async function GET() {
   }
 }
 
-// POST /api/alumnos - Crear un nuevo alumno
+// Normalizar fecha a medianoche (00:00:00) para evitar inconsistencias
+function normalizarFecha(fecha: Date): Date {
+  const normalizada = new Date(fecha)
+  normalizada.setHours(0, 0, 0, 0)
+  return normalizada
+}
+
+/// Función helper para calcular próxima fecha de vencimiento - CORREGIDA para meses
+function getNextVencimiento(fechaActual: Date, frecuencia: string): Date {
+  const anio = fechaActual.getFullYear()
+  const mes = fechaActual.getMonth()
+  const dia = fechaActual.getDate()
+  
+  switch (frecuencia) {
+    case 'diario':
+      return normalizarFecha(new Date(anio, mes, dia + 1))
+    case 'semanal':
+      return normalizarFecha(new Date(anio, mes, dia + 7))
+    case 'mensual':
+      // Mantener el mismo día del mes, pasar al siguiente mes
+      return normalizarFecha(new Date(anio, mes + 1, dia))
+    default:
+      return normalizarFecha(new Date(anio, mes + 1, dia))
+  }
+}
+
+// Función para generar pagos recurrentes desde fechaCobro hasta HOY (pagos vencidos)
+function generarPagosRecurrentes(
+  monto: number,
+  frecuencia: string,
+  fechaInicio: Date,
+  alumnoId: string,
+  concepto: string,
+  tipo: string
+) {
+  const pagos = []
+  const hoy = normalizarFecha(new Date())
+  let fechaActual = normalizarFecha(new Date(fechaInicio))
+  
+  // Generar pagos desde fechaInicio hasta hoy (inclusive)
+  while (fechaActual <= hoy) {
+    pagos.push({
+      alumnoId,
+      concepto,
+      tipo,
+      frecuencia,
+      monto,
+      fechaVencimiento: fechaActual,
+      pagado: false,
+      activo: true
+    })
+    fechaActual = getNextVencimiento(fechaActual, frecuencia)
+  }
+  
+  return pagos
+}
+
+// POST /api/alumnos - Crear nuevo alumno
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -38,18 +96,40 @@ export async function POST(request: NextRequest) {
       pagaTransporte,
       montoTransporte,
       transporteAsignado,
-      fechaRegistro,
+      fechaCobro,
       estado,
       notasInactividad
     } = body
 
     // Validaciones básicas
-    if (!nombre || !edad || !tipoPago || !montoPago || !fechaRegistro) {
+    if (!nombre || !edad || !tipoPago || montoPago === undefined) {
       return NextResponse.json(
-        { error: 'Todos los campos requeridos deben ser completados' },
+        { error: 'Faltan campos requeridos: nombre, edad, tipoPago, montoPago' },
         { status: 400 }
       )
     }
+    
+    // Validaciones adicionales
+    const edadNum = parseInt(edad)
+    if (isNaN(edadNum) || edadNum < 1 || edadNum > 99) {
+      return NextResponse.json(
+        { error: 'La edad debe ser un número entre 1 y 99' },
+        { status: 400 }
+      )
+    }
+    
+    const tipoPagoValido = ['diario', 'semanal', 'mensual']
+    if (!tipoPagoValido.includes(tipoPago)) {
+      return NextResponse.json(
+        { error: 'El tipo de pago debe ser: diario, semanal o mensual' },
+        { status: 400 }
+      )
+    }
+
+    // Determinar fecha de cobro normalizada
+    const fechaCobroNormalizada = fechaCobro 
+      ? normalizarFecha(new Date(fechaCobro)) 
+      : normalizarFecha(new Date())
 
     // Crear el alumno
     const alumno = await prisma.alumno.create({
@@ -59,81 +139,65 @@ export async function POST(request: NextRequest) {
         telefono: telefono || null,
         clase: clase || null,
         tipoPago,
-        montoPago: parseFloat(montoPago),
+        montoPago: parseFloat(montoPago) || 0,
         pagaTransporte: pagaTransporte || false,
-        montoTransporte: pagaTransporte ? parseFloat(montoTransporte) : null,
-        transporteAsignado: pagaTransporte ? transporteAsignado : null,
-        fechaRegistro: new Date(fechaRegistro),
+        montoTransporte: montoTransporte ? parseFloat(montoTransporte) : null,
+        transporteAsignado: transporteAsignado || null,
+        fechaCobro: fechaCobroNormalizada,
         estado: estado || 'Activo',
-        notasInactividad: notasInactividad || null
-      },
-      include: {
-        pagos: true
+        notasInactividad: estado === 'Retirado' ? (notasInactividad || null) : null
       }
     })
 
-    // Generar pagos automáticamente según el tipo de pago
-    const fechaBase = new Date(fechaRegistro)
-    const pagosACrear = []
-
-    // Generar pagos para los próximos 12 períodos
-    for (let i = 0; i < 12; i++) {
-      let fechaVencimiento = new Date(fechaBase)
-      
-      // Calcular fecha de vencimiento según tipo de pago
-      switch (tipoPago) {
-        case 'diario':
-          fechaVencimiento.setDate(fechaBase.getDate() + i)
-          break
-        case 'semanal':
-          fechaVencimiento.setDate(fechaBase.getDate() + (i * 7))
-          break
-        case 'mensual':
-          fechaVencimiento.setMonth(fechaBase.getMonth() + i)
-          break
-      }
-
-      // Pago de clases
-      pagosACrear.push({
-        alumnoId: alumno.id,
-        concepto: 'clase',
-        monto: parseFloat(montoPago),
-        fechaVencimiento,
-        pagado: false
-      })
-
-      // Pago de transporte si aplica
-      if (pagaTransporte && montoTransporte) {
-        pagosACrear.push({
-          alumnoId: alumno.id,
-          concepto: 'transporte',
-          monto: parseFloat(montoTransporte),
-          fechaVencimiento,
-          pagado: false
-        })
-      }
+    // Generar pagos recurrentes si el monto es mayor a 0
+    const pagos_a_crear = []
+    
+    // Pago de clase principal
+    if (parseFloat(montoPago) > 0) {
+      const conceptoClase = tipoPago === 'diario' ? 'Pago Diario' : tipoPago === 'semanal' ? 'Pago Semanal' : 'Mensualidad'
+      pagos_a_crear.push(...generarPagosRecurrentes(
+        parseFloat(montoPago),
+        tipoPago,
+        fechaCobroNormalizada,
+        alumno.id,
+        conceptoClase,
+        'cuota'
+      ))
+    }
+    
+    // Pago de transporte si aplica
+    if (pagaTransporte && montoTransporte && parseFloat(montoTransporte) > 0) {
+      pagos_a_crear.push(...generarPagosRecurrentes(
+        parseFloat(montoTransporte),
+        tipoPago, // Misma frecuencia que la clase
+        fechaCobroNormalizada,
+        alumno.id,
+        'Transporte',
+        'transporte'
+      ))
     }
 
     // Crear todos los pagos
-    await prisma.pago.createMany({
-      data: pagosACrear
-    })
+    if (pagos_a_crear.length > 0) {
+      await prisma.pago.createMany({
+        data: pagos_a_crear
+      })
+    }
 
-    // Obtener el alumno con los pagos creados
-    const alumnoConPagos = await prisma.alumno.findUnique({
+    // Obtener el alumno con todos los datos
+    const alumnoCompleto = await prisma.alumno.findUnique({
       where: { id: alumno.id },
       include: {
         pagos: {
-          orderBy: {
-            fechaVencimiento: 'asc'
-          }
-        }
+          orderBy: { fechaVencimiento: 'asc' }
+        },
+        otrasClases: true
       }
     })
 
-    return NextResponse.json(alumnoConPagos, { status: 201 })
+    return NextResponse.json(alumnoCompleto, { status: 201 })
   } catch (error) {
-    console.error('Error al crear alumno:', error)
+    console.error('Error creating alumno:', error)
     return NextResponse.json(
       { error: 'Error al crear el alumno' },
       { status: 500 }
