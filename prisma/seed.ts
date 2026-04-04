@@ -23,7 +23,7 @@ async function main(): Promise<void> {
     create: {
       id: 'alumno-seed-1',
       nombre: 'Juan Perez',
-      edad: 8,
+      fechaNacimiento: new Date('2018-03-15'),
       telefono: '555-1234',
       clase: '1er Grado',
       tipoPago: 'mensual',
@@ -42,7 +42,7 @@ async function main(): Promise<void> {
     create: {
       id: 'alumno-seed-2',
       nombre: 'María Gomez',
-      edad: 10,
+      fechaNacimiento: new Date('2015-07-22'),
       telefono: '555-5678',
       clase: '3er Grado',
       tipoPago: 'mensual',

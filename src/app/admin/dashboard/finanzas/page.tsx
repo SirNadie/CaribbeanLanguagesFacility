@@ -1,24 +1,84 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { toast } from 'sonner'
+
+interface Alumno {
+  id: string
+  nombre: string
+  tipoPago: string
+}
+
+interface Pago {
+  id: string
+  alumnoId: string
+  concepto: string
+  tipo: string
+  monto: number
+  fechaVencimiento: string
+  pagado: boolean
+  fechaPago: string | null
+  createdAt: string
+  alumno: Alumno
+}
 
 export default function FinanzasPage() {
+  const [pagos, setPagos] = useState<Pago[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [filtroTipo, setFiltroTipo] = useState('todos')
+  const [filtroEstado, setFiltroEstado] = useState('todos')
 
-  // Datos de ejemplo - se conectará con el backend después
-  const movimientos = [
-    { id: 1, tipo: 'ingreso', concepto: 'Pago de Mensualidad', monto: 500, fecha: '29 Mar 2026', hora: '10:30', alumno: 'Juan Doe' },
-    { id: 2, tipo: 'egreso', concepto: 'Compra de Materiales', monto: 150, fecha: '29 Mar 2026', hora: '08:15', alumno: null },
-    { id: 3, tipo: 'ingreso', concepto: 'Pago de Transporte', monto: 200, fecha: '28 Mar 2026', hora: '16:45', alumno: 'María García' },
-    { id: 4, tipo: 'ingreso', concepto: 'Pago de Matrícula', monto: 800, fecha: '28 Mar 2026', hora: '14:20', alumno: 'Carlos López' },
-    { id: 5, tipo: 'egreso', concepto: 'Pago de Servicios', monto: 300, fecha: '27 Mar 2026', hora: '11:00', alumno: null },
-    { id: 6, tipo: 'ingreso', concepto: 'Pago de Mensualidad', monto: 500, fecha: '27 Mar 2026', hora: '09:30', alumno: 'Ana Martínez' },
-  ]
+  useEffect(() => {
+    const fetchPagos = async () => {
+      try {
+        const response = await fetch('/api/pagos')
+        if (!response.ok) throw new Error('Error al cargar pagos')
+        const data = await response.json()
+        setPagos(data)
+      } catch (error) {
+        console.error('Error:', error)
+        toast.error('Error al cargar los pagos')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchPagos()
+  }, [])
 
-  const movimientosFiltrados = filtroTipo === 'todos' 
-    ? movimientos 
-    : movimientos.filter(m => m.tipo === filtroTipo)
+  // Filtrar pagos
+  const pagosFiltrados = pagos.filter(pago => {
+    if (filtroTipo !== 'todos' && pago.tipo !== filtroTipo) return false
+    if (filtroEstado === 'pagados' && !pago.pagado) return false
+    if (filtroEstado === 'pendientes' && pago.pagado) return false
+    return true
+  })
+
+  // Calcular totales
+  const totalIngresos = pagos
+    .filter(p => p.pagado)
+    .reduce((sum, p) => sum + Number(p.monto), 0)
+  
+  const totalPendiente = pagos
+    .filter(p => !p.pagado)
+    .reduce((sum, p) => sum + Number(p.monto), 0)
+
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr)
+    return date.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    })
+  }
+
+  const formatTime = (dateStr: string) => {
+    const date = new Date(dateStr)
+    return date.toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
 
   return (
     <div className="space-y-6">
@@ -116,75 +176,152 @@ export default function FinanzasPage() {
         </div>
       </div>
 
-      {/* Movements List */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h3 className="text-lg font-semibold text-gray-900">Todos los Movimientos ({movimientosFiltrados.length})</h3>
+      {/* Loading State */}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
         </div>
-        
-        {/* Desktop Table */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Concepto</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alumno</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {movimientosFiltrados.map((movimiento) => (
-                <tr key={movimiento.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      movimiento.tipo === 'ingreso' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {movimiento.tipo === 'ingreso' ? 'Ingreso' : 'Egreso'}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{movimiento.concepto}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{movimiento.alumno || '-'}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{movimiento.fecha} {movimiento.hora}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">
-                    <span className={movimiento.tipo === 'ingreso' ? 'text-green-600' : 'text-red-600'}>
-                      {movimiento.tipo === 'ingreso' ? '+' : '-'}${movimiento.monto}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {/* Mobile List */}
-        <div className="md:hidden divide-y divide-gray-100">
-          {movimientosFiltrados.map((movimiento) => (
-            <div key={movimiento.id} className="p-4 hover:bg-gray-50 transition-colors">
-              <div className="flex items-center justify-between mb-2">
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  movimiento.tipo === 'ingreso' 
-                    ? 'bg-green-100 text-green-800' 
-                    : 'bg-red-100 text-red-800'
-                }`}>
-                  {movimiento.tipo === 'ingreso' ? 'Ingreso' : 'Egreso'}
-                </span>
-                <span className={`text-sm font-bold ${movimiento.tipo === 'ingreso' ? 'text-green-600' : 'text-red-600'}`}>
-                  {movimiento.tipo === 'ingreso' ? '+' : '-'}${movimiento.monto}
-                </span>
+      ) : (
+        <>
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-500">Total Pagado</p>
+                  <p className="text-2xl font-bold text-green-600">${totalIngresos.toFixed(2)}</p>
+                </div>
+                <div className="p-3 bg-green-100 rounded-xl">
+                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
               </div>
-              <p className="text-sm font-medium text-gray-900">{movimiento.concepto}</p>
-              <p className="text-xs text-gray-500 mt-1">
-                {movimiento.alumno && `${movimiento.alumno} • `}
-                {movimiento.fecha} {movimiento.hora}
-              </p>
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-500">Pendiente por Cobrar</p>
+                  <p className="text-2xl font-bold text-red-600">${totalPendiente.toFixed(2)}</p>
+                </div>
+                <div className="p-3 bg-red-100 rounded-xl">
+                  <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-500">Total Pagos</p>
+                  <p className="text-2xl font-bold text-gray-900">{pagos.length}</p>
+                </div>
+                <div className="p-3 bg-gray-100 rounded-xl">
+                  <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Movements List */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">Pagos ({pagosFiltrados.length})</h3>
+              <div className="flex gap-2">
+                <select
+                  value={filtroEstado}
+                  onChange={(e) => setFiltroEstado(e.target.value)}
+                  className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  <option value="todos">Todos</option>
+                  <option value="pagados">Pagados</option>
+                  <option value="pendientes">Pendientes</option>
+                </select>
+              </div>
+            </div>
+            
+            {pagosFiltrados.length === 0 ? (
+              <div className="p-12 text-center">
+                <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <p className="text-gray-500">No hay pagos registrados</p>
+              </div>
+            ) : (
+              <>
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Concepto</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alumno</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Monto</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {pagosFiltrados.map((pago) => (
+                        <tr key={pago.id} className="hover:bg-gray-50 transition-colors">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              pago.pagado 
+                                ? 'bg-green-100 text-green-800' 
+                                : 'bg-amber-100 text-amber-800'
+                            }`}>
+                              {pago.pagado ? 'Pagado' : 'Pendiente'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.concepto}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{pago.alumno?.nombre || '-'}</td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {formatDate(pago.fechaVencimiento)}
+                            {pago.fechaPago && <span className="text-green-600 ml-1">✓ Pagado: {formatDate(pago.fechaPago)}</span>}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold">
+                            <span className={pago.pagado ? 'text-green-600' : 'text-amber-600'}>
+                              ${Number(pago.monto).toFixed(2)}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile List */}
+                <div className="md:hidden divide-y divide-gray-100">
+                  {pagosFiltrados.map((pago) => (
+                    <div key={pago.id} className="p-4 hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          pago.pagado 
+                            ? 'bg-green-100 text-green-800' 
+                            : 'bg-amber-100 text-amber-800'
+                        }`}>
+                          {pago.pagado ? 'Pagado' : 'Pendiente'}
+                        </span>
+                        <span className={`text-sm font-bold ${pago.pagado ? 'text-green-600' : 'text-amber-600'}`}>
+                          ${Number(pago.monto).toFixed(2)}
+                        </span>
+                      </div>
+                      <p className="text-sm font-medium text-gray-900">{pago.concepto}</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {pago.alumno?.nombre && `${pago.alumno.nombre} • `}
+                        {formatDate(pago.fechaVencimiento)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </div>
   )
 }
