@@ -466,7 +466,7 @@ export default function EditarAlumnoPage() {
                 onClick={() => {
                   setFormData(prev => ({
                     ...prev,
-                    otrasClases: [...prev.otrasClases, { nombre: '', monto: '', frecuencia: 'mensual', activo: false }]
+                    otrasClases: [...prev.otrasClases, { nombre: '', monto: '', frecuencia: 'mensual', activo: false, fechaInicio: '' }]
                   }))
                 }}
                 className="px-4 py-2 bg-orange-600 text-white text-sm font-semibold rounded-xl hover:bg-orange-700 transition-all duration-200"
