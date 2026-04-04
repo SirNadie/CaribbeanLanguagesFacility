@@ -7,7 +7,7 @@ export async function GET() {
       select: {
         id: true,
         nombre: true,
-        edad: true,
+        fechaNacimiento: true,
         telefono: true,
         clase: true,
         tipoPago: true,
