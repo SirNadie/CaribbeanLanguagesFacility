@@ -18,7 +18,7 @@ model AdminUser {
 model Alumno {
   id                  String    @id @default(cuid())
   nombre              String
-  edad                Int
+  fechaNacimiento     DateTime?
   telefono            String?
   clase               String?   // "1er Grado", "2do Grado", etc.
   tipoPago            String    // "diario", "semanal", "mensual"

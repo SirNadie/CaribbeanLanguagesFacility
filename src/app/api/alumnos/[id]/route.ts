@@ -45,7 +45,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
     
     const {
       nombre,
-      edad,
+      fechaNacimiento,
       telefono,
       clase,
       tipoPago,
@@ -60,7 +60,12 @@ export async function PUT(request: NextRequest, { params }: Params) {
 
     const updateData: any = {}
     if (nombre !== undefined) updateData.nombre = nombre
-    if (edad !== undefined) updateData.edad = parseInt(edad)
+    if (fechaNacimiento !== undefined) {
+      const fechaNacimientoDate = new Date(fechaNacimiento)
+      if (!isNaN(fechaNacimientoDate.getTime())) {
+        updateData.fechaNacimiento = fechaNacimientoDate
+      }
+    }
     if (telefono !== undefined) updateData.telefono = telefono
     if (clase !== undefined) updateData.clase = clase
     if (tipoPago !== undefined) updateData.tipoPago = tipoPago

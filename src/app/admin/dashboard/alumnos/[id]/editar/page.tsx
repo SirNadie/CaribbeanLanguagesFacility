@@ -17,7 +17,7 @@ export default function EditarAlumnoPage() {
   const [formData, setFormData] = useState({
     // Datos del alumno
     nombre: '',
-    edad: '',
+    fechaNacimiento: '',
     telefono: '',
     clase: '',
     
@@ -69,7 +69,7 @@ export default function EditarAlumnoPage() {
           
           setFormData({
             nombre: alumno.nombre,
-            edad: alumno.edad.toString(),
+            fechaNacimiento: alumno.fechaNacimiento ? new Date(alumno.fechaNacimiento).toISOString().split('T')[0] : '',
             telefono: alumno.telefono || '',
             clase: alumno.clase || '',
             tipoPago: alumno.tipoPago,
@@ -122,7 +122,6 @@ export default function EditarAlumnoPage() {
         },
         body: JSON.stringify({
           ...formData,
-          edad: parseInt(formData.edad),
           telefono: formData.telefono || null,
           clase: formData.clase || null,
           montoPago: formData.montoPago ? parseFloat(formData.montoPago) : 0,
@@ -259,15 +258,12 @@ export default function EditarAlumnoPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Edad <span className="text-red-500">*</span>
+                Fecha de Nacimiento <span className="text-red-500">*</span>
               </label>
               <input
-                type="number"
-                value={formData.edad}
-                onChange={(e) => handleInputChange('edad', e.target.value)}
-                placeholder="12"
-                min="1"
-                max="99"
+                type="date"
+                value={formData.fechaNacimiento}
+                onChange={(e) => handleInputChange('fechaNacimiento', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 required
               />

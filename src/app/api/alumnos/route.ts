@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     
     const {
       nombre,
-      edad,
+      fechaNacimiento,
       telefono,
       clase,
       tipoPago,
@@ -102,18 +102,26 @@ export async function POST(request: NextRequest) {
     } = body
 
     // Validaciones básicas
-    if (!nombre || !edad || !tipoPago || montoPago === undefined) {
+    if (!nombre || !fechaNacimiento || !tipoPago || montoPago === undefined) {
       return NextResponse.json(
-        { error: 'Faltan campos requeridos: nombre, edad, tipoPago, montoPago' },
+        { error: 'Faltan campos requeridos: nombre, fechaNacimiento, tipoPago, montoPago' },
         { status: 400 }
       )
     }
     
-    // Validaciones adicionales
-    const edadNum = parseInt(edad)
-    if (isNaN(edadNum) || edadNum < 1 || edadNum > 99) {
+    // Validar que fechaNacimiento sea una fecha válida
+    const fechaNacimientoDate = new Date(fechaNacimiento)
+    if (isNaN(fechaNacimientoDate.getTime())) {
       return NextResponse.json(
-        { error: 'La edad debe ser un número entre 1 y 99' },
+        { error: 'La fecha de nacimiento no es válida' },
+        { status: 400 }
+      )
+    }
+    
+    // Validar que no sea una fecha futura
+    if (fechaNacimientoDate > new Date()) {
+      return NextResponse.json(
+        { error: 'La fecha de nacimiento no puede ser futura' },
         { status: 400 }
       )
     }
@@ -135,7 +143,7 @@ export async function POST(request: NextRequest) {
     const alumno = await prisma.alumno.create({
       data: {
         nombre,
-        edad: parseInt(edad),
+        fechaNacimiento: fechaNacimientoDate,
         telefono: telefono || null,
         clase: clase || null,
         tipoPago,

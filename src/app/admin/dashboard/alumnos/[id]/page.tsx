@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { calcularEdad, formatearFechaCumple } from '@/lib/utils'
 
 interface Pago {
   id: string
@@ -30,7 +31,7 @@ interface OtrasClase {
 interface Alumno {
   id: string
   nombre: string
-  edad: number
+  fechaNacimiento: string
   telefono: string | null
   clase: string | null
   tipoPago: string
@@ -249,7 +250,11 @@ export default function AlumnoDetailPage() {
           </div>
           <div className="bg-gray-50 p-4 rounded-xl">
             <p className="text-sm text-gray-500">Edad</p>
-            <p className="font-medium">{alumno.edad} años</p>
+            <p className="font-medium">{calcularEdad(alumno.fechaNacimiento)} años</p>
+          </div>
+          <div className="bg-gray-50 p-4 rounded-xl">
+            <p className="text-sm text-gray-500">Fecha de Nacimiento</p>
+            <p className="font-medium">{formatearFechaCumple(alumno.fechaNacimiento)}</p>
           </div>
           <div className="bg-gray-50 p-4 rounded-xl">
             <p className="text-sm text-gray-500">Grado</p>

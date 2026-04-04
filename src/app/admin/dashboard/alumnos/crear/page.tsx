@@ -12,7 +12,7 @@ export default function CrearAlumnoPage() {
   const [formData, setFormData] = useState({
     // Datos del alumno
     nombre: '',
-    edad: '',
+    fechaNacimiento: '',
     telefono: '',
     clase: '',
     
@@ -61,7 +61,6 @@ export default function CrearAlumnoPage() {
         },
         body: JSON.stringify({
           ...formData,
-          edad: parseInt(formData.edad),
           telefono: formData.telefono || null,
           montoPago: formData.montoPago ? parseFloat(formData.montoPago) : 0,
           montoTransporte: formData.pagaTransporte ? parseFloat(formData.montoTransporte) : null,
@@ -156,15 +155,12 @@ export default function CrearAlumnoPage() {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Edad <span className="text-red-500">*</span>
+                Fecha de Nacimiento <span className="text-red-500">*</span>
               </label>
               <input
-                type="number"
-                value={formData.edad}
-                onChange={(e) => handleInputChange('edad', e.target.value)}
-                placeholder="12"
-                min="1"
-                max="99"
+                type="date"
+                value={formData.fechaNacimiento}
+                onChange={(e) => handleInputChange('fechaNacimiento', e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 required
               />

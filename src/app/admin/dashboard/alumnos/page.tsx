@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { calcularEdad, formatearFechaCumple } from '@/lib/utils'
 
 interface Pago {
   id: string
@@ -24,7 +25,7 @@ interface OtrasClase {
 interface Alumno {
   id: string
   nombre: string
-  edad: number
+  fechaNacimiento: string
   telefono: string | null
   clase: string | null
   tipoPago: string
@@ -332,9 +333,12 @@ export default function AlumnosPage() {
                           <div>
                             <div className="text-sm font-semibold text-gray-900">{alumno.nombre}</div>
                             <div className="text-xs text-gray-500">
-                              {alumno.edad} años
+                              {calcularEdad(alumno.fechaNacimiento)} años
                               {alumno.clase && ` • ${alumno.clase}`}
                               {alumno.telefono && ` • ${alumno.telefono}`}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              Cumple: {formatearFechaCumple(alumno.fechaNacimiento)}
                             </div>
                           </div>
                         </Link>
@@ -471,9 +475,12 @@ export default function AlumnosPage() {
                         <div>
                           <div className="text-sm font-semibold text-gray-900">{alumno.nombre}</div>
                           <div className="text-xs text-gray-500 mt-0.5">
-                            {alumno.edad} años
+                            {calcularEdad(alumno.fechaNacimiento)} años
                             {alumno.clase && ` • ${alumno.clase}`}
                             {alumno.telefono && ` • ${alumno.telefono}`}
+                          </div>
+                          <div className="text-xs text-gray-400 mt-0.5">
+                            Cumple: {formatearFechaCumple(alumno.fechaNacimiento)}
                           </div>
                         </div>
                       </div>
