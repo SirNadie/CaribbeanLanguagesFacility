@@ -57,6 +57,16 @@ model Pago {
   @@map("pagos")
 }
 
+model Transporte {
+  id        String   @id @default(cuid())
+  nombre    String   @unique
+  activo    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("transportes")
+}
+
 model OtrasClases {
   id          String    @id @default(cuid())
   alumnoId    String

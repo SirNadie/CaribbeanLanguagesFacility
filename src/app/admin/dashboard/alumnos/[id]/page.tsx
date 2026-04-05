@@ -62,8 +62,7 @@ export default function AlumnoDetailPage() {
     concepto: '', 
     monto: '', 
     fechaVencimiento: '', 
-    frecuencia: 'unico', // 'unico', 'diario', 'semanal', 'mensual'
-    recurrencias: 12 // Cuántas veces se repite
+    frecuencia: 'semanal', // 'semanal', 'mensual'
   })
   const [otrasClases, setOtrasClases] = useState<any[]>([])
 
@@ -437,8 +436,6 @@ export default function AlumnoDetailPage() {
                   onChange={(e) => setNuevoPago({ ...nuevoPago, frecuencia: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
-                  <option value="unico">Único (una vez)</option>
-                  <option value="diario">Diario</option>
                   <option value="semanal">Semanal</option>
                   <option value="mensual">Mensual</option>
                 </select>

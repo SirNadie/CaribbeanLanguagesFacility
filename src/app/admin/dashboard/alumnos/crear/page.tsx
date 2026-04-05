@@ -1,31 +1,44 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+
+interface Transporte {
+  id: string
+  nombre: string
+}
 
 export default function CrearAlumnoPage() {
   const router = useRouter()
   
   const [isLoading, setIsLoading] = useState(false)
+  const [transportes, setTransportes] = useState<Transporte[]>([])
+  const [nombresClases, setNombresClases] = useState<string[]>([])
+  
+  useEffect(() => {
+    fetch('/api/transportes')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setTransportes(data))
+      .catch(() => setTransportes([]))
+    
+    fetch('/api/otras-clases/nombres')
+      .then(res => res.ok ? res.json() : [])
+      .then(data => setNombresClases(data))
+      .catch(() => setNombresClases([]))
+  }, [])
+  
   const [formData, setFormData] = useState({
-    // Datos del alumno
     nombre: '',
     fechaNacimiento: '',
     telefono: '',
     clase: '',
-    
-    // Pago de clases
     tipoPago: 'mensual',
     montoPago: '',
-    
-    // Transporte
     pagaTransporte: false,
     montoTransporte: '',
     transporteAsignado: '',
-    
-    // Otras clases
     otrasClases: [] as Array<{
       nombre: string
       monto: string
@@ -33,11 +46,7 @@ export default function CrearAlumnoPage() {
       activo: boolean
       fechaInicio: string
     }>,
-    
-    // Registro
     fechaCobro: new Date().toISOString().split('T')[0],
-    
-    // Estado
     estado: 'Activo',
     notasInactividad: ''
   })
@@ -75,7 +84,6 @@ export default function CrearAlumnoPage() {
 
       const alumno = await response.json()
 
-      // Guardar otras clases
       for (const otraClase of formData.otrasClases) {
         if (otraClase.nombre && otraClase.monto) {
           await fetch(`/api/alumnos/${alumno.id}/otras-clases`, {
@@ -124,7 +132,6 @@ export default function CrearAlumnoPage() {
         </div>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         
         {/* Sección 1: Datos del Alumno */}
@@ -166,9 +173,7 @@ export default function CrearAlumnoPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Teléfono
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
               <input
                 type="tel"
                 value={formData.telefono}
@@ -176,12 +181,9 @@ export default function CrearAlumnoPage() {
                 placeholder="+591 70000000"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               />
-              <p className="text-xs text-gray-500 mt-1">Opcional</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Clase
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Clase</label>
               <select
                 value={formData.clase}
                 onChange={(e) => handleInputChange('clase', e.target.value)}
@@ -198,7 +200,6 @@ export default function CrearAlumnoPage() {
                 <option value="8vo Grado">8vo Grado</option>
                 <option value="9no Grado">9no Grado</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">Opcional</p>
             </div>
           </div>
         </div>
@@ -226,20 +227,12 @@ export default function CrearAlumnoPage() {
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                 required
               >
-                <option value="diario">Diario</option>
                 <option value="semanal">Semanal</option>
                 <option value="mensual">Mensual</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">
-                {formData.tipoPago === 'diario' && 'El alumno debe pagar cada día'}
-                {formData.tipoPago === 'semanal' && 'El alumno debe pagar cada semana'}
-                {formData.tipoPago === 'mensual' && 'El alumno debe pagar cada mes'}
-              </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Monto ($)
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Monto ($)</label>
               <input
                 type="number"
                 step="0.01"
@@ -248,7 +241,6 @@ export default function CrearAlumnoPage() {
                 placeholder="500.00"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
               />
-              <p className="text-xs text-gray-500 mt-1">Monto que el alumno debe pagar según el tipo (0 = no se cobra)</p>
             </div>
           </div>
         </div>
@@ -275,9 +267,7 @@ export default function CrearAlumnoPage() {
                   type="button"
                   onClick={() => handleInputChange('pagaTransporte', true)}
                   className={`flex-1 px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                    formData.pagaTransporte
-                      ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
-                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                    formData.pagaTransporte ? 'border-cyan-500 bg-cyan-50 text-cyan-700' : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -291,9 +281,7 @@ export default function CrearAlumnoPage() {
                   type="button"
                   onClick={() => handleInputChange('pagaTransporte', false)}
                   className={`flex-1 px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                    !formData.pagaTransporte
-                      ? 'border-cyan-500 bg-cyan-50 text-cyan-700'
-                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                    !formData.pagaTransporte ? 'border-cyan-500 bg-cyan-50 text-cyan-700' : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   }`}
                 >
                   <div className="flex items-center justify-center gap-2">
@@ -321,21 +309,22 @@ export default function CrearAlumnoPage() {
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
                     required={formData.pagaTransporte}
                   />
-                  <p className="text-xs text-gray-500 mt-1">Monto adicional por servicio de transporte</p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Transporte Asignado <span className="text-red-500">*</span>
                   </label>
-                  <input
-                    type="text"
+                  <select
                     value={formData.transporteAsignado}
                     onChange={(e) => handleInputChange('transporteAsignado', e.target.value)}
-                    placeholder="Transporte García"
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
                     required={formData.pagaTransporte}
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Nombre del servicio de transporte</p>
+                  >
+                    <option value="">Seleccionar transporte</option>
+                    {transportes.map(t => (
+                      <option key={t.id} value={t.nombre}>{t.nombre}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
             )}
@@ -383,17 +372,11 @@ export default function CrearAlumnoPage() {
                           nuevasClases[index].activo = !nuevasClases[index].activo
                           setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
                         }}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          otraClase.activo ? 'bg-orange-600' : 'bg-gray-200'
-                        }`}
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${otraClase.activo ? 'bg-orange-600' : 'bg-gray-200'}`}
                       >
-                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          otraClase.activo ? 'translate-x-6' : 'translate-x-1'
-                        }`} />
+                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${otraClase.activo ? 'translate-x-6' : 'translate-x-1'}`} />
                       </button>
-                      <span className="text-sm font-medium text-gray-700">
-                        {otraClase.nombre || 'Nueva Clase'}
-                      </span>
+                      <span className="text-sm font-medium text-gray-700">{otraClase.nombre || 'Nueva Clase'}</span>
                     </div>
                     <button
                       type="button"
@@ -411,17 +394,33 @@ export default function CrearAlumnoPage() {
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                      <input
-                        type="text"
-                        value={otraClase.nombre}
-                        onChange={(e) => {
-                          const nuevasClases = [...formData.otrasClases]
-                          nuevasClases[index].nombre = e.target.value
-                          setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
-                        }}
-                        placeholder="Ej: Danza, Pintura, Música"
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
-                      />
+                      <div className="flex gap-1">
+                        <select
+                          value={nombresClases.includes(otraClase.nombre) ? otraClase.nombre : ''}
+                          onChange={(e) => {
+                            const nuevasClases = [...formData.otrasClases]
+                            nuevasClases[index].nombre = e.target.value
+                            setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                          }}
+                          className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                        >
+                          <option value="">Seleccionar...</option>
+                          {nombresClases.map(nombre => (
+                            <option key={nombre} value={nombre}>{nombre}</option>
+                          ))}
+                        </select>
+                        <input
+                          type="text"
+                          value={!nombresClases.includes(otraClase.nombre) ? otraClase.nombre : ''}
+                          onChange={(e) => {
+                            const nuevasClases = [...formData.otrasClases]
+                            nuevasClases[index].nombre = e.target.value
+                            setFormData(prev => ({ ...prev, otrasClases: nuevasClases }))
+                          }}
+                          placeholder="Nueva"
+                          className="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+                        />
+                      </div>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Monto ($)</label>
@@ -449,7 +448,6 @@ export default function CrearAlumnoPage() {
                         }}
                         className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
                       >
-                        <option value="diario">Diario</option>
                         <option value="semanal">Semanal</option>
                         <option value="mensual">Mensual</option>
                       </select>
@@ -499,7 +497,6 @@ export default function CrearAlumnoPage() {
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                   required
                 />
-                <p className="text-xs text-gray-500 mt-1">Fecha desde la que se calcularán los pagos</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">

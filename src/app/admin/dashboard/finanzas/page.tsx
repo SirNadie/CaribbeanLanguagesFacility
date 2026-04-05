@@ -28,6 +28,9 @@ export default function FinanzasPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [filtroTipo, setFiltroTipo] = useState('todos')
   const [filtroEstado, setFiltroEstado] = useState('todos')
+  const [filtroOrden, setFiltroOrden] = useState('desc')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
 
   useEffect(() => {
     const fetchPagos = async () => {
@@ -46,13 +49,28 @@ export default function FinanzasPage() {
     fetchPagos()
   }, [])
 
-  // Filtrar pagos
-  const pagosFiltrados = pagos.filter(pago => {
-    if (filtroTipo !== 'todos' && pago.tipo !== filtroTipo) return false
-    if (filtroEstado === 'pagados' && !pago.pagado) return false
-    if (filtroEstado === 'pendientes' && pago.pagado) return false
-    return true
-  })
+  // Filtrar y ordenar pagos
+  const pagosFiltrados = pagos
+    .filter(pago => {
+      if (filtroTipo !== 'todos' && pago.tipo !== filtroTipo) return false
+      if (filtroEstado === 'pagados' && !pago.pagado) return false
+      if (filtroEstado === 'pendientes' && pago.pagado) return false
+      return true
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.fechaVencimiento).getTime()
+      const dateB = new Date(b.fechaVencimiento).getTime()
+      return filtroOrden === 'desc' ? dateB - dateA : dateA - dateB
+    })
+
+  // Paginación
+  const totalPages = Math.ceil(pagosFiltrados.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = Math.min(startIndex + itemsPerPage, pagosFiltrados.length)
+  const pagosPaginados = pagosFiltrados.slice(startIndex, endIndex)
+
+  // Resetear página cuando cambian los filtros
+  const resetPagination = () => setCurrentPage(1)
 
   // Calcular totales
   const totalIngresos = pagos
@@ -85,19 +103,9 @@ export default function FinanzasPage() {
       {/* Header */}
       <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 text-white shadow-lg">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <Link
-              href="/admin/dashboard"
-              className="p-2 bg-white/20 hover:bg-white/30 rounded-xl transition-all duration-200 backdrop-blur-sm"
-            >
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-            </Link>
-            <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-white">Finanzas</h1>
-              <p className="text-emerald-100 mt-1 text-sm lg:text-base">Gestión financiera completa</p>
-            </div>
+          <div>
+            <h1 className="text-2xl lg:text-3xl font-bold text-white">Finanzas</h1>
+            <p className="text-emerald-100 mt-1 text-sm lg:text-base">Gestión financiera completa</p>
           </div>
           
           {/* Action Buttons */}
@@ -233,12 +241,20 @@ export default function FinanzasPage() {
               <div className="flex gap-2">
                 <select
                   value={filtroEstado}
-                  onChange={(e) => setFiltroEstado(e.target.value)}
+                  onChange={(e) => { setFiltroEstado(e.target.value); setCurrentPage(1); }}
                   className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <option value="todos">Todos</option>
                   <option value="pagados">Pagados</option>
                   <option value="pendientes">Pendientes</option>
+                </select>
+                <select
+                  value={filtroOrden}
+                  onChange={(e) => { setFiltroOrden(e.target.value); setCurrentPage(1); }}
+                  className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  <option value="desc">Más reciente</option>
+                  <option value="asc">Más antiguo</option>
                 </select>
               </div>
             </div>
@@ -265,7 +281,7 @@ export default function FinanzasPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      {pagosFiltrados.map((pago) => (
+                      {pagosPaginados.map((pago) => (
                         <tr key={pago.id} className="hover:bg-gray-50 transition-colors">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -295,7 +311,7 @@ export default function FinanzasPage() {
 
                 {/* Mobile List */}
                 <div className="md:hidden divide-y divide-gray-100">
-                  {pagosFiltrados.map((pago) => (
+                  {pagosPaginados.map((pago) => (
                     <div key={pago.id} className="p-4 hover:bg-gray-50 transition-colors">
                       <div className="flex items-center justify-between mb-2">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -320,6 +336,34 @@ export default function FinanzasPage() {
               </>
             )}
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between px-4 py-3 bg-white rounded-b-2xl border-t border-gray-100">
+              <div className="text-sm text-gray-500">
+                Mostrando {startIndex + 1}-{endIndex} de {pagosFiltrados.length}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  ← Anterior
+                </button>
+                <div className="px-3 py-1.5 text-sm text-gray-700">
+                  Página {currentPage} de {totalPages}
+                </div>
+                <button
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Siguiente →
+                </button>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

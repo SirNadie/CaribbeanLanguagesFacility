@@ -206,3 +206,55 @@ export async function GET(request: NextRequest, { params }: Params) {
     )
   }
 }
+
+// DELETE /api/alumnos/[id]/otras-clases - Eliminar una clase adicional
+export async function DELETE(request: NextRequest, { params }: Params) {
+  try {
+    const { id } = await params
+    const { searchParams } = new URL(request.url)
+    const otraClaseId = searchParams.get('otraClaseId')
+
+    if (!otraClaseId) {
+      return NextResponse.json(
+        { error: 'Se requiere el ID de la clase' },
+        { status: 400 }
+      )
+    }
+
+    // Verificar que la clase existe y pertenece al alumno
+    const otraClaseExistente = await prisma.otrasClases.findFirst({
+      where: {
+        id: otraClaseId,
+        alumnoId: id
+      }
+    })
+
+    if (!otraClaseExistente) {
+      return NextResponse.json(
+        { error: 'Clase adicional no encontrada' },
+        { status: 404 }
+      )
+    }
+
+    // Eliminar la clase
+    await prisma.otrasClases.delete({
+      where: { id: otraClaseId }
+    })
+
+    // Eliminar pagos asociados a esta clase
+    await prisma.pago.deleteMany({
+      where: {
+        alumnoId: id,
+        concepto: otraClaseExistente.nombre
+      }
+    })
+
+    return NextResponse.json({ success: true, message: 'Clase eliminada' })
+  } catch (error) {
+    console.error('Error deleting otras clases:', error)
+    return NextResponse.json(
+      { error: 'Error al eliminar la clase adicional' },
+      { status: 500 }
+    )
+  }
+}
