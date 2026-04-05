@@ -63,6 +63,7 @@ export default function AlumnoDetailPage() {
     monto: '', 
     fechaVencimiento: '', 
     frecuencia: 'semanal', // 'semanal', 'mensual'
+    recurrencias: 4,
   })
   const [otrasClases, setOtrasClases] = useState<any[]>([])
 
@@ -129,7 +130,7 @@ export default function AlumnoDetailPage() {
         : `${nuevoPago.recurrencias} pagos recurrentes generados`
       toast.success(mensaje)
       setShowAgregarPago(false)
-      setNuevoPago({ concepto: '', monto: '', fechaVencimiento: '', frecuencia: 'unico', recurrencias: 12 })
+      setNuevoPago({ concepto: '', monto: '', fechaVencimiento: '', frecuencia: 'semanal', recurrencias: 4 })
       
       // Recargar datos del alumno
       const res = await fetch(`/api/alumnos/${alumnoId}`)
@@ -459,7 +460,7 @@ export default function AlumnoDetailPage() {
               <button
                 onClick={() => {
                   setShowAgregarPago(false)
-                  setNuevoPago({ concepto: '', monto: '', fechaVencimiento: '', frecuencia: 'unico', recurrencias: 12 })
+                  setNuevoPago({ concepto: '', monto: '', fechaVencimiento: '', frecuencia: 'semanal', recurrencias: 4 })
                 }}
                 className="flex-1 px-4 py-2 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-all duration-200"
               >
