@@ -9,13 +9,13 @@ export default function Footer() {
     const { t } = useLanguage();
 
     return (
-        <footer className="bg-primary text-white pt-20 pb-8 mt-16">
+        <footer className="bg-primary text-white pt-20 pb-8 mt-16 relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-8">
                 {/* Main Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 mb-16">
                     {/* Brand */}
                     <div className="sm:col-span-2 lg:col-span-1 space-y-5">
-                        <div className="h-14 w-14 bg-white rounded-xl p-1.5 shadow-lg">
+                        <div className="h-14 w-14 bg-white rounded-xl p-1.5 shadow-lg relative">
                             <Image
                                 src="/images/logos/INSIlogo.png"
                                 alt="INSI Logo"
