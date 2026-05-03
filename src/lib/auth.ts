@@ -20,6 +20,9 @@ export async function verifyPassword(password: string, hashedPassword: string): 
 
 // Create session token
 export async function createSessionToken(): Promise<string> {
+  if (!AUTH_SECRET) {
+    throw new Error('AUTH_SECRET environment variable is not set')
+  }
   const timestamp = Date.now()
   const randomString = Math.random().toString(36).substring(2)
   return Buffer.from(`${timestamp}:${randomString}:${AUTH_SECRET}`).toString('base64')
@@ -27,6 +30,10 @@ export async function createSessionToken(): Promise<string> {
 
 // Verify session token
 export async function verifySessionToken(token: string): Promise<boolean> {
+  if (!AUTH_SECRET) {
+    console.error('AUTH_SECRET environment variable is not set')
+    return false
+  }
   try {
     const decoded = Buffer.from(token, 'base64').toString('utf-8')
     const [timestamp, , secret] = decoded.split(':')
@@ -35,7 +42,7 @@ export async function verifySessionToken(token: string): Promise<boolean> {
     const tokenAge = Date.now() - parseInt(timestamp)
     const maxAge = 24 * 60 * 60 * 1000 // 24 hours
     
-    return secret === AUTH_SECRET && tokenAge < maxAge
+    return secret === AUTH_SECRET && tokenAge < maxAge && !isNaN(parseInt(timestamp))
   } catch {
     return false
   }

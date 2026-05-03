@@ -46,7 +46,7 @@ export default function Contact() {
                             ].map((item, i) => (
                                 <div key={i} className="flex items-start gap-6 p-6 rounded-2xl bg-slate-50 border border-slate-100">
                                     <div className="p-3 bg-white text-primary rounded-xl shadow-sm">
-                                        <span className="material-symbols-outlined">{item.icon}</span>
+                                        <span aria-hidden="true" className="material-symbols-outlined">{item.icon}</span>
                                     </div>
                                     <div>
                                         <h4 className="font-bold text-lg text-primary">{t(item.title)}</h4>

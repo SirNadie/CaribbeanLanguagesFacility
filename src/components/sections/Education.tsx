@@ -120,14 +120,14 @@ export default function Education() {
                             {/* Flyer Image */}
                             <div className="relative w-full max-h-[60vh] overflow-y-auto">
                                 <Image
-                                    src="/images/spanish-kids-program.webp"
-                                    alt={t('education.lisasKidsAlt')}
-                                    width={800}
-                                    height={1000}
-                                    quality={85}
-                                    className="w-full h-auto object-contain"
-                                    priority
-                                />
+                                src="/images/spanish-kids-program.webp"
+                                alt=""
+                                width={800}
+                                height={1000}
+                                quality={85}
+                                className="w-full h-auto object-contain"
+                                priority
+                            />
                             </div>
 
                             {/* CTA Button - Below the image */}

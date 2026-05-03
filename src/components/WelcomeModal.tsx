@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '../context/LanguageContext';
@@ -162,10 +163,12 @@ export default function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
                                         <div className="flex-1">
                                             <strong className="block text-orange-700 font-bold text-lg mb-1 group-hover:text-orange-600 transition-colors">{c.taller.title}</strong>
                                             <p className="text-orange-500/70 text-xs italic">{c.taller.clickInfo}</p>
-                                            <img 
-                                                src="/images/taller001.jpeg" 
-                                                alt="Taller" 
-                                                className="w-full h-auto max-h-64 object-contain rounded-lg mt-3" 
+                                            <Image
+                                                src="/images/taller001.jpeg"
+                                                alt=""
+                                                width={600}
+                                                height={400}
+                                                className="w-full h-auto max-h-64 object-contain rounded-lg mt-3"
                                             />
                                         </div>
                                         <span className="material-symbols-outlined text-orange-400 group-hover:text-orange-500 ml-auto shrink-0 transition-transform group-hover:translate-x-1">arrow_forward</span>

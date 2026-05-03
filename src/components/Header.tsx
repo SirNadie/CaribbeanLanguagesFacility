@@ -103,8 +103,8 @@ export default function Header() {
                         aria-expanded={isMenuOpen}
                         aria-controls="mobile-menu"
                     >
-                        <span className={`material-symbols-outlined text-3xl transition-transform duration-300 ${isMenuOpen ? 'rotate-90 opacity-0 absolute' : 'rotate-0 opacity-100'}`}>menu</span>
-                        <span className={`material-symbols-outlined text-3xl transition-transform duration-300 ${isMenuOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0 absolute'}`}>close</span>
+                        <span aria-hidden="true" className={`material-symbols-outlined text-3xl transition-transform duration-300 ${isMenuOpen ? 'rotate-90 opacity-0 absolute' : 'rotate-0 opacity-100'}`}>menu</span>
+                        <span aria-hidden="true" className={`material-symbols-outlined text-3xl transition-transform duration-300 ${isMenuOpen ? 'rotate-0 opacity-100' : '-rotate-90 opacity-0 absolute'}`}>close</span>
                     </button>
                 </div>
             </div>
