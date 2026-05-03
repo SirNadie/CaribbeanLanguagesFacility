@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { translations, Language } from '../i18n/translations';
 
 type LanguageContextType = {
@@ -51,16 +51,16 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         document.documentElement.lang = lang;
     };
 
-    const openModal = (service?: string) => {
+    const openModal = useCallback((service?: string) => {
         if (service) {
             setSelectedService(service);
         }
         setIsModalOpen(true);
-    };
+    }, []);
 
-    const closeModal = () => {
+    const closeModal = useCallback(() => {
         setIsModalOpen(false);
-    };
+    }, []);
 
     const t = (keyStr: string): string => {
         const keys = keyStr.split('.');

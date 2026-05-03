@@ -4,9 +4,9 @@ import { cookies } from 'next/headers'
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'liscetaguilera2022@gmail.com'
-const ADMIN_PASSWORD = 'CLF#2026!Dashboard$Secure'
-const AUTH_SECRET = process.env.AUTH_SECRET || 'your-super-secret-key-change-this-in-production'
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+const AUTH_SECRET = process.env.AUTH_SECRET
 
 // Hash password for storage
 export async function hashPassword(password: string): Promise<string> {
@@ -43,11 +43,13 @@ export async function verifySessionToken(token: string): Promise<boolean> {
 
 // Authenticate admin user
 export async function authenticateAdmin(email: string, password: string): Promise<boolean> {
-  // Verify against hardcoded credentials
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    console.error('ADMIN_EMAIL or ADMIN_PASSWORD environment variables are not set')
+    return false
+  }
   if (email !== ADMIN_EMAIL) {
     return false
   }
-  
   return password === ADMIN_PASSWORD
 }
 

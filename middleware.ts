@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const AUTH_SECRET = process.env.AUTH_SECRET || 'your-super-secret-key-change-this-in-production'
+const AUTH_SECRET = process.env.AUTH_SECRET
 
 // Verify session token inline (middleware context)
 function verifyToken(token: string): boolean {
+  if (!AUTH_SECRET) return false
   try {
     const decoded = Buffer.from(token, 'base64').toString('utf-8')
     const [timestamp, , secret] = decoded.split(':')
@@ -20,6 +21,11 @@ function verifyToken(token: string): boolean {
 }
 
 export async function middleware(request: NextRequest) {
+  if (!AUTH_SECRET) {
+    console.error('AUTH_SECRET environment variable is not set')
+    return NextResponse.redirect(new URL('/admin/login', request.url))
+  }
+
   // Only protect admin routes (except login)
   if (request.nextUrl.pathname.startsWith('/admin') && 
       !request.nextUrl.pathname.startsWith('/admin/login')) {

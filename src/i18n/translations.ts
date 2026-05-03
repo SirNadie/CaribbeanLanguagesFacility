@@ -83,6 +83,7 @@ export const translations = {
     education: {
         title: { es: 'Servicios Educativos', en: 'Educational Services' },
         lisasKids: { es: "Lisa's Kids Casa Bilingüe", en: "Lisa's Kids Bilingual House" },
+        lisasKidsAlt: { es: "Programa bilingüe para niños", en: "Bilingual program for children" },
         description: {
             es: 'Escuela bilingüe para niños y adolescentes. Enseñamos inglés como segundo idioma y damos refuerzo académico.',
             en: 'Bilingual school for children and teenagers. We teach English as a second language and provide academic support.'

@@ -125,11 +125,29 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
-    
+
+    // Validar tipoPago
     const tipoPagoValido = ['diario', 'semanal', 'mensual']
     if (!tipoPagoValido.includes(tipoPago)) {
       return NextResponse.json(
         { error: 'El tipo de pago debe ser: diario, semanal o mensual' },
+        { status: 400 }
+      )
+    }
+
+    // Validar montoPago sea positivo
+    const montoPagoNum = parseFloat(montoPago)
+    if (isNaN(montoPagoNum) || montoPagoNum < 0) {
+      return NextResponse.json(
+        { error: 'El monto de pago debe ser un número positivo' },
+        { status: 400 }
+      )
+    }
+
+    // Validar telefono si se proporciona (formato básico)
+    if (telefono && !/^[\d\s\-\+\(\)]{7,20}$/.test(telefono.replace(/\s/g, ''))) {
+      return NextResponse.json(
+        { error: 'El formato del teléfono no es válido' },
         { status: 400 }
       )
     }

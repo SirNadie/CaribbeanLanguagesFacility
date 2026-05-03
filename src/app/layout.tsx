@@ -7,6 +7,7 @@ import JsonLd from '../components/JsonLd';
 import ContactModal from '../components/ContactModal';
 import SkipLink from '../components/SkipLink';
 import WhatsAppFloatWrapper from '../components/WhatsAppFloatWrapper';
+import ErrorBoundary from '../components/ErrorBoundary';
 import { Toaster } from 'sonner';
 
 const playfair = Playfair_Display({
@@ -92,17 +93,19 @@ export default function RootLayout({
                     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap&text=arrow_forward,arrow_back,info,close,mail,school,error,cast_for_education,call,location_on,email,phone,check_circle,check,translate,workspace_premium,visibility,diamond,menu,group,schedule,home,payments,fact_check,assignment,checklist,apparel,restaurant,lunch_dining,alarm,description,edit_document,contract,shield,gavel,psychology,favorite,account_balance,expand_more,diversity_3,work,child_care,menu_book,language,timelapse,calendar_month,timer"
                 />
             </head>
-            <body className={`${jakarta.className} bg-background-light text-text-light antialiased`}>
+<body className={`${jakarta.className} bg-background-light text-text-light antialiased`}>
                 <LanguageProvider>
-                    <SkipLink />
-                    <ContactModal />
-                    <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
-                        <main id="main-content" className="layout-container flex h-full grow flex-col pt-0">
-                            {children}
-                        </main>
+                    <ErrorBoundary>
+                        <SkipLink />
+                        <ContactModal />
+                        <div className="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+                            <main id="main-content" className="layout-container flex h-full grow flex-col pt-0">
+                                {children}
+                            </main>
 
-                        <WhatsAppFloatWrapper />
-                    </div>
+                            <WhatsAppFloatWrapper />
+                        </div>
+                    </ErrorBoundary>
                 </LanguageProvider>
                 <JsonLd />
                 <Toaster position="top-right" richColors />

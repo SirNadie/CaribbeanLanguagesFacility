@@ -70,7 +70,7 @@ export default function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
         };
         window.addEventListener('keydown', handleEscape);
         return () => window.removeEventListener('keydown', handleEscape);
-    }, [isOpen, onClose]);
+    }, [isOpen]);
 
     useEffect(() => {
         if (isOpen) document.body.style.overflow = 'hidden';

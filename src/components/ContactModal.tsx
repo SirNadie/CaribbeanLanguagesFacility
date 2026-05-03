@@ -19,7 +19,7 @@ export default function ContactModal() {
         };
         window.addEventListener('keydown', handleEscape);
         return () => window.removeEventListener('keydown', handleEscape);
-    }, [isModalOpen, closeModal]);
+    }, [isModalOpen]);
 
     // Prevent body scroll when modal is open
     useEffect(() => {

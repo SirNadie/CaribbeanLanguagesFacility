@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
-import { ADDRESS_LINE_1, ADDRESS_LINE_2, ADDRESS_2_LINE_1, ADDRESS_2_LINE_2, EMAIL_ADDRESS, PHONE_NUMBER } from '../consts';
+import { ADDRESS_LINE_1, ADDRESS_LINE_2, ADDRESS_2_LINE_1, ADDRESS_2_LINE_2, EMAIL_ADDRESS, PHONE_NUMBER, WHATSAPP_NUMBER } from '../consts';
 
 export default function Footer() {
     const { t } = useLanguage();
@@ -31,7 +31,7 @@ export default function Footer() {
                         {/* Social Media Icons */}
                         <div className="flex gap-4 pt-2">
                             <a
-                                href={`https://wa.me/${PHONE_NUMBER.replace(/[^0-9]/g, '')}`}
+                                href={`https://wa.me/${WHATSAPP_NUMBER}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-10 h-10 bg-white/10 hover:bg-green-500 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"

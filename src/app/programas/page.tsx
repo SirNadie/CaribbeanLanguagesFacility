@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '../../context/LanguageContext';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { PHONE_NUMBER } from '../../consts';
+import { PHONE_NUMBER, WHATSAPP_NUMBER } from '../../consts';
 
 const content = {
     es: {
@@ -688,7 +688,7 @@ export default function ProgramasPage() {
                                 {t.cta}
                             </button>
                             <a
-                                href={`https://wa.me/${PHONE_NUMBER.replace(/[^0-9]/g, '')}`}
+                                href={`https://wa.me/${WHATSAPP_NUMBER}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-white font-bold rounded-full hover:bg-green-600 transition-colors shadow-lg"

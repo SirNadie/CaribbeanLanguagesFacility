@@ -1,8 +1,9 @@
 "use client";
 
 import { useLanguage } from '../context/LanguageContext';
+import { WHATSAPP_NUMBER } from '../consts';
 
-const WHATSAPP_URL = "https://wa.me/18682693510";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 
 export default function WhatsAppFloat() {
     const { t } = useLanguage();
