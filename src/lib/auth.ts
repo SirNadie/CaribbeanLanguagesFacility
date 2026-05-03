@@ -4,22 +4,24 @@ import { cookies } from 'next/headers'
 import bcrypt from 'bcryptjs'
 import { prisma } from './prisma'
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
-const AUTH_SECRET = process.env.AUTH_SECRET
+// Authenticate admin user
+export async function authenticateAdmin(email: string, password: string): Promise<boolean> {
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
 
-// Hash password for storage
-export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, 12)
-}
-
-// Verify password against hash
-export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
-  return bcrypt.compare(password, hashedPassword)
+  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    console.error('ADMIN_EMAIL or ADMIN_PASSWORD environment variables are not set')
+    return false
+  }
+  if (email !== ADMIN_EMAIL) {
+    return false
+  }
+  return password === ADMIN_PASSWORD
 }
 
 // Create session token
 export async function createSessionToken(): Promise<string> {
+  const AUTH_SECRET = process.env.AUTH_SECRET
   if (!AUTH_SECRET) {
     throw new Error('AUTH_SECRET environment variable is not set')
   }
@@ -30,6 +32,7 @@ export async function createSessionToken(): Promise<string> {
 
 // Verify session token
 export async function verifySessionToken(token: string): Promise<boolean> {
+  const AUTH_SECRET = process.env.AUTH_SECRET
   if (!AUTH_SECRET) {
     console.error('AUTH_SECRET environment variable is not set')
     return false
@@ -37,27 +40,14 @@ export async function verifySessionToken(token: string): Promise<boolean> {
   try {
     const decoded = Buffer.from(token, 'base64').toString('utf-8')
     const [timestamp, , secret] = decoded.split(':')
-    
-    // Check if token is valid and not expired (24 hours)
+
     const tokenAge = Date.now() - parseInt(timestamp)
-    const maxAge = 24 * 60 * 60 * 1000 // 24 hours
-    
+    const maxAge = 24 * 60 * 60 * 1000
+
     return secret === AUTH_SECRET && tokenAge < maxAge && !isNaN(parseInt(timestamp))
   } catch {
     return false
   }
-}
-
-// Authenticate admin user
-export async function authenticateAdmin(email: string, password: string): Promise<boolean> {
-  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
-    console.error('ADMIN_EMAIL or ADMIN_PASSWORD environment variables are not set')
-    return false
-  }
-  if (email !== ADMIN_EMAIL) {
-    return false
-  }
-  return password === ADMIN_PASSWORD
 }
 
 // Set session cookie

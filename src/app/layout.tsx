@@ -80,7 +80,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="es" className={`${playfair.variable} ${jakarta.variable} scroll-smooth`}>
+        <html lang="es" data-scroll-behavior="smooth" className={`${playfair.variable} ${jakarta.variable}`}>
             <head>
                 {/* Resource hints for performance */}
                 <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
